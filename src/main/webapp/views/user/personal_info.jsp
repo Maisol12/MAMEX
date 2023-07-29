@@ -70,6 +70,11 @@
                                     <button class="btn btn-outline-dark m-2"><small>Editar </small><i class="custom-icon" data-feather="arrow-right"></i></button>
                                 </a>
                             </form>
+                            <div class="container text-center">
+                                <form novalidate action="${pageContext.request.contextPath}/user/logout" method="get">
+                                    <button class="btn bg-dark" style="color: white;">Cerrar sesión</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
