@@ -16,18 +16,7 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <form action="search" method="get">
-        <input type="text" name="query" placeholder="Search">
-        <button type="submit">Buscar</button>
-      </form>
-      <form action="filter" method="get">
-        <select name="category">
-          <!-- Replace with your categories -->
-          <option value="category1">Category 1</option>
-          <option value="category2">Category 2</option>
-        </select>
-        <button type="submit">Filter</button>
-      </form>
+
     </div>
   </div>
   <div class="row">
