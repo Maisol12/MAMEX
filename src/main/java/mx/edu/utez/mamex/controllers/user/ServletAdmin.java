@@ -97,7 +97,7 @@ public class ServletAdmin extends HttpServlet {
 
     }
 
-    private void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /*private void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Obtén los nuevos datos del producto desde el request
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
@@ -129,7 +129,7 @@ public class ServletAdmin extends HttpServlet {
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     private void loadUsersData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDao userDao = new UserDao(new MySQLConnection().connect());
