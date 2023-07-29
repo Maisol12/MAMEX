@@ -15,6 +15,10 @@ import mx.edu.utez.mamex.utils.MySQLConnection;
 import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.sales.SaleDao;
 import mx.edu.utez.mamex.models.sales.Sale;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -26,7 +30,7 @@ import java.sql.SQLException;
 
 
 
-@WebServlet(name = "admin", urlPatterns = {"/admin/inicio", "/admin/crear_producto", "/admin/products", "/user/admin/dashboard", "/user/admin/products","/admin/users","/admin/sales","/admin/delete_product"})
+@WebServlet(name = "admin", urlPatterns = {"/admin/inicio", "/admin/crear_producto", "/admin/products", "/user/admin/dashboard", "/user/admin/products","/admin/users","/admin/sales","/admin/delete_product","/admin/editar_producto"})
 @MultipartConfig
 public class ServletAdmin extends HttpServlet {
     private String action;
@@ -80,8 +84,10 @@ public class ServletAdmin extends HttpServlet {
             createProduct(request, response);
         } else if ("/admin/delete_product".equals(action)) {
             deleteProduct(request, response);
+        } else if ("/admin/editar_producto".equals(action)) {
+            editProduct(request, response);
         }
-        }
+    }
 
     private void loadInicioData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDao userDao = new UserDao(new MySQLConnection().connect());
@@ -97,39 +103,51 @@ public class ServletAdmin extends HttpServlet {
 
     }
 
-    /*private void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Obtén los nuevos datos del producto desde el request
+    private void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String color = request.getParameter("color");
         double unitPrice = Double.parseDouble(request.getParameter("unitPrice"));
         int stock = Integer.parseInt(request.getParameter("stock"));
-        String notes = request.getParameter("notes");
-        // Aquí puedes agregar cualquier otro campo que desees editar
 
-        // Crea un nuevo objeto Item con los datos obtenidos
-        Item item = new Item();
-        item.setId(id);
-        item.setName(name);
-        item.setDescription(description);
-        item.setColor(color);
-        item.setUnitPrice(unitPrice);
-        item.setStock(stock);
-        item.setNotes(notes);
-        // Aquí puedes establecer cualquier otro campo que desees editar
+        List<Part> fileParts = new ArrayList<>(Arrays.asList(request.getPart("image1"), request.getPart("image2"), request.getPart("image3")));
+        fileParts.removeIf(part -> part == null || part.getSize() == 0);
 
-        // Usa el DAO para actualizar el producto en la base de datos
-        ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
-        boolean success = itemDao.updateItem(item);
-
-        // En lugar de redirigir, envía una respuesta con el resultado de la operación
-        if (success) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        Map<String, byte[]> imagesMap = new HashMap<>();
+        Map<String, String> base64ImagesMap = new HashMap<>();
+        int imageIndex = 1;
+        for (Part filePart : fileParts) {
+            byte[] imageBytes = new byte[(int) filePart.getSize()];
+            filePart.getInputStream().read(imageBytes);
+            imagesMap.put("image" + imageIndex, imageBytes);
+            base64ImagesMap.put("image" + imageIndex, Base64.getEncoder().encodeToString(imageBytes));
+            imageIndex++;
         }
-    }*/
+
+        // Aquí está el problema, el constructor de Item no incluye las imágenes en sus parámetros
+        Item item = new Item(id, name, description, color, unitPrice, stock);
+
+        // Actualizar las imágenes del objeto Item
+        item.setImages(imagesMap);
+        item.setBase64Images(base64ImagesMap);
+
+        ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
+
+        boolean result = itemDao.updateItem(item);
+
+        if (result) {
+            response.sendRedirect(request.getContextPath() + "/admin/products?result=success");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/products?result=error");
+        }
+    }
+
+
+
+
+
+
 
     private void loadUsersData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDao userDao = new UserDao(new MySQLConnection().connect());
@@ -230,15 +248,3 @@ public class ServletAdmin extends HttpServlet {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

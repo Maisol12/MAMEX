@@ -86,6 +86,47 @@ public class ItemDao {
         }
     }
 
+
+
+
+    public boolean updateItem(Item item) {
+        String updateItemQuery = "UPDATE items SET name_item = ?, description_item = ?, color = ?, unit_price = ?, stock = ? WHERE id_item = ?";
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(updateItemQuery);
+            preparedStatement.setString(1, item.getName());
+            preparedStatement.setString(2, item.getDescription());
+            preparedStatement.setString(3, item.getColor());
+            preparedStatement.setDouble(4, item.getUnitPrice());
+            preparedStatement.setInt(5, item.getStock());
+            preparedStatement.setInt(6, item.getId());
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0 && item.getImages().size() > 0) {
+                // First, delete all the old images for this item
+                String deleteImagesQuery = "DELETE FROM item_images WHERE id_item = ?";
+                preparedStatement = conn.prepareStatement(deleteImagesQuery);
+                preparedStatement.setInt(1, item.getId());
+                preparedStatement.executeUpdate();
+
+                // Then, insert the new images
+                String insertImagesQuery = "INSERT INTO item_images (id_item, image) VALUES (?, ?)";
+                preparedStatement = conn.prepareStatement(insertImagesQuery);
+                for (Map.Entry<String, byte[]> imageEntry : item.getImages().entrySet()) {
+                    preparedStatement.setInt(1, item.getId());
+                    preparedStatement.setBytes(2, imageEntry.getValue());
+                    preparedStatement.addBatch();
+                }
+                preparedStatement.executeBatch();
+            }
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     public Item getItemById(int itemId) {
         Item item = null;
         String query = "SELECT * FROM items WHERE id_item = ?";

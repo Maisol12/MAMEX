@@ -15,71 +15,10 @@
     <link rel="icon" href="../../assets/img/OIP.jpg">
     <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/css/styles.css">
-    <script src="https://unpkg.com/feather-icons"></script>
     <title>Productos</title>
 </head>
 <body>
-<nav class="navbar sticky-top navbar-expand-lg bg-white">
-    <div class="container">
-        <a class="navbar-brand" href="./inicio.jsp">
-            <img src="../../assets/img/OIP.jpg" alt="Bootstrap" width="34" height="34" style="border-radius: 50px;">
-        </a>
-        <p class="pt-3 ms-5" style="font-size: 20px;">Producto</p>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <button class="btn d-lg-none ms-2 ps-5" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive"><i
-                    data-feather="sidebar"></i></button>
-        </button>
-        <div class="navbar-collapse collapse" id="navbarNavAltMarkup">
-            <div class="container d-flex justify-content-center">
-                <div class="group">
-                    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
-                        <g>
-                            <path
-                                    d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
-                            </path>
-                        </g>
-                    </svg>
-                    <input placeholder="Buscar" type="search" class="input">
-                </div>
-            </div>
-            <img class="d-sm-none d-lg-block" src="../../assets/img/Rancho_Cucamonga_Tree_16.png" width="34" height="34"
-                 style="border-radius: 50px;">
-            <p class="pt-3 ms-3 d-none d-lg-block">Administrador</p>
-
-        </div>
-    </div>
-</nav>
-
-<div class="offcanvas-lg offcanvas-start" tabindex="-1" id="offcanvasResponsive"
-     aria-labelledby="offcanvasResponsiveLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasResponsiveLabel">Menú</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive"
-                aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <div class="sidebar">
-            <ul class="list-unstyled p-5 mt-5" style="font-size: 14px;">
-                <li class="mb-3"><a href="/user/admin/dashboard" class="nav-link"><i data-feather="home"></i><span class="ps-3">Inicio</span></a>
-                </li>
-                <li class="mb-3"><a href="" class="nav-link"><i data-feather="shopping-cart"></i><span class="ps-3">Órdenes</span></a>
-                </li>
-                <li class="mb-3"><a href="/user/admin/products" class="nav-link"><i data-feather="tag"></i><span class="ps-3">Productos</span></a>
-                </li>
-                <li class="mb-3"><a href="/admin/users" class="nav-link"><i data-feather="users"></i><span class="ps-3">Usuarios</span></a></li>
-                <li class="mb-3"><a href="/admin/sales" class="nav-link"><i data-feather="dollar-sign"></i><span class="ps-3">Ventas</span></a></li>
-                <li class="mb-3"><a href="" class="nav-link"><i data-feather="settings"></i><span class="ps-3">Ajustes</span></a></li>
-            </ul>
-            <form action="/user/unlogin" method="post" id="unlogin">
-                <button class="btn bg-dark ms-5" style="color: white;">Cerrar sesión</button>
-            </form>
-        </div>
-    </div>
-</div>
-
+<jsp:include page="../../layouts/sidebar.jsp"/>
 <main>
     <div class="container-main">
         <div class="card text-end">
@@ -93,31 +32,72 @@
                     <table class="table table-striped caption-top">
                         <thead>
                         <tr>
-                            <th scope="col">ID</th>
                             <th scope="col">Producto</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Descripcion</th>
-                            <th scope="col">Disponibilidad</th>
+                            <th scope="col">Color</th>
                             <th scope="col">Inventario</th>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach var="item" items="${items}">
                             <tr>
-                                <th scope="row">${item.id}</th>
                                 <td>${item.name}</td>
                                 <td>$${item.unitPrice}</td>
                                 <td>${item.description}</td>
-                                <td>${item.available}</td>
+                                <td>${item.color}</td>
                                 <td>${item.stock}</td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm btn-outline edit-button"
-                                            data-bs-toggle="modal" data-bs-target="#editProductModal"
-                                            data-id="${item.id}" data-name="${item.name}"
-                                            data-description="${item.description}" data-unitprice="${item.unitPrice}"
-                                            data-available="${item.available}" data-stock="${item.stock}">
+                                    <button type="button" class="btn btn-primary btn-sm btn-outline" data-bs-toggle="modal" data-bs-target="#edit-product-modal-${item.id}">
                                         <i data-feather="edit"></i>
                                     </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="edit-product-modal-${item.id}" tabindex="-1" aria-labelledby="edit-product-modal-label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="edit-product-modal-label">Editar Producto</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="${pageContext.request.contextPath}/admin/editar_producto" method="post" enctype="multipart/form-data">
+                                                        <input type="hidden" name="id" value="${item.id}">
+
+                                                        <label for="name-${item.id}">Nombre del Producto:</label>
+                                                        <input type="text" id="name-${item.id}" name="name" value="${item.name}" required>
+
+                                                        <label for="description-${item.id}">Descripción del Producto:</label>
+                                                        <input type="text" id="description-${item.id}" name="description" value="${item.description}" required>
+
+                                                        <label for="color-${item.id}">Color:</label>
+                                                        <input type="text" id="color-${item.id}" name="color" value="${item.color}" required>
+
+                                                        <label for="unitPrice-${item.id}">Precio del Producto:</label>
+                                                        <input type="text" id="unitPrice-${item.id}" name="unitPrice" value="${item.unitPrice}" required>
+
+                                                        <label for="stock-${item.id}">Cantidad en Stock:</label>
+                                                        <input type="number" id="stock-${item.id}" name="stock" value="${item.stock}" required>
+
+                                                        <label for="image1-${item.id}">Imagen del producto 1:</label>
+                                                        <input type="file" id="image1-${item.id}" name="image1" accept="image/*">
+
+                                                        <label for="image2-${item.id}">Imagen del producto 2:</label>
+                                                        <input type="file" id="image2-${item.id}" name="image2" accept="image/*">
+
+                                                        <label for="image3-${item.id}">Imagen del producto 3:</label>
+                                                        <input type="file" id="image3-${item.id}" name="image3" accept="image/*">
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <button class="btn btn-danger btn-sm btn-outline delete-button" data-id="${item.id}">
                                         <i data-feather="trash"></i>
                                     </button>
@@ -129,44 +109,14 @@
                 </div>
             </div>
         </div>
-
-        <!-- Modal para editar un producto -->
-        <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editProductModalLabel">Editar Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Aquí va el formulario de edición que has proporcionado -->
-                        <form action="${pageContext.request.contextPath}/admin/editar_producto" method="post" class="mt-3" enctype="multipart/form-data">
-                            <input type="hidden" id="edit-id" name="id">
-                            <small class="fw-bold">Nombre del Producto*</small>
-                            <input type="text" class="form-control w-50 mb-2" id="edit-name" name="name" placeholder="Nombre del Producto" aria-label="Nombre del Producto" required>
-                            <br>
-                            <small class="fw-bold">Descripción del Producto*</small>
-                            <input type="text" class="form-control w-75 mb-2" id="edit-description" name="description" placeholder="Descripción del Producto" aria-label="Descripción del Producto" required>
-                            <br>
-                            <small class="fw-bold">Precio del Producto*</small>
-                            <input type="text" class="form-control w-50 mb-2" id="edit-unitPrice" name="unitPrice" placeholder="Precio del Producto" aria-label="Precio del Producto" required>
-                            <br>
-                            <small class="fw-bold">Cantidad en Stock*</small>
-                            <input type="number" class="form-control w-50 mb-2" id="edit-stock" name="stock" placeholder="Cantidad en Stock" aria-label="Cantidad en Stock" required>
-                            <br>
-                            <input type="submit" class="btn btn-primary" value="Guardar Cambios">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </main>
 
-<script>
-    feather.replace();
-</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
 <script>
     document.querySelectorAll('.delete-button').forEach(button => {
         button.addEventListener('click', event => {
@@ -188,8 +138,8 @@
         });
     });
 </script>
+
 <script>
-    feather.replace();
     document.querySelectorAll('.edit-button').forEach(button => {
         button.addEventListener('click', () => {
             const id = button.getAttribute('data-id');
@@ -208,11 +158,38 @@
 </script>
 <script>
     $(document).ready(function() {
+        $('#editProductForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/editar_producto',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Aquí puedes manejar la respuesta del servidor.
+                    // Por ejemplo, puedes mostrar un mensaje de éxito, actualizar la tabla de productos, etc.
+                    alert('Producto actualizado con éxito');
+                    location.reload(); // Esta línea recargará la página.
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Aquí puedes manejar cualquier error que pueda haber ocurrido durante la solicitud.
+                    alert('Error al actualizar el producto');
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
         $('#editForm').submit(function(e) {
             e.preventDefault();
             var formData = new FormData(this);
             $.ajax({
-                url: '${pageContext.request.contextPath}/admin/editar_producto',
+                url: '${pageContext.request.contextPath}/admin/products',
                 type: 'POST',
                 data: formData,
                 success: function(data) {
@@ -252,5 +229,8 @@
         previewImage(this, 'image-preview3');
     });
 </script>
+
+<jsp:include page="../../layouts/footer.jsp"/>
+
 </body>
 </html>

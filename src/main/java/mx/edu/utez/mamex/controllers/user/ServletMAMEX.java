@@ -380,4 +380,3 @@ public class ServletMAMEX extends HttpServlet {
         resp.sendRedirect(req.getContextPath() + redirect);
     }
 }
-

@@ -94,7 +94,6 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellido</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Estado</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -103,7 +102,6 @@
                             <td>${user.names}</td>
                             <td>${user.lastnames}</td>
                             <td>${user.email}</td>
-                            <td>$${user.userState}</td>
                             <td>
                                 <a href="./editar_usuario.jsp?id=${user.id}" style="text-decoration: none">
                                     <button class="btn btn-primary btn-sm btn-outline"><i data-feather="edit"></i></button>
