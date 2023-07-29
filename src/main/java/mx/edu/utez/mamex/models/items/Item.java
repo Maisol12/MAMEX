@@ -1,5 +1,4 @@
 package mx.edu.utez.mamex.models.items;
-
 import java.util.Date;
 import java.util.Map;
 
@@ -17,9 +16,9 @@ public class Item {
     private Map<String, byte[]> images;
     private Map<String, String> base64Images;
 
+    // Constructor
     public Item(int id, String name, String description, String available, String color, double unitPrice,
-                Date createDate, Date updateDate, int stock, String notes, Map<String, byte[]> images,
-                Map<String, String> base64Images) {
+                Date createDate, Date updateDate, int stock, String notes, Map<String, byte[]> images, Map<String, String> base64Images) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -34,8 +33,18 @@ public class Item {
         this.base64Images = base64Images;
     }
 
-    // Getters and setters...
+    // Constructor override
+    public Item(int id, String name, String description, String color, double unitPrice, int stock) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.color = color;
+        this.unitPrice = unitPrice;
+        this.stock = stock;
+    }
 
+
+    // Getters and Setters
     public int getId() {
         return id;
     }

@@ -167,15 +167,15 @@ public class DAOUser{
     }
 
 
-        public void close () {
-            try {
-                if (conn != null) conn.close();
-                if (pstm != null) pstm.close();
-                if (rs != null) rs.close();
-                if (cs != null) cs.close();
-            } catch (SQLException e) {
+    public void close () {
+        try {
+            if (conn != null) conn.close();
+            if (pstm != null) pstm.close();
+            if (rs != null) rs.close();
+            if (cs != null) cs.close();
+        } catch (SQLException e) {
 
-            }
         }
     }
+}
 

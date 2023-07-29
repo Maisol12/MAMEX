@@ -25,31 +25,72 @@
                     <table class="table table-striped caption-top">
                         <thead>
                         <tr>
-                            <th scope="col">ID</th>
                             <th scope="col">Producto</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Descripcion</th>
-                            <th scope="col">Disponibilidad</th>
+                            <th scope="col">Color</th>
                             <th scope="col">Inventario</th>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach var="item" items="${items}">
                             <tr>
-                                <th scope="row">${item.id}</th>
                                 <td>${item.name}</td>
                                 <td>$${item.unitPrice}</td>
                                 <td>${item.description}</td>
-                                <td>${item.available}</td>
+                                <td>${item.color}</td>
                                 <td>${item.stock}</td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm btn-outline edit-button"
-                                            data-bs-toggle="modal" data-bs-target="#editProductModal"
-                                            data-id="${item.id}" data-name="${item.name}"
-                                            data-description="${item.description}" data-unitprice="${item.unitPrice}"
-                                            data-available="${item.available}" data-stock="${item.stock}">
+                                    <button type="button" class="btn btn-primary btn-sm btn-outline" data-bs-toggle="modal" data-bs-target="#edit-product-modal-${item.id}">
                                         <i data-feather="edit"></i>
                                     </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="edit-product-modal-${item.id}" tabindex="-1" aria-labelledby="edit-product-modal-label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="edit-product-modal-label">Editar Producto</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="${pageContext.request.contextPath}/admin/editar_producto" method="post" enctype="multipart/form-data">
+                                                        <input type="hidden" name="id" value="${item.id}">
+
+                                                        <label for="name-${item.id}">Nombre del Producto:</label>
+                                                        <input type="text" id="name-${item.id}" name="name" value="${item.name}" required>
+
+                                                        <label for="description-${item.id}">Descripción del Producto:</label>
+                                                        <input type="text" id="description-${item.id}" name="description" value="${item.description}" required>
+
+                                                        <label for="color-${item.id}">Color:</label>
+                                                        <input type="text" id="color-${item.id}" name="color" value="${item.color}" required>
+
+                                                        <label for="unitPrice-${item.id}">Precio del Producto:</label>
+                                                        <input type="text" id="unitPrice-${item.id}" name="unitPrice" value="${item.unitPrice}" required>
+
+                                                        <label for="stock-${item.id}">Cantidad en Stock:</label>
+                                                        <input type="number" id="stock-${item.id}" name="stock" value="${item.stock}" required>
+
+                                                        <label for="image1-${item.id}">Imagen del producto 1:</label>
+                                                        <input type="file" id="image1-${item.id}" name="image1" accept="image/*">
+
+                                                        <label for="image2-${item.id}">Imagen del producto 2:</label>
+                                                        <input type="file" id="image2-${item.id}" name="image2" accept="image/*">
+
+                                                        <label for="image3-${item.id}">Imagen del producto 3:</label>
+                                                        <input type="file" id="image3-${item.id}" name="image3" accept="image/*">
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <button class="btn btn-danger btn-sm btn-outline delete-button" data-id="${item.id}">
                                         <i data-feather="trash"></i>
                                     </button>
@@ -58,37 +99,6 @@
                         </c:forEach>
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal para editar un producto -->
-        <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editProductModalLabel">Editar Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Aquí va el formulario de edición que has proporcionado -->
-                        <form action="${pageContext.request.contextPath}/admin/editar_producto" method="post" class="mt-3" enctype="multipart/form-data">
-                            <input type="hidden" id="edit-id" name="id">
-                            <small class="fw-bold">Nombre del Producto*</small>
-                            <input type="text" class="form-control w-50 mb-2" id="edit-name" name="name" placeholder="Nombre del Producto" aria-label="Nombre del Producto" required>
-                            <br>
-                            <small class="fw-bold">Descripción del Producto*</small>
-                            <input type="text" class="form-control w-75 mb-2" id="edit-description" name="description" placeholder="Descripción del Producto" aria-label="Descripción del Producto" required>
-                            <br>
-                            <small class="fw-bold">Precio del Producto*</small>
-                            <input type="text" class="form-control w-50 mb-2" id="edit-unitPrice" name="unitPrice" placeholder="Precio del Producto" aria-label="Precio del Producto" required>
-                            <br>
-                            <small class="fw-bold">Cantidad en Stock*</small>
-                            <input type="number" class="form-control w-50 mb-2" id="edit-stock" name="stock" placeholder="Cantidad en Stock" aria-label="Cantidad en Stock" required>
-                            <br>
-                            <input type="submit" class="btn btn-primary" value="Guardar Cambios">
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -117,6 +127,7 @@
         });
     });
 </script>
+
 <script>
     document.querySelectorAll('.edit-button').forEach(button => {
         button.addEventListener('click', () => {
@@ -136,11 +147,38 @@
 </script>
 <script>
     $(document).ready(function() {
+        $('#editProductForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/editar_producto',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Aquí puedes manejar la respuesta del servidor.
+                    // Por ejemplo, puedes mostrar un mensaje de éxito, actualizar la tabla de productos, etc.
+                    alert('Producto actualizado con éxito');
+                    location.reload(); // Esta línea recargará la página.
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Aquí puedes manejar cualquier error que pueda haber ocurrido durante la solicitud.
+                    alert('Error al actualizar el producto');
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
         $('#editForm').submit(function(e) {
             e.preventDefault();
             var formData = new FormData(this);
             $.ajax({
-                url: '${pageContext.request.contextPath}/admin/editar_producto',
+                url: '${pageContext.request.contextPath}/admin/products',
                 type: 'POST',
                 data: formData,
                 success: function(data) {
@@ -180,5 +218,8 @@
         previewImage(this, 'image-preview3');
     });
 </script>
+
+<jsp:include page="../../layouts/footer.jsp"/>
+
 </body>
 </html>

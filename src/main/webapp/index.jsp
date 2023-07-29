@@ -42,45 +42,28 @@
     </div>
 </div>
 
-<div class="container-fluid p-5">
-    <div class="container p-sm-5 p-lg-5">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <c:forEach var="item" items="${items}" varStatus="status">
-                    <c:if test="${status.index % 3 == 0}">
-                        <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
-                        <div class="card-group">
-                    </c:if>
-                    <div class="card">
-                        <c:if test="${not empty item.base64Images}">
-                            <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}" />
-                            <img class="card-img-top" src="data:image/jpeg;base64,${item.base64Images[imageName]}" alt="${item.name}">
-                        </c:if>
-                        <div class="card-body">
-                            <h5 class="card-title">${item.name}</h5>
-                            <p class="card-text">${item.description}</p>
-                        </div>
-                    </div>
-                    <c:if test="${status.index % 3 == 2 || status.index == fn:length(items) - 1}">
-                        </div>
-                        </div>
-                    </c:if>
-                </c:forEach>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+<aside>
+    <div class="container-fluid p-5">
+        <div class="container p-sm-5 p-lg-5">
+            <section class="container">
+                <div class="row">
+                    <article class="col-12 col-lg-7">
+                        <h2 class="display-4 mb-5 mt-5">Descubre la belleza en cada hilo</h2>
+                        <p class="lead text-sm-start text-md-start">Sumérgete en un mundo de
+                            posibilidades con nuestra amplia
+                            colección de tejidos de alta calidad
+                            cuidadosamente seleccionados para que puedas crear prendas únicas y
+                            proyectos creativos que reflejen tu estilo y pasión por la moda.</p>
+                        <button class="btn btn-dark m-4"
+                                style="font-weight: 300; border-radius: 0; padding: 10px; width: 150px;"><a href="${pageContext.request.contextPath}/user/register-view" style="text-decoration: none; color: whitesmoke;">Regístrate</a></button>
+                    </article>
+                    <article class="col-12 col-lg-5 ps-lg-5 ps-sm-0">
+                        <img src="${pageContext.request.contextPath}/assets/img/e9be2a1f1471feb0c1b18083309ea295.jpg" alt="img-hilos" class="img-fluid">
+                    </article>
+                </div>
+            </section>
         </div>
     </div>
-</div>
-
-<aside>
-
 </aside>
 
 <footer class="p-5" style="background-color: #6b6b6b">
