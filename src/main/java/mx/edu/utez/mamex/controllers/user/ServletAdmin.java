@@ -141,7 +141,7 @@ public class ServletAdmin extends HttpServlet {
         } else {
             response.sendRedirect(request.getContextPath() + "/admin/products?result=error");
         }
-    }*/
+    }
 
 
 

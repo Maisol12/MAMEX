@@ -23,7 +23,7 @@
             </h1>
 
             <div class="container-fluid">
-                <form class="text-center w-50 m-auto pt-4" novalidate action="/user/login" method="post">
+                <form class="text-center m-auto pt-4 w-75" novalidate action="${pageContext.request.contextPath}/user/login" method="post">
                     <div class="m-4">
                         <input class="form-control" type="email" id="email" name="email" placeholder="E-mail" required>
                     </div>
@@ -37,7 +37,7 @@
                 </form>
                 <div class="container">
                     <div class="col-12 text-center mt-5">
-                        <p class="text-center">¿No tienes una cuenta? <a href="/user/register-view"
+                        <p class="text-center">¿No tienes una cuenta? <a href="${pageContext.request.contextPath}/user/register-view"
                                                                          class="text-decoration-none text-dark link-animation"
                                                                          style=" font-weight: 700; color:black">Regístrate</a></p>
                         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#resetPassword">

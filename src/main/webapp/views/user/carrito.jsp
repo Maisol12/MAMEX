@@ -29,14 +29,14 @@
           <td>${cartItem.item.name}</td>
           <td>${cartItem.quantity}</td>
           <td>
-            <a href="/user/remove-from-cart?itemId=${cartItem.item.id}" class="btn btn-danger">Eliminar</a>
+            <a href="${pageContext.request.contextPath}/user/remove-from-cart?itemId=${cartItem.item.id}" class="btn btn-danger">Eliminar</a>
           </td>
         </tr>
       </c:forEach>
       </tbody>
     </table>
     <div class="d-flex justify-content-end">
-      <a href="/user/checkout" class="btn btn-success">Checkout</a>
+      <a href="${pageContext.request.contextPath}/user/checkout" class="btn btn-success">Checkout</a>
     </div>
   </div>
 </div>
