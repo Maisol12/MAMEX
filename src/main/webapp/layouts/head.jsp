@@ -21,12 +21,55 @@
     .micarrusel{
         height: 500px !important;
     }
+
     .carousel-item{
         width: 100% !important;
         height: 500px !important;
     }
+    /* Media query para pantallas pequeñas */
+    @media screen and (max-width: 767px) {
+        .micarrusel {
+            height: auto !important;
+        }
 
+        .carousel-item {
+            height: auto !important;
+        }
+    }
+    @media screen and (max-width: 767px) {
+        .custom-container {
+            width: auto;
+            height: auto !important;
+        }
 
+        .profile-card {
+            width: auto;
+            height: auto !important;
+        }
+    }
+    .links{
+        text-decoration: none;
+        color: black;
+    }
+    .profile-img{
+        width: 20%;
+        height: 20%;
+        border-radius: 50%;
+        margin-top: 24px;
+    }
+
+    .cards-ventas{
+        flex: 1 0 auto;
+        margin: 0 30px;
+        background-color: white;
+        width: 224px;
+        height: 400px;
+    }
+
+    .cards-ventas img{
+        width: 100%;
+        height: 300px;
+    }
 </style>
 
 

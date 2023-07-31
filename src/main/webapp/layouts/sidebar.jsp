@@ -56,11 +56,11 @@
         <div class="sidebar bg-white">
             <ul class="list-unstyled p-5 mt-5" style="font-size: 14px;">
                 <li class="mb-3"><a href="${pageContext.request.contextPath}/admin/inicio" class="nav-link"><i data-feather="home"></i><span class="ps-3">Inicio</span></a></li>
-                <li class="mb-3"><a href="/admin/orders" class="nav-link"><i data-feather="shopping-cart"></i><span class="ps-3">Órdenes</span></a></li>
+                <li class="mb-3"><a href="${pageContext.request.contextPath}/admin/orders" class="nav-link"><i data-feather="shopping-cart"></i><span class="ps-3">Órdenes</span></a></li>
                 <li class="mb-3"><a href="${pageContext.request.contextPath}/admin/products" class="nav-link"><i data-feather="tag"></i><span class="ps-3">Productos</span></a></li>
                 <li class="mb-3"><a href="${pageContext.request.contextPath}/admin/users" class="nav-link"><i data-feather="users"></i><span class="ps-3">Usuarios</span></a></li>
                 <li class="mb-3"><a href="${pageContext.request.contextPath}/admin/sales"><i data-feather="dollar-sign"></i><span class="ps-3">Ventas</span></a></li>
-                <li class="mb-3"><a href="/admin/settings" class="nav-link"><i data-feather="settings"></i><span class="ps-3">Ajustes</span></a></li>
+                <li class="mb-3"><a href="${pageContext.request.contextPath}/admin/settings" class="nav-link"><i data-feather="settings"></i><span class="ps-3">Ajustes</span></a></li>
             </ul>
             <div class="container text-center">
                 <form novalidate action="${pageContext.request.contextPath}/user/logout" method="get">
@@ -71,7 +71,6 @@
     </div>
 </div>
 
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="footer.jsp"/>
 </body>
 </html>

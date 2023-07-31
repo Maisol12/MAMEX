@@ -3,18 +3,11 @@
 
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif !important;
-        }
-    </style>
-    <link rel="icon" href="../../assets/img/OIP.jpg">
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../assets/css/styles.css">
-    <title>Usuarios</title>
+    <jsp:include page="../../layouts/headAdmin.jsp"/>
+    <title>Ventas</title>
 </head>
 <body>
 <jsp:include page="../../layouts/sidebar.jsp"/>

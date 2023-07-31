@@ -17,14 +17,14 @@
 <body>
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand ms-lg-5" href="/user/mamex"><img
+        <a class="navbar-brand ms-lg-5" href="${pageContext.request.contextPath}/user/mamex"><img
                 src="${pageContext.request.contextPath}/assets/img/OIP.jpg" alt="logo"/></a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse text-center navbar-collapse" id="navbarNavAltMarkup">
+        <div class="collapse navbar-collapse text-center" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <ul class="mt-lg-3 d-lg-flex justify-content-lg-center justify-content-center list-unstyled">
                     <li><a href="${pageContext.request.contextPath}/user/mamex" class="nav-link">Inicio</a></li>
@@ -39,17 +39,19 @@
                     <button class="icon-button m-2">
                         <i class="icon" data-feather="search"></i>
                     </button>
-                    <div class="dropdown">
-                        <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="btn-group">
+                        <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="icon" data-feather="user"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-lg-end dropdown-menu-sm-start">
-                            <li>
-                                <button type="button" class="btn">
-                                    <a href="/user/login" style="text-decoration: none; color: black">Mi perfil</a>
-                                </button>
-                            </li>
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/register-view">Registrarse</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/login">Mi perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Menu item</a></li>
+                            <li><div class="container text-center dropdown-item">
+                                <form novalidate action="${pageContext.request.contextPath}/user/logout"
+                                      method="get">
+                                    <button class="btn bg-dark m-1" style="color: white;">Cerrar sesión</button>
+                                </form>
+                            </div></li>
                         </ul>
                     </div>
                     <a href="${pageContext.request.contextPath}/views/user/carrito.jsp" class="icon-button m-2">
@@ -57,12 +59,10 @@
                     </a>
                 </div>
             </div>
-
         </div>
     </div>
 </nav>
-
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="footer.jsp"/>
 </body>
 </html>

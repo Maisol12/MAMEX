@@ -20,7 +20,7 @@
                 CREAR CUENTA
             </h1>
             <div class="container">
-                <form id="register-form" class="text-center w-50 m-auto fs-1 pt-3" novalidate action="/user/register"
+                <form id="register-form" class="text-center w-75 m-auto pt-3" novalidate action="${pageContext.request.contextPath}/user/register"
                       method="post">
                     <div class="m-4">
                         <input class="form-control" type="text" name="names" id="names" placeholder="Nombre(s)"
@@ -35,7 +35,7 @@
                     </div>
                     <div class="m-4">
                         <input class="form-control" type="password" name="password" id="password"
-                               placeholder="Contraseña" required>
+                               placeholder="Contraseña (mayor a 6 dígitos)" required>
                     </div>
 
 
@@ -48,7 +48,7 @@
 
                 <div class="container">
                     <div class="col-12 text-center">
-                        <p class="text-center mt-5">¿Ya tienes una cuenta? <a href="/user/login"
+                        <p class="text-center mt-5">¿Ya tienes una cuenta? <a href="${pageContext.request.contextPath}/user/login"
                                                                               class="text-decoration-none text-dark link-animation"
                                                                               style=" font-weight: 700; color:black">Inicia
                             sesión</a></p>
@@ -70,7 +70,6 @@
 
 
 
-<script src="../../assets/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../../layouts/footer.jsp"/>
 
 <script>
