@@ -4,17 +4,10 @@
 
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif !important;
-        }
-    </style>
-    <link rel="icon" href="../../assets/img/OIP.jpg">
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <jsp:include page="../../layouts/headAdmin.jsp"/>
     <title>Productos</title>
 </head>
 <body>
@@ -23,7 +16,7 @@
     <div class="container-main">
         <div class="card text-end">
             <div class="card-title pt-4 pe-3">
-                <a style="text-decoration: none; color:black" href="/views/admin/crear_producto.jsp">
+                <a style="text-decoration: none; color:black" href="${pageContext.request.contextPath}/views/admin/crear_producto.jsp">
                     <small>Agregar productos</small><button class="btn btn-success btn-sm btn-outline pt-2 ms-2"><i data-feather="plus"></i></button>
                 </a>
             </div>
@@ -112,11 +105,7 @@
     </div>
 </main>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-<script src="../../assets/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-
+<jsp:include page="../../layouts/footer.jsp"/>
 <script>
     document.querySelectorAll('.delete-button').forEach(button => {
         button.addEventListener('click', event => {

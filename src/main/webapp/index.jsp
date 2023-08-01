@@ -20,13 +20,13 @@
     <div id="carouselExampleAutoplaying" class="carousel slide micarrusel w-100" data-bs-ride="carousel" data-bs-interval="3000">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="${pageContext.request.contextPath}/assets/img/F1.jpg" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/assets/img/h1.png" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="${pageContext.request.contextPath}/assets/img/F2.jpg" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/assets/img/h2.png" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="${pageContext.request.contextPath}/assets/img/F3.jpg" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/assets/img/h3.png" class="d-block w-100" alt="...">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
@@ -41,10 +41,64 @@
         </button>
     </div>
 </div>
+<div class="container d-flex flex-nowrap overflow-scroll mt-5 h-auto">
+    <div class="container">
+        <h4 class="display-4 mb-5 mt-5">Nuevos productos</h4>
+    </div>
+    <div class="cards-ventas box-shadow-1 mb-5">
+        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+        <div class="container">
+            <h6 class="mt-1">Nombre producto</h6>
+            <small>$1299</small>
+        </div>
+    </div>
+    <div class="cards-ventas box-shadow-1 mb-5">
+        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+        <div class="container">
+            <h6 class="mt-1">Nombre producto</h6>
+            <small>$1299</small>
+        </div>
+    </div>
+    <div class="cards-ventas box-shadow-1 mb-5">
+        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+        <div class="container">
+            <h6 class="mt-1">Nombre producto</h6>
+            <small>$1299</small>
+        </div>
+    </div>
+    <div class="cards-ventas box-shadow-1 mb-5">
+        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+        <div class="container">
+            <h6 class="mt-1">Nombre producto</h6>
+            <small>$1299</small>
+        </div>
+    </div>
+    <div class="cards-ventas box-shadow-1 mb-5">
+        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+        <div class="container">
+            <h6 class="mt-1">Nombre producto</h6>
+            <small>$1299</small>
+        </div>
+    </div>
+    <div class="cards-ventas box-shadow-1 mb-5">
+        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+        <div class="container">
+            <h6 class="mt-1">Nombre producto</h6>
+            <small>$1299</small>
+        </div>
+    </div>
+    <div class="cards-ventas box-shadow-1 mb-5">
+        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+        <div class="container">
+            <h6 class="mt-1">Nombre producto</h6>
+            <small>$1299</small>
+        </div>
+    </div>
 
+</div>
 <aside>
     <div class="container-fluid p-5">
-        <div class="container p-sm-5 p-lg-5">
+        <div class="container p-lg-5">
             <section class="container">
                 <div class="row">
                     <article class="col-12 col-lg-7">

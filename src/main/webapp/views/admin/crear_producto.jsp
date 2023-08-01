@@ -4,103 +4,14 @@
 
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif !important;
-        }
-
-        .custom-file-upload {
-            width: inherit;
-            height: 30%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed #cacaca;
-            background-color: rgba(255, 255, 255, 1);
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
-        }
-
-        .custom-file-upload .icon-upload {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .custom-file-upload .icon-upload svg {
-            height: 80px;
-            fill: rgba(75, 85, 99, 1);
-        }
-
-        .custom-file-upload .text {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .custom-file-upload .text span {
-            font-weight: 400;
-            color: rgba(75, 85, 99, 1);
-        }
-
-        .custom-file-upload input {
-            display: none;
-        }
-
-        /* New styles for file upload */
-        .file-input {
-            display: none;
-        }
-
-        .file-input-label {
-            padding: 10px;
-            color: white;
-            background-color: #4CAF50;
-            cursor: pointer;
-        }
-
-        .file-input-label:hover {
-            background-color: #45a049;
-        }
-
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            width: 330px;
-            height: auto;
-            border: 1px solid #ddd;
-            margin-top: 15px;
-        }
-        .image-preview div {
-            width: 100px;
-            height: 100px;
-            border: 1px solid #000;
-            margin: 10px;
-        }
-        .image-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-
-    </style>
-    <link rel="icon" href="${pageContext.request.contextPath}/assets/img/OIP.jpg">
     <jsp:include page="../../layouts/headAdmin.jsp"/>
     <title>MAMEX</title>
 </head>
 <body>
 <jsp:include page="../../layouts/sidebar.jsp"/>
-
 <main>
     <div class="container-main">
         <div class="card mt-4">
@@ -168,9 +79,7 @@
     </div>
 </main>
 
-<%@ include file="../../layouts/footer.jsp" %>
-
-</body>
+<jsp:include page="../../layouts/footer.jsp"/>
 <script>
     document.getElementById('file-input1').addEventListener('change', function(e) {
         previewImage(e, 'image-preview1');
@@ -211,6 +120,8 @@
         reader.readAsDataURL(file);
     }
 </script>
+
+</body>
 </html>
 
 
