@@ -8,13 +8,21 @@ public class Order {
     private Date date;
     private Date updateDate;
     private int userId;
+    private int fkIdUser;
+    private int fkIdSale;
 
-    public Order(int id, String state, Date date, Date updateDate, int userId) {
+    public Order() {
+        // Default constructor
+    }
+
+    public Order(int id, String state, Date date, Date updateDate, int userId, int fkIdUser, int fkIdSale) {
         this.id = id;
         this.state = state;
         this.date = date;
         this.updateDate = updateDate;
         this.userId = userId;
+        this.fkIdUser = fkIdUser;
+        this.fkIdSale = fkIdSale;
     }
 
     public int getId() {
@@ -56,5 +64,20 @@ public class Order {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-}
 
+    public int getFkIdUser() {
+        return fkIdUser;
+    }
+
+    public void setFkIdUser(int fkIdUser) {
+        this.fkIdUser = fkIdUser;
+    }
+
+    public int getFkIdSale() {
+        return fkIdSale;
+    }
+
+    public void setFkIdSale(int fkIdSale) {
+        this.fkIdSale = fkIdSale;
+    }
+}

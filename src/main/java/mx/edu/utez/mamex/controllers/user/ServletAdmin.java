@@ -7,17 +7,23 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import jakarta.servlet.http.*;
 import mx.edu.utez.mamex.models.items.ItemDao;
 import mx.edu.utez.mamex.models.items.Item;
 import mx.edu.utez.mamex.models.user.UserDao;
-import mx.edu.utez.mamex.models.transactions.TransactionDao;
 import mx.edu.utez.mamex.utils.MySQLConnection;
 import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.sales.SaleDao;
 import mx.edu.utez.mamex.models.sales.Sale;
+import mx.edu.utez.mamex.models.cart.Cart;
+import mx.edu.utez.mamex.models.cart.CartItem;
+import mx.edu.utez.mamex.models.orders.Order;
+import mx.edu.utez.mamex.models.orders.OrderDao;
+import mx.edu.utez.mamex.models.transactions.TransactionDao;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 
 
 import java.io.IOException;
@@ -25,12 +31,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.SQLException;
+import jakarta.servlet.http.*;
 
 
-
-
-
-@WebServlet(name = "admin", urlPatterns = {"/admin/inicio", "/admin/crear_producto", "/admin/products", "/user/admin/dashboard", "/user/admin/products","/admin/users","/admin/sales","/admin/delete_product","/admin/editar_producto"})
+@WebServlet(name = "admin", urlPatterns = {"/admin/inicio", "/admin/crear_producto", "/admin/products", "/user/admin/dashboard", "/user/admin/products","/admin/users","/admin/sales","/admin/delete_product","/admin/editar_producto","/user/checkout-admin"})
 @MultipartConfig
 public class ServletAdmin extends HttpServlet {
     private String action;
@@ -42,7 +46,7 @@ public class ServletAdmin extends HttpServlet {
         action = req.getServletPath();
         switch (action) {
             case "/admin/inicio":
-            case "/user/admin/dashboard":  // Añade esta línea
+            case "/user/admin/dashboard":
             {
                 loadInicioData(req, resp);
                 redirect = "/views/admin/inicio.jsp";
@@ -86,6 +90,8 @@ public class ServletAdmin extends HttpServlet {
             deleteProduct(request, response);
         } else if ("/admin/editar_producto".equals(action)) {
             editProduct(request, response);
+        } else if ("/user/checkout-admin".equals(action)) {
+            processCheckout(request, response);
         }
     }
 
@@ -102,6 +108,63 @@ public class ServletAdmin extends HttpServlet {
         request.setAttribute("totalEarnings", totalEarnings);
 
     }
+
+    public void processCheckout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("email") != null) {
+            // Get the user ID from the session
+            int userId = (Integer) session.getAttribute("userId");
+
+            // Get the cart from the session
+            Cart cart = (Cart) session.getAttribute("cart");
+
+            if (cart != null && !cart.isEmpty()) {
+                // Create a new sale for each cart item and save it
+                SaleDao saleDao = new SaleDao(new MySQLConnection().connect());
+                for (CartItem cartItem : cart.getItems()) {
+                    Sale sale = new Sale();
+                    sale.setQuantitySale(cartItem.getQuantity());
+                    sale.setSubtotal(cartItem.getQuantity() * cartItem.getItem().getUnitPrice());
+                    sale.setSaleState("PENDIENTE");
+                    sale.setSlDateCreate(new Date());
+                    sale.setSlDateUpdate(new Date());
+                    sale.setNumberSale(0); // Set this to the correct number sale
+                    sale.setFkIdUser(userId);
+                    sale.setFkIdItem(cartItem.getItem().getId());
+
+                    // Save the sale in the database
+                    saleDao.saveSale(sale);
+
+                    // Create a new order
+                    Order order = new Order();
+                    order.setFkIdUser(userId);
+                    order.setFkIdSale(sale.getIdSale());
+                    order.setState("PENDIENTE");
+                    java.util.Date utilDate = new java.util.Date();
+                    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                    order.setDate(sqlDate);
+
+                    try {
+                        // code that may throw SQLException
+                        OrderDao orderDao = new OrderDao(new MySQLConnection().connect());
+                        orderDao.saveOrder(order);
+                    } catch(SQLException e) {
+                        // code to handle the exception
+                        e.printStackTrace();
+                    }
+                }
+
+                // Empty the cart
+                cart.clear();
+            }
+
+            // Redirect the user to the checkout confirmation page
+            response.sendRedirect(request.getContextPath() + "/checkout-confirmation");
+        }
+    }
+
+
+
 
     private void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
