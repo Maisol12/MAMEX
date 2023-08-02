@@ -3,6 +3,7 @@ package mx.edu.utez.mamex.models.orders;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 
 public class OrderDao {
     private Connection connection;
@@ -20,6 +21,18 @@ public class OrderDao {
             statement.setInt(3, orderId);
             statement.executeUpdate();
         }
+    }
+
+    public boolean saveOrder(Order order) throws SQLException {
+        String query = "INSERT INTO orders (state, date, updateDate, userId, fkIdUser, fkIdSale) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setString(1, order.getState());
+        pstmt.setDate(2, new java.sql.Date(order.getDate().getTime())); // Convert java.util.Date to java.sql.Date
+        pstmt.setDate(3, new java.sql.Date(order.getUpdateDate().getTime())); // Convert java.util.Date to java.sql.Date
+        pstmt.setInt(4, order.getUserId());
+        pstmt.setInt(5, order.getFkIdUser());
+        pstmt.setInt(6, order.getFkIdSale());
+        return pstmt.executeUpdate() > 0;
     }
 
     public boolean deleteOrder(int orderId) {
@@ -78,8 +91,10 @@ public class OrderDao {
         Date date = resultSet.getDate("date_order");
         Date updateDate = resultSet.getDate("update_date");
         int userId = resultSet.getInt("fk_id_user");
+        int fkIdUser = resultSet.getInt("fk_id_user");  // Assumes you have this column in your table
+        int fkIdSale = resultSet.getInt("fk_id_sale");  // Assumes you have this column in your table
 
-        return new Order(id, state, date, updateDate, userId);
+        return new Order(id, state, date, updateDate, userId, fkIdUser, fkIdSale);
     }
 
     private Date getCurrentDate() {

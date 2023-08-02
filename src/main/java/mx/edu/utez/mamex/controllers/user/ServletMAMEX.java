@@ -14,6 +14,9 @@ import mx.edu.utez.mamex.utils.MySQLConnection;
 import mx.edu.utez.mamex.models.items.Item;
 import mx.edu.utez.mamex.models.cart.Cart;
 import mx.edu.utez.mamex.models.cart.CartItem;
+import mx.edu.utez.mamex.models.sales.Sale;
+import mx.edu.utez.mamex.models.sales.SaleDao;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +28,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import java.util.Date;
 
 
 
@@ -42,10 +46,11 @@ import java.util.UUID;
         "/user/profile",
         "/user/update-profile",
         "/user/AboutUs",
-        "/user/personal-info",
+        "/user/personal_info",
         "/user/novedades",
         "/user/productDetails",
         "/user/cart",
+        "/user/checkout-user",
         "/user/remove-from-cart"
 }) //endpoints para saber a donde redirigir al usuario
 public class ServletMAMEX extends HttpServlet {
@@ -85,15 +90,25 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
-            case "/user/personal-info": {
-                id = req.getParameter("user_id");
-                System.out.println("User ID: " + id);  // Agregamos una línea para imprimir el id del usuario
-                User user = new DAOUser().findOne(id != null ? Long.parseLong(id) : 0L);
-                System.out.println("User: " + user);  // Imprimimos el objeto User
-                req.setAttribute("user", user);
-                redirect = "/views/user/personal_info.jsp";
+            case "/user/personal_info": {
+                HttpSession session = req.getSession(false);
+                if (session != null && session.getAttribute("email") != null) {
+                    String userEmail = (String) session.getAttribute("email");
+                    DAOUser daoUser = new DAOUser();
+                    User user = daoUser.findUserByEmail(userEmail);
+                    if (user != null) {
+                        req.setAttribute("user", user);
+                        redirect = "/views/user/personal_info.jsp";
+                    } else {
+                        req.getRequestDispatcher("/path/to/error.jsp").forward(req, resp);
+                    }
+                } else {
+                    req.getRequestDispatcher("/path/to/error.jsp").forward(req, resp);
+                }
             }
             break;
+
+
 
             case "/user/logout": {
                 try {
@@ -236,14 +251,12 @@ public class ServletMAMEX extends HttpServlet {
                     password = req.getParameter("password");
                     User user = new DAOUser().login(email, password);
                     if (user != null) {
+                        session = req.getSession(true); // Create a new session
+                        session.setAttribute("email", user.getEmail()); // Set the email from the user object
                         if (user.getRol() == 1) {
-                            session = req.getSession();
-                            session.setAttribute("email", email);
                             redirect = "/user/admin/dashboard?result=" + true
                                     + "&message" + URLEncoder.encode("Inicio de sesion correctamente administrador! :D" + user.getNames(), StandardCharsets.UTF_8);
                         } else {
-                            session = req.getSession();
-                            session.setAttribute("email", email);
                             redirect = "/user/mamex?result=" + true
                                     + "&message" + URLEncoder.encode("Inicio de sesion correctamente! :D" + user.getNames(), StandardCharsets.UTF_8);
                         }
@@ -251,18 +264,71 @@ public class ServletMAMEX extends HttpServlet {
                         redirect = "/user/mamex?result=" + false
                                 + "&message" + URLEncoder.encode("Usuario o contraseña incorrectos", StandardCharsets.UTF_8);
                     }
-
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
                     System.out.println(email + " " + password);
                     System.out.println(e);
                     redirect = "/user/mamex?result=" + false
                             + "&message" + URLEncoder.encode("Credentials Missmatch", StandardCharsets.UTF_8);
-                } finally {
-
                 }
             }
             break;
+
+            case "/user/checkout-user": {
+                // Asegúrate de que el usuario ha iniciado sesión
+                HttpSession session = req.getSession(false);
+                if (session != null && session.getAttribute("email") != null) {
+                    // Obtén el carrito de la sesión
+                    Cart cart = (Cart) session.getAttribute("cart");
+                    if (cart != null && !cart.isEmpty()) {
+                        // Obten el ID del usuario de la sesión
+                        int userId = (int) session.getAttribute("userId");
+
+                        // Para cada artículo en el carrito, crea una nueva venta y una nueva orden
+                        for (CartItem cartItem : cart.getItems()) {
+                            // Crea una nueva venta
+                            Sale sale = new Sale();
+                            sale.setFkIdUser(userId);
+                            sale.setFkIdItem(cartItem.getItem().getId());
+                            sale.setQuantitySale(cartItem.getQuantity());
+                            sale.setSubtotal(cartItem.getQuantity() * cartItem.getItem().getUnitPrice());
+                            sale.setSaleState("PENDIENTE");
+                            sale.setSlDateCreate(new Date());
+                            sale.setSlDateUpdate(new Date());
+
+                            // Guarda la venta en la base de datos
+                            try {
+                                SaleDao saleDao = new SaleDao(new MySQLConnection().connect());
+                                saleDao.createSale(sale);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                                // Handle the exception (for example, log the error and redirect to an error page)
+                                // Here's an example of how to send a redirect:
+                                // response.sendRedirect("errorPage.jsp");
+                            }
+
+
+                            // Aquí deberías crear y guardar una nueva orden en la base de datos, similar a cómo lo hiciste con la venta
+                            // Asegúrate de añadir la orden a la lista de órdenes del usuario
+                        }
+
+                        // Vacía el carrito
+                        cart.clear();
+                        session.setAttribute("cart", cart);
+
+                        // Redirige al usuario a la página de confirmación de checkout
+                        redirect = "/user/checkout-confirmation";
+                    } else {
+                        // Redirige al usuario a la página del carrito si el carrito está vacío
+                        redirect = "/user/view-cart";
+                    }
+                } else {
+                    // Redirige al usuario a la página de inicio de sesión si no ha iniciado sesión
+                    redirect = "/user/login";
+                }
+                break;
+            }
+
 
 
             case "/user/add-to-cart": {

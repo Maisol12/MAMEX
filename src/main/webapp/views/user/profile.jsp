@@ -49,7 +49,7 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-12 col-lg-4">
-                    <a href="../../views/user/personal_info.jsp" class="links">
+                    <a href="${pageContext.request.contextPath}/user/personal_info" class="links">
                         <div class="card">
                             <div class="row justify-content-center mb-3">
                                 <img src="../../assets/svgs/user-information-svgrepo-com.svg" alt="" style="width: 80px; height: 80px">

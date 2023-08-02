@@ -48,6 +48,36 @@ public class DAOUser{
         return users;
     }
 
+    public User findUserByEmail(String email) {
+        User user = null;
+        try {
+            conn = new MySQLConnection().connect();
+            cs = conn.prepareCall("{call find_user_by_email(?)}");
+            cs.setString(1, email);
+            boolean result = cs.execute();
+            if(result) {
+                rs = cs.getResultSet();
+                if (rs.next()) {
+                    user = new User();
+                    user.setId(rs.getLong("id_user"));
+                    user.setNames(rs.getString("name_user"));
+                    user.setLastnames(rs.getString("lastname"));
+                    user.setEmail(rs.getString("email"));
+                    user.setGender(rs.getString("sex"));
+                    user.setBirthday(rs.getString("birthday"));
+                    user.setImg_user(rs.getBytes("photo"));
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DAOUser.class.getName())
+                    .log(Level.SEVERE, "ERROR findUserByEmail" + e.getMessage());
+        } finally {
+            close();
+        }
+        return user;
+    }
+
+
     public User findOne(Long id) {
         User user = null;
         try {
