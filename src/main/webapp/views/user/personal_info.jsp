@@ -11,7 +11,6 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
     <jsp:include page="../../layouts/head.jsp"/>
     <title>Mi perfil</title>
 </head>
