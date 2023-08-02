@@ -64,7 +64,6 @@ public class ServletMAMEX extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        String action = req.getServletPath();
         action = req.getServletPath();
         switch (action) {
             case "/user/mamex": //redirigir al inicio
@@ -86,7 +85,7 @@ public class ServletMAMEX extends HttpServlet {
             break;
 
             case "/user/personal_info": {
-                HttpSession session = req.getSession(false);
+                session = req.getSession(false);
                 if (session != null && session.getAttribute("email") != null) {
                     String userEmail = (String) session.getAttribute("email");
                     DAOUser daoUser = new DAOUser();
@@ -94,16 +93,10 @@ public class ServletMAMEX extends HttpServlet {
                     if (user != null) {
                         req.setAttribute("user", user);
                         redirect = "/views/user/personal_info.jsp";
-                    } else {
-                        req.getRequestDispatcher("/path/to/error.jsp").forward(req, resp);
                     }
-                } else {
-                    req.getRequestDispatcher("/path/to/error.jsp").forward(req, resp);
                 }
             }
             break;
-
-
 
             case "/user/logout": {
                 try {
@@ -165,13 +158,11 @@ public class ServletMAMEX extends HttpServlet {
             break;
 
             case "/user/novedades": {
-                redirect = "/views/user/novedades.jsp";
                 ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
                 List<Item> items = itemDao.getAllItems();
                 req.setAttribute("items", items);
-                req.getRequestDispatcher("/views/user/novedades.jsp").forward(req, resp);
-                return;
-            }
+                redirect = "/views/user/novedades.jsp";
+            }break;
 
             case "/user/productDetails": {
                 redirect = "/views/user/productDetails.jsp";
@@ -189,24 +180,25 @@ public class ServletMAMEX extends HttpServlet {
                         Item item = itemDao.getItemById(productId);
                         System.out.println(item);
                         req.setAttribute("item", item); // Asegúrate de agregar el objeto "item" como atributo de solicitud
-                        req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
+                        redirect = "/views/user/productDetails.jsp";
                     } catch (NumberFormatException e) {
                         // Manejar la situación cuando el parámetro no es un número válido
                         req.setAttribute("errorMessage", "El parámetro productId no es un número válido.");
-                        req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
+                        redirect = "/views/user/productDetails.jsp";
                     }
                 } else {
                     // Manejar la situación cuando el parámetro es nulo
                     req.setAttribute("errorMessage", "El parámetro productId es nulo.");
-                    req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
-                    return;
+                    redirect = "/views/user/productDetails.jsp";
+
                 }
             }
             break;
 
 
-            default:
+            default: {
                 System.out.println(action);
+            }
                 break;
         }
         req.getRequestDispatcher(redirect).forward(req, resp);

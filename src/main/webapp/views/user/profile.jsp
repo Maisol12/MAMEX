@@ -49,10 +49,10 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-12 col-lg-4">
-                    <a href="${pageContext.request.contextPath}/user/personal_info" class="links">
+                    <a href="${pageContext.request.contextPath}/user/personal_info" >
                         <div class="card">
                             <div class="row justify-content-center mb-3">
-                                <img src="../../assets/svgs/user-information-svgrepo-com.svg" alt="" style="width: 80px; height: 80px">
+                                <img src="${pageContext.request.contextPath}/assets/svgs/user-information-svgrepo-com.svg" alt="" style="width: 80px; height: 80px">
                                 <h6>Información personal</h6>
                                 <small>Configura tus datos personales</small>
                             </div>
