@@ -56,6 +56,25 @@ public class SaleDao {
         return salesList;
     }
 
+    public boolean saveSale(Sale sale) {
+        String query = "INSERT INTO sales(quantity_sale, subtotal, sale_state, sldate_create, number_sale, fk_id_user, fk_id_item) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, sale.getQuantitySale());
+            statement.setDouble(2, sale.getSubtotal());
+            statement.setString(3, sale.getSaleState());
+            statement.setDate(4, new java.sql.Date(sale.getSlDateCreate().getTime()));
+            statement.setInt(5, sale.getNumberSale());
+            statement.setInt(6, sale.getFkIdUser());
+            statement.setInt(7, sale.getFkIdItem());
+            int rowsAffected = statement.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public boolean updateSale(Sale sale) throws SQLException {
         String query = "UPDATE sales SET quantity_sale = ?, subtotal = ?, sale_state = ?, sldate_create = ?, sldate_update = ?, number_sale = ?, fk_id_user = ?, fk_id_item = ? WHERE id_sale = ?";

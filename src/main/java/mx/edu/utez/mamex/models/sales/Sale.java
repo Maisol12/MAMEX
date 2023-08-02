@@ -13,6 +13,9 @@ public class Sale {
     private int fkIdUser;
     private int fkIdItem;
 
+    public Sale() {
+        // Constructor body
+    }
     public Sale(int idSale, int quantitySale, double subtotal, String saleState, Date slDateCreate, Date slDateUpdate, int numberSale, int fkIdUser, int fkIdItem) {
         this.idSale = idSale;
         this.quantitySale = quantitySale;
