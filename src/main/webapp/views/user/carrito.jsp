@@ -36,7 +36,9 @@
       </tbody>
     </table>
     <div class="d-flex justify-content-end">
-      <a href="${pageContext.request.contextPath}/user/checkout" class="btn btn-success">Checkout</a>
+      <form action="${pageContext.request.contextPath}/user/checkout" method="post">
+        <input type="submit" value="Checkout" class="btn btn-success"/>
+      </form>
     </div>
   </div>
 </div>

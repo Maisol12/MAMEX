@@ -41,8 +41,8 @@
                                 <td>${sale.slDateCreate}</td>
                                 <td>${sale.slDateUpdate}</td>
                                 <td>${sale.numberSale}</td>
-                                <td>${sale.fkIdUser}</td>
-                                <td>${sale.fkIdItem}</td>
+                                <td>${sale.user.id}</td>
+                                <td>${sale.item.id}</td>
                                 <td>
                                     <input type="checkbox" name="pagoConfirmado" value="${sale.idSale}" ${sale.pagoConfirmado ? 'checked' : ''} />
                                 </td>

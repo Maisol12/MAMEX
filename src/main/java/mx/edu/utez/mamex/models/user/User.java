@@ -1,6 +1,8 @@
 package mx.edu.utez.mamex.models.user;
 
 import java.sql.Blob;
+import java.util.Date;
+
 
 //se crea la clase usuario con sus constructores y sus metodos set y get
 public class User {
@@ -36,6 +38,13 @@ public class User {
         this.birthday = birthday;
         this.gender = gender;
         this.rol = rol;
+    }
+
+    public User(long id, String names, String lastnames, String email) {
+        this.id = id;
+        this.names = names;
+        this.lastnames = lastnames;
+        this.email = email;
     }
 
     public Long getId() {

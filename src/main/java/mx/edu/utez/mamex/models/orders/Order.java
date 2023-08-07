@@ -15,15 +15,15 @@ public class Order {
         // Default constructor
     }
 
-    public Order(int id, String state, Date date, Date updateDate, int userId, int fkIdUser, int fkIdSale) {
+    public Order(int id, String state, Date date, Date updateDate, int fkIdUser, int fkIdSale) {
         this.id = id;
         this.state = state;
         this.date = date;
         this.updateDate = updateDate;
-        this.userId = userId;
         this.fkIdUser = fkIdUser;
         this.fkIdSale = fkIdSale;
     }
+
 
     public int getId() {
         return id;

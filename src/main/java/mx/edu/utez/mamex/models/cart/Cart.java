@@ -24,7 +24,6 @@ public class Cart {
         this.items.clear();
     }
 
-
     public boolean addItem(Item item, int quantity) {
         // Esto es solo un ejemplo, tu implementación puede variar
         return items.add(new CartItem(item, quantity));
@@ -33,6 +32,22 @@ public class Cart {
     public boolean removeItem(Item item) {
         // Esto es solo un ejemplo, tu implementación puede variar
         return items.removeIf(cartItem -> cartItem.getItem().equals(item));
+    }
+
+    public int getTotalQuantity() {
+        int totalQuantity = 0;
+        for (CartItem item : items) {
+            totalQuantity += item.getQuantity();
+        }
+        return totalQuantity;
+    }
+
+    public double getTotalPrice() {
+        double totalPrice = 0.0;
+        for (CartItem item : items) {
+            totalPrice += item.getQuantity() * item.getItem().getUnitPrice();
+        }
+        return totalPrice;
     }
 
     public boolean isEmpty() {

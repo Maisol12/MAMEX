@@ -33,6 +33,10 @@ public class Item {
         this.base64Images = base64Images;
     }
 
+    public int getIdItem() {
+        return id; // Suponiendo que el atributo que almacena el ID del item se llama 'id'
+    }
+
     // Constructor override
     public Item(int id, String name, String description, String color, double unitPrice, int stock) {
         this.id = id;
@@ -41,6 +45,12 @@ public class Item {
         this.color = color;
         this.unitPrice = unitPrice;
         this.stock = stock;
+    }
+
+    public Item(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
     }
 
 

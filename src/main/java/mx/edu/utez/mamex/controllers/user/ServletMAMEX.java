@@ -13,6 +13,7 @@ import mx.edu.utez.mamex.models.items.ItemDao;
 import mx.edu.utez.mamex.utils.MySQLConnection;
 import mx.edu.utez.mamex.models.items.Item;
 import mx.edu.utez.mamex.models.cart.Cart;
+import java.sql.Connection;
 import mx.edu.utez.mamex.models.cart.CartItem;
 import mx.edu.utez.mamex.models.sales.Sale;
 import mx.edu.utez.mamex.models.sales.SaleDao;
@@ -180,31 +181,53 @@ public class ServletMAMEX extends HttpServlet {
 
             case "/user/productDetails": {
                 redirect = "/views/user/productDetails.jsp";
+                System.out.println("Servlet invoked");
                 // Obtener el valor del parámetro "productId" de la solicitud
-                String productIdString = req.getParameter("productId");
+                String productIdString = req.getParameter("id");
 
-                // Verificar que el parámetro no sea nulo antes de convertirlo a un número entero
-                if (productIdString != null) {
+                // Intentar abrir la conexión a la base de datos
+                try (Connection connection = new MySQLConnection().connect()) {
+                    System.out.println("Connected to database");
+
+                    // Si el productIdString es nulo o está vacío, establecer un mensaje de error y redirigir
+                    if (productIdString == null || productIdString.trim().isEmpty()) {
+                        req.setAttribute("errorMessage", "El parámetro productId es nulo o vacío.");
+                        req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
+                        return;
+                    }
+
+                    // Intentar convertir el productIdString a un número entero
                     try {
-                        // Convertir el parámetro a un valor numérico entero
+                        System.out.println("productId: " + productIdString);
                         int productId = Integer.parseInt(productIdString);
 
-                        // Aquí puedes usar el ID del producto (productId) para obtener los detalles del producto y mostrarlos en la página
-                        ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
+                        // Usar el ID del producto (productId) para obtener los detalles del producto y mostrarlos en la página
+                        ItemDao itemDao = new ItemDao(connection);
                         Item item = itemDao.getItemById(productId);
                         System.out.println(item);
-                        req.setAttribute("item", item); // Asegúrate de agregar el objeto "item" como atributo de solicitud
+
+                        // Si el item es nulo, entonces no se encontró en la base de datos
+                        if (item == null) {
+                            req.setAttribute("errorMessage", "El producto solicitado no se encontró.");
+                            req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
+                            return;
+                        }
+
+                        req.setAttribute("item", item); // Añadir el objeto "item" como atributo de solicitud
                         req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
+
                     } catch (NumberFormatException e) {
                         // Manejar la situación cuando el parámetro no es un número válido
                         req.setAttribute("errorMessage", "El parámetro productId no es un número válido.");
                         req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
                     }
-                } else {
-                    // Manejar la situación cuando el parámetro es nulo
-                    req.setAttribute("errorMessage", "El parámetro productId es nulo.");
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    // Aquí podrías manejar errores relacionados con la base de datos
+                    // Por ejemplo, podrías mostrar un mensaje amigable al usuario
+                    req.setAttribute("errorMessage", "Error al acceder a la base de datos. Por favor, inténtalo más tarde.");
                     req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
-                    return;
                 }
             }
             break;
@@ -253,6 +276,7 @@ public class ServletMAMEX extends HttpServlet {
                     if (user != null) {
                         session = req.getSession(true); // Create a new session
                         session.setAttribute("email", user.getEmail()); // Set the email from the user object
+                        session.setAttribute("id", user.getId());
                         if (user.getRol() == 1) {
                             redirect = "/user/admin/dashboard?result=" + true
                                     + "&message" + URLEncoder.encode("Inicio de sesion correctamente administrador! :D" + user.getNames(), StandardCharsets.UTF_8);
@@ -274,63 +298,6 @@ public class ServletMAMEX extends HttpServlet {
                 }
             }
             break;
-
-            case "/user/checkout-user": {
-                // Asegúrate de que el usuario ha iniciado sesión
-                HttpSession session = req.getSession(false);
-                if (session != null && session.getAttribute("email") != null) {
-                    // Obtén el carrito de la sesión
-                    Cart cart = (Cart) session.getAttribute("cart");
-                    if (cart != null && !cart.isEmpty()) {
-                        // Obten el ID del usuario de la sesión
-                        int userId = (int) session.getAttribute("userId");
-
-                        // Para cada artículo en el carrito, crea una nueva venta y una nueva orden
-                        for (CartItem cartItem : cart.getItems()) {
-                            // Crea una nueva venta
-                            Sale sale = new Sale();
-                            sale.setFkIdUser(userId);
-                            sale.setFkIdItem(cartItem.getItem().getId());
-                            sale.setQuantitySale(cartItem.getQuantity());
-                            sale.setSubtotal(cartItem.getQuantity() * cartItem.getItem().getUnitPrice());
-                            sale.setSaleState("PENDIENTE");
-                            sale.setSlDateCreate(new Date());
-                            sale.setSlDateUpdate(new Date());
-
-                            // Guarda la venta en la base de datos
-                            try {
-                                SaleDao saleDao = new SaleDao(new MySQLConnection().connect());
-                                saleDao.createSale(sale);
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                                // Handle the exception (for example, log the error and redirect to an error page)
-                                // Here's an example of how to send a redirect:
-                                // response.sendRedirect("errorPage.jsp");
-                            }
-
-
-                            // Aquí deberías crear y guardar una nueva orden en la base de datos, similar a cómo lo hiciste con la venta
-                            // Asegúrate de añadir la orden a la lista de órdenes del usuario
-                        }
-
-                        // Vacía el carrito
-                        cart.clear();
-                        session.setAttribute("cart", cart);
-
-                        // Redirige al usuario a la página de confirmación de checkout
-                        redirect = "/user/checkout-confirmation";
-                    } else {
-                        // Redirige al usuario a la página del carrito si el carrito está vacío
-                        redirect = "/user/view-cart";
-                    }
-                } else {
-                    // Redirige al usuario a la página de inicio de sesión si no ha iniciado sesión
-                    redirect = "/user/login";
-                }
-                break;
-            }
-
-
 
             case "/user/add-to-cart": {
                 // Asegúrate de que el usuario ha iniciado sesión

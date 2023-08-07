@@ -10,7 +10,6 @@
     <jsp:include page="../../layouts/head.jsp"/>
     <title>Manos Mexicanas</title>
 </head>
-
 <body>
 
 <jsp:include page="../../layouts/nav.jsp"/>
@@ -70,18 +69,15 @@
                                                         restablecer tu
                                                         contraseña.</span>
                                         <div class="mt-5">
-                                            <form action="">
-                                                <label class="fw-bold" style="font-size: 14px;">Introduce tu
-                                                    correo electrónico</label>
+                                            <form action="${pageContext.request.contextPath}/user/reset_password" method="POST">
+                                                <label class="fw-bold" style="font-size: 14px;">Introduce tu correo electrónico</label>
+                                                <div class="p-2">
+                                                    <input style="width: inherit; padding: 6px;" type="email" name="email" id="email_password" placeholder="Correo electrónico" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-dark m-5 m-lg-4"
+                                                        style="font-weight: 500; border-radius: 50px; padding: 10px; width: 100px;">Enviar</button>
                                             </form>
                                         </div>
-                                        <div class="p-2">
-                                            <input style="width: inherit; padding: 6px;" type="email"
-                                                   name="user_email" id="email_password"
-                                                   placeholder="Correo electrónico" required>
-                                        </div>
-                                        <button class="btn btn-dark m-5 m-lg-4"
-                                                style="font-weight: 500; border-radius: 50px; padding: 10px; width: 100px;">Enviar</button>
                                     </div>
                                     <div class="modal-footer">
                                         <div>
@@ -109,3 +105,4 @@
 <jsp:include page="../../layouts/footer.jsp"/>
 
 </body>
+</html>
