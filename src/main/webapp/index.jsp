@@ -46,8 +46,62 @@
     <div class="container">
         <h4 class="display-4 mb-5 mt-5">Nuevos productos</h4>
     </div>
-    <a href="">
-        <div class="cards-ventas box-shadow-1 mb-5 links">
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
+        </div>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
+        </div>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
+        </div>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
+        </div>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
+        </div>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
+        </div>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
             <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
             <div class="container">
                 <h6 class="mt-1">Nombre producto</h6>
@@ -56,48 +110,6 @@
         </div>
     </a>
 
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
-        </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
-        </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
-        </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
-        </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
-        </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
-        </div>
-    </div>
 </div>
 <aside>
     <div class="container-fluid p-5">

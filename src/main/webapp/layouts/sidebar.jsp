@@ -61,7 +61,7 @@
             </form>
             <form novalidate action="${pageContext.request.contextPath}/user/logout"
                   method="get">
-                <button class="btn btn-small btn-outline-dark ms-3 mt-2 mb-2" style="border-radius: 50px"><small>Salir</small> <i data-feather="log-out" style="width: 16px; height: 16px"></i></button>
+                <button class="btn btn-small btn-outline-dark ms-3 mt-2 pt-2" style="border-radius: 50px"><small>Salir</small> <i data-feather="log-out" style="width: 16px; height: 16px"></i></button>
             </form>
 
 
