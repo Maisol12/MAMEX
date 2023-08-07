@@ -17,6 +17,15 @@
 <jsp:include page="../../layouts/nav.jsp"/>
 
 <div class="container mt-5">
+    <!-- Mensajes de depuración para verificar si los datos están disponibles -->
+    <c:if test="${empty item}">
+        <p>No hay datos para el ítem.</p>
+    </c:if>
+
+    <c:if test="${empty comments}">
+        <p>No hay comentarios disponibles.</p>
+    </c:if>
+
     <div class="row">
         <div class="col-lg-6">
             <c:if test="${not empty item.base64Images}">
@@ -63,4 +72,3 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
