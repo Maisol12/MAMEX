@@ -10,7 +10,6 @@
     <jsp:include page="../../layouts/head.jsp"/>
     <title>Manos Mexicanas</title>
 </head>
-
 <body>
 
 <jsp:include page="../../layouts/nav.jsp"/>
