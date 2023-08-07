@@ -8,24 +8,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <jsp:include page="../../layouts/head.jsp"/>
-    <title>Productos</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Detalles</title>
 
 </head>
 <body>
 <jsp:include page="../../layouts/nav.jsp"/>
 
-<div class="container mt-5">
-    <!-- Mensajes de depuración para verificar si los datos están disponibles -->
-    <c:if test="${empty item}">
-        <p>No hay datos para el ítem.</p>
-    </c:if>
-
-    <c:if test="${empty comments}">
-        <p>No hay comentarios disponibles.</p>
-    </c:if>
-
+<div class="container mt-5 text-black">
     <div class="row">
         <div class="col-lg-6">
             <c:if test="${not empty item.base64Images}">
@@ -68,7 +57,5 @@
 </div>
 
 <jsp:include page="../../layouts/footer.jsp"/>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -15,8 +15,8 @@
 
 <jsp:include page="../../layouts/sidebar.jsp"/>
 <main>
-    <div class="container-main bg-body-light">
-        <div class="container">
+    <div class="container-fluid custom-container">
+        <div class="container pt-4">
             <div class="cards d-grid justify-content-between">
                 <div class="card-box">
                     <div class="container">
