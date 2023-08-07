@@ -17,7 +17,8 @@
 <jsp:include page="/layouts/nav.jsp"/>
 
 <div class="container-fluid p-0 m-0">
-    <div id="carouselExampleAutoplaying" class="carousel slide micarrusel w-100" data-bs-ride="carousel" data-bs-interval="3000">
+    <div id="carouselExampleAutoplaying" class="carousel slide micarrusel w-100" data-bs-ride="carousel"
+         data-bs-interval="3000">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="${pageContext.request.contextPath}/assets/img/h1.png" class="d-block w-100" alt="...">
@@ -45,55 +46,69 @@
     <div class="container">
         <h4 class="display-4 mb-5 mt-5">Nuevos productos</h4>
     </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
         </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
         </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
         </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
         </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
         </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
         </div>
-    </div>
-    <div class="cards-ventas box-shadow-1 mb-5">
-        <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-        <div class="container">
-            <h6 class="mt-1">Nombre producto</h6>
-            <small>$1299</small>
+    </a>
+    <a href="" class="text-decoration-none text-black-50">
+        <div class="cards-ventas box-shadow-1 mb-5">
+            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
+            <div class="container">
+                <h6 class="mt-1">Nombre producto</h6>
+                <small>$1299</small>
+            </div>
         </div>
-    </div>
+    </a>
 
 </div>
 <aside>
@@ -108,11 +123,16 @@
                             colección de tejidos de alta calidad
                             cuidadosamente seleccionados para que puedas crear prendas únicas y
                             proyectos creativos que reflejen tu estilo y pasión por la moda.</p>
-                        <button class="btn btn-dark m-4"
-                                style="font-weight: 300; border-radius: 0; padding: 10px; width: 150px;"><a href="${pageContext.request.contextPath}/user/register-view" style="text-decoration: none; color: whitesmoke;">Regístrate</a></button>
+                        <a href="${pageContext.request.contextPath}/user/register-view"
+                           style="text-decoration: none; color: whitesmoke;">
+                            <button class="btn btn-dark m-4"
+                                    style="font-weight: 300; border-radius: 0; padding: 10px; width: 150px;">Regístrate
+                            </button>
+                        </a>
                     </article>
                     <article class="col-12 col-lg-5 ps-lg-5 ps-sm-0">
-                        <img src="${pageContext.request.contextPath}/assets/img/e9be2a1f1471feb0c1b18083309ea295.jpg" alt="img-hilos" class="img-fluid">
+                        <img src="${pageContext.request.contextPath}/assets/img/e9be2a1f1471feb0c1b18083309ea295.jpg"
+                             alt="img-hilos" class="img-fluid">
                     </article>
                 </div>
             </section>

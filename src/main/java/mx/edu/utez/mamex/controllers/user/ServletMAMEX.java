@@ -259,6 +259,7 @@ public class ServletMAMEX extends HttpServlet {
                         } else {
                             redirect = "/user/mamex?result=" + true
                                     + "&message" + URLEncoder.encode("Inicio de sesion correctamente! :D" + user.getNames(), StandardCharsets.UTF_8);
+
                         }
                     } else {
                         redirect = "/user/mamex?result=" + false

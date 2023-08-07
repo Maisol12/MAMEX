@@ -7,21 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
-
-
-<script>
-    // Agrega el evento de escucha al botón de registro
-    $('#btn-registro').click(function() {
-        $('#modal-registro').modal('show'); // Muestra la ventana modal
-
-        // Desaparece la ventana modal después de 3 segundos (3000 milisegundos)
-        setTimeout(function() {
-            $('#modal-registro').modal('hide');
-        }, 3000);
-    });
-</script>
-
 <script src="${pageContext.request.contextPath}/assets/js/feather.js"></script>
+
 
 <script>
     feather.replace()
