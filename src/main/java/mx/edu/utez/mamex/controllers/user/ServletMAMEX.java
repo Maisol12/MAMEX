@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import mx.edu.utez.mamex.models.Review;
 import mx.edu.utez.mamex.models.user.DAOUser;
 import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.items.ItemDao;
@@ -17,6 +18,8 @@ import java.sql.Connection;
 import mx.edu.utez.mamex.models.cart.CartItem;
 import mx.edu.utez.mamex.models.sales.Sale;
 import mx.edu.utez.mamex.models.sales.SaleDao;
+
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +55,9 @@ import java.util.Date;
         "/user/productDetails",
         "/user/cart",
         "/user/checkout-user",
-        "/user/remove-from-cart"
+        "/user/remove-from-cart",
+        "/user/review-product",
+        "/user/review-view"
 }) //endpoints para saber a donde redirigir al usuario
 public class ServletMAMEX extends HttpServlet {
     private String action;
@@ -63,14 +68,13 @@ public class ServletMAMEX extends HttpServlet {
     private String mime, fileName;
     //LINUX - "/"
     private String directory = "D:" + File.separator + "mamex";
-    private int id_product, quantity;
+    private String id_product, quantity;
     private double cost;
     HttpSession session;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        String action = req.getServletPath();
         action = req.getServletPath();
         switch (action) {
             case "/user/mamex": //redirigir al inicio
@@ -92,7 +96,7 @@ public class ServletMAMEX extends HttpServlet {
             break;
 
             case "/user/personal_info": {
-                HttpSession session = req.getSession(false);
+                session = req.getSession(false);
                 if (session != null && session.getAttribute("email") != null) {
                     String userEmail = (String) session.getAttribute("email");
                     DAOUser daoUser = new DAOUser();
@@ -100,16 +104,10 @@ public class ServletMAMEX extends HttpServlet {
                     if (user != null) {
                         req.setAttribute("user", user);
                         redirect = "/views/user/personal_info.jsp";
-                    } else {
-                        req.getRequestDispatcher("/path/to/error.jsp").forward(req, resp);
                     }
-                } else {
-                    req.getRequestDispatcher("/path/to/error.jsp").forward(req, resp);
                 }
             }
             break;
-
-
 
             case "/user/logout": {
                 try {
@@ -171,13 +169,11 @@ public class ServletMAMEX extends HttpServlet {
             break;
 
             case "/user/novedades": {
-                redirect = "/views/user/novedades.jsp";
                 ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
                 List<Item> items = itemDao.getAllItems();
                 req.setAttribute("items", items);
-                req.getRequestDispatcher("/views/user/novedades.jsp").forward(req, resp);
-                return;
-            }
+                redirect = "/views/user/novedades.jsp";
+            }break;
 
             case "/user/productDetails": {
                 redirect = "/views/user/productDetails.jsp";
@@ -219,7 +215,7 @@ public class ServletMAMEX extends HttpServlet {
                     } catch (NumberFormatException e) {
                         // Manejar la situación cuando el parámetro no es un número válido
                         req.setAttribute("errorMessage", "El parámetro productId no es un número válido.");
-                        req.getRequestDispatcher("/views/user/productDetails.jsp").forward(req, resp);
+                        redirect = "/views/user/productDetails.jsp";
                     }
 
                 } catch (SQLException e) {
@@ -232,9 +228,15 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
+            //vista para hacer review al producto
+            //solo para el pull request :D
+            case "/user/review-view":{
+                redirect = "/views/user/review_product.jsp";
+            }break;
 
-            default:
+            default: {
                 System.out.println(action);
+            }
                 break;
         }
         req.getRequestDispatcher(redirect).forward(req, resp);
@@ -286,7 +288,7 @@ public class ServletMAMEX extends HttpServlet {
 
                         }
                     } else {
-                        redirect = "/user/mamex?result=" + false
+                        redirect = "/user/login?result=" + false
                                 + "&message" + URLEncoder.encode("Usuario o contraseña incorrectos", StandardCharsets.UTF_8);
                     }
                 } catch (Exception e) {
@@ -404,7 +406,24 @@ public class ServletMAMEX extends HttpServlet {
                 }
             }break;
 
-
+            case "/user/review-product":{
+                try{
+                    int id_product = Integer.parseInt(req.getParameter("id_product"));
+                    int rating = Integer.parseInt(req.getParameter("rating"));
+                    String comment = req.getParameter("comment");
+                    Review review = new Review(0L, id_product, rating, comment);
+                    boolean result = new DAOUser().review(review);
+                    if (result) {
+                        redirect = "/user/mamex?result=" + true
+                                + "&message" + URLEncoder.encode("Exito! Producto calificado correctamente", StandardCharsets.UTF_8);
+                    } else {
+                        throw new Exception("ERROR");
+                    }
+                }catch (Exception e){
+                    redirect = "/user/mamex?result=" + false
+                            + "&message" + URLEncoder.encode("Error :/ Acción no realizada correctamente", StandardCharsets.UTF_8);
+                }
+            }break;
 
             default: {
                 redirect = "/user/mamex";

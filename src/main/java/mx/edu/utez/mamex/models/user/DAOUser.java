@@ -1,6 +1,7 @@
 package mx.edu.utez.mamex.models.user;
 
 
+import mx.edu.utez.mamex.models.Review;
 import mx.edu.utez.mamex.models.crud.DAORepository;
 import mx.edu.utez.mamex.utils.MySQLConnection;
 
@@ -128,6 +129,23 @@ public class DAOUser{
         }
         return false;
     } //metodo para registrar un nuevo usuario a mamex
+
+    public boolean review(Review review){
+        try {
+            conn = new MySQLConnection().connect();
+            cs = conn.prepareCall("{call insertar_review(?, ?, ?)}");
+            cs.setInt(2, review.getRating());
+            cs.setString(3, review.getComment());
+            cs.setLong(4, review.getProductId());
+            boolean result = cs.execute();
+            return !result;
+        }catch (SQLException e){
+            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, "Error saving review" + e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
 
     public boolean login(User object) {
         return false;

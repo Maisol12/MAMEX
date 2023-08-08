@@ -142,7 +142,7 @@
                                 </button>
                                 <button class="btn btn-dark m-4"
                                         style="font-weight: 300; border-radius: 0; padding: 10px; width: 150px;">
-                                    <a href="../../views/user/personal_info.jsp">Ver mas</a>
+                                    <a href="${pageContext.request.contextPath}/user/review-view">Ver mas</a>
                                 </button>
                                 </p>
                             </div>
