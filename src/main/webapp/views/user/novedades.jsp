@@ -22,12 +22,13 @@
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center text-lg-start text-sm-center">
         <c:forEach var="item" items="${items}">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
-                <a class="text-decoration-none" href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}">
-                    <div class="card custom-card h-100">
+                    <div class="card custom-card h-100 position-relative">
                         <c:if test="${not empty item.base64Images}">
                             <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
+                            <a class="text-decoration-none" href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}">
                             <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="card-img-top"
                                  alt="${item.name}">
+                            </a>
                         </c:if>
                         <div class="card-body">
                             <h6 class="card-title">${item.name}</h6>
@@ -36,13 +37,12 @@
                         </div>
                         <div class="card-footer bg-light">
                             <div class="row row-cols-2 justify-content-around">
-                                <button class="btn btn-sm btn-outline-warning" onclick="addToCart(${item.id})">
+                                <button class="btn btn-sm btn-outline-dark w-100" onclick="addToCart(${item.id})" style="border-radius: 0;">
                                     <small class="text">Agregar <i data-feather="shopping-cart" style="width: 14px; height: 14px"></i></small>
                                 </button>
                             </div>
                         </div>
                     </div>
-                </a>
             </div>
         </c:forEach>
     </div>
@@ -65,8 +65,6 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                // Redirige al usuario al carrito después de agregar el ítem
-                window.location.href = '/user/cart';
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);

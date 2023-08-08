@@ -12,43 +12,63 @@
     <title>${item.name}</title>
 </head>
 <body>
-
 <jsp:include page="../../layouts/nav.jsp"/>
 
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-6">
+        <!-- Imagen del producto -->
+        <div class="col-md-8 mb-4">
             <c:if test="${not empty item.base64Images}">
                 <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}" />
-                <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="img-fluid rounded" alt="${item.name}">
+                <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="img-fluid product-img" alt="${item.name}">
             </c:if>
         </div>
-        <div class="col-md-6">
-            <h1>${item.name}</h1>
-            <h3 class="text-success">$${item.unitPrice}</h3>
-            <p>${item.description}</p>
-            <h4>Detalles</h4>
-            <p><strong>Stock disponible:</strong> ${item.stock}</p>
-            <p><strong>Color:</strong> ${item.color}</p>
-            <button class="btn btn-primary btn-lg btn-block mt-3">Agregar al carrito</button>
+
+        <!-- Detalles del producto -->
+        <div class="col-md-4">
+            <h3 class="display-6">${item.name}</h3>
+            <p class="lead">${item.description}</p>
+            <p class="lead">$${item.unitPrice}</p>
+            <button type="submit" class="btn w-100 btn-outline-dark" onclick="addToCart(${item.id})" style="border-radius: 0"><span>Agregar al carrito</span></button>
         </div>
     </div>
-    <div class="row mt-4">
+
+    <!-- Comentarios de los usuarios -->
+    <div class="row mt-5">
         <div class="col-12">
-            <h2>Comentarios de los usuarios</h2>
+            <h5 class="display-6">Comentarios de los usuarios</h5>
             <c:forEach var="comment" items="${comments}">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">${comment.user}</h5>
-                        <p class="card-text">${comment.text}</p>
-                    </div>
+                <div class="card">
+                    <h5 class="card-title">${comment.user}</h5>
+                    <p class="card-text">${comment.text}</p>
                 </div>
             </c:forEach>
         </div>
     </div>
 </div>
 
-<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function addToCart(itemId) {
+        fetch('/user/add-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'itemId=' + itemId + '&quantity=1',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
+</script>
 <jsp:include page="../../layouts/footer.jsp"/>
+
+
 </body>
 </html>
