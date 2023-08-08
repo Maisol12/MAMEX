@@ -169,7 +169,6 @@ public class ItemDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return item;
     }
 

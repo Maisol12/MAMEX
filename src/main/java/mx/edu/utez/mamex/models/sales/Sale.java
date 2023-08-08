@@ -1,22 +1,27 @@
 package mx.edu.utez.mamex.models.sales;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import mx.edu.utez.mamex.models.items.Item;
+import mx.edu.utez.mamex.models.user.User;
+import mx.edu.utez.mamex.models.sales.SaleItem;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class Sale {
     private int idSale;
     private int quantitySale;
     private double subtotal;
     private String saleState;
-    private Date slDateCreate;
-    private Date slDateUpdate;
+    private Timestamp slDateCreate;
+    private Timestamp slDateUpdate;
     private int numberSale;
-    private int fkIdUser;
-    private int fkIdItem;
+    private User user; // Agregamos el campo User para almacenar el objeto User asociado a la venta
+    private Item item; // Agregamos el campo Item para almacenar el objeto Item asociado a la venta
+    private boolean PagoConfirmado;
+    private List<SaleItem> saleItems;
 
-    public Sale() {
-        // Constructor body
-    }
-    public Sale(int idSale, int quantitySale, double subtotal, String saleState, Date slDateCreate, Date slDateUpdate, int numberSale, int fkIdUser, int fkIdItem) {
+    public Sale(int idSale, int quantitySale, double subtotal, String saleState, Timestamp slDateCreate, Timestamp slDateUpdate, int numberSale, User user, boolean pagoConfirmado) {
         this.idSale = idSale;
         this.quantitySale = quantitySale;
         this.subtotal = subtotal;
@@ -24,8 +29,12 @@ public class Sale {
         this.slDateCreate = slDateCreate;
         this.slDateUpdate = slDateUpdate;
         this.numberSale = numberSale;
-        this.fkIdUser = fkIdUser;
-        this.fkIdItem = fkIdItem;
+        this.user = user;
+        this.PagoConfirmado = pagoConfirmado;
+    }
+
+    public Sale() {
+        saleItems = new ArrayList<>();
     }
 
     public int getIdSale() {
@@ -60,19 +69,19 @@ public class Sale {
         this.saleState = saleState;
     }
 
-    public Date getSlDateCreate() {
+    public Timestamp getSlDateCreate() {
         return slDateCreate;
     }
 
-    public void setSlDateCreate(Date slDateCreate) {
+    public void setSlDateCreate(Timestamp slDateCreate) {
         this.slDateCreate = slDateCreate;
     }
 
-    public Date getSlDateUpdate() {
+    public Timestamp getSlDateUpdate() {
         return slDateUpdate;
     }
 
-    public void setSlDateUpdate(Date slDateUpdate) {
+    public void setSlDateUpdate(Timestamp slDateUpdate) {
         this.slDateUpdate = slDateUpdate;
     }
 
@@ -84,19 +93,35 @@ public class Sale {
         this.numberSale = numberSale;
     }
 
-    public int getFkIdUser() {
-        return fkIdUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setFkIdUser(int fkIdUser) {
-        this.fkIdUser = fkIdUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getFkIdItem() {
-        return fkIdItem;
+    public Item getItem() {
+        return item;
     }
 
-    public void setFkIdItem(int fkIdItem) {
-        this.fkIdItem = fkIdItem;
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public boolean getPagoConfirmado() {
+        return PagoConfirmado;
+    }
+
+    public void setPagoConfirmado(boolean pagoConfirmado) {
+        this.PagoConfirmado = pagoConfirmado;
+    }
+
+    public List<SaleItem> getSaleItems() {
+        return saleItems;
+    }
+
+    public void addSaleItem(SaleItem saleItem) {
+        this.saleItems.add(saleItem);
     }
 }

@@ -4,6 +4,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import java.io.IOException;
+import mx.edu.utez.mamex.utils.MySQLConnection;
+
+
+
 
 public class OrderDao {
     private Connection connection;
@@ -13,7 +21,7 @@ public class OrderDao {
     }
 
     public void updateOrderState(int orderId, String newState) throws SQLException {
-        String query = "UPDATE orders SET state_order = ?, update_date = ? WHERE id_order = ?";
+        String query = "UPDATE orders SET state = ?, date_updated = ? WHERE id = ?";  // Modifica los nombres de las columnas
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, newState);
@@ -23,17 +31,46 @@ public class OrderDao {
         }
     }
 
-    public boolean saveOrder(Order order) throws SQLException {
-        String query = "INSERT INTO orders (state, date, updateDate, userId, fkIdUser, fkIdSale) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement pstmt = connection.prepareStatement(query);
+    public int saveOrder(Order order) throws SQLException {
+        String query = "INSERT INTO orders (state, date_created, fk_id_user, fk_id_sale) VALUES (?, ?, ?, ?)";
+        PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         pstmt.setString(1, order.getState());
         pstmt.setDate(2, new java.sql.Date(order.getDate().getTime())); // Convert java.util.Date to java.sql.Date
-        pstmt.setDate(3, new java.sql.Date(order.getUpdateDate().getTime())); // Convert java.util.Date to java.sql.Date
-        pstmt.setInt(4, order.getUserId());
-        pstmt.setInt(5, order.getFkIdUser());
-        pstmt.setInt(6, order.getFkIdSale());
-        return pstmt.executeUpdate() > 0;
+        pstmt.setInt(3, order.getFkIdUser());
+        pstmt.setInt(4, order.getFkIdSale());
+
+        int affectedRows = pstmt.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("Creating order failed, no rows affected.");
+        }
+
+        try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Creating order failed, no ID obtained.");
+            }
+        }
     }
+
+    public List<Order> getAllOrders() {
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT * FROM orders";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Order order = createOrderFromResultSet(resultSet);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
 
     public boolean deleteOrder(int orderId) {
         String query = "DELETE FROM orders WHERE id_order = ?";
@@ -50,7 +87,7 @@ public class OrderDao {
     }
 
     public Order getOrderById(long orderId) {
-        String query = "SELECT * FROM orders WHERE id_order = ?";
+        String query = "SELECT * FROM orders WHERE id = ?";  // Modifica los nombres de las columnas
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, orderId);
@@ -68,7 +105,7 @@ public class OrderDao {
 
     public List<Order> getUserOrders(int userId) {
         List<Order> orders = new ArrayList<>();
-        String query = "SELECT * FROM orders WHERE fk_id_user = ?";
+        String query = "SELECT * FROM orders WHERE fk_id_user = ?";  // Modifica los nombres de las columnas
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
@@ -86,15 +123,14 @@ public class OrderDao {
     }
 
     private Order createOrderFromResultSet(ResultSet resultSet) throws SQLException {
-        int id = resultSet.getInt("id_order");
-        String state = resultSet.getString("state_order");
-        Date date = resultSet.getDate("date_order");
-        Date updateDate = resultSet.getDate("update_date");
-        int userId = resultSet.getInt("fk_id_user");
-        int fkIdUser = resultSet.getInt("fk_id_user");  // Assumes you have this column in your table
-        int fkIdSale = resultSet.getInt("fk_id_sale");  // Assumes you have this column in your table
+        int id = resultSet.getInt("id");
+        String state = resultSet.getString("state");
+        Date date = resultSet.getDate("date_created");
+        Date updateDate = resultSet.getDate("date_updated");
+        int fkIdUser = resultSet.getInt("fk_id_user");
+        int fkIdSale = resultSet.getInt("fk_id_sale");
 
-        return new Order(id, state, date, updateDate, userId, fkIdUser, fkIdSale);
+        return new Order(id, state, date, updateDate, fkIdUser, fkIdSale);
     }
 
     private Date getCurrentDate() {

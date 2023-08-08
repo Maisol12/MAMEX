@@ -5,6 +5,10 @@
 <link rel="icon" href="${pageContext.request.contextPath}/assets/img/OIP.jpg">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
+<script src="${pageContext.request.contextPath}/assets/js/alertify.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/alertify.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/default.min.css">
+
 <style>
     .icon {
         color: white;
@@ -69,6 +73,24 @@
     .cards-ventas img{
         width: 100%;
         height: 300px;
+    }
+
+    .custom-card {
+        max-width: 260px !important;
+        border-radius: 0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .custom-card:hover {
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-img-top {
+        height:220px;
+        object-fit: cover;
+        border-radius: 0 !important;
+
     }
 </style>
 

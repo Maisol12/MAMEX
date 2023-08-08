@@ -62,11 +62,8 @@
             </div>
         </div>
     </div>
-    </form>
 </div>
-</div>
-</div>
-</div>
+
 
 <jsp:include page="../../layouts/footer.jsp"/>
 </body>
