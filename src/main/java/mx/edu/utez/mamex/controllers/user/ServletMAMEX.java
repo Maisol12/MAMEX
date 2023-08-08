@@ -229,6 +229,7 @@ public class ServletMAMEX extends HttpServlet {
             break;
 
             //vista para hacer review al producto
+            //solo para el pull request :D
             case "/user/review-view":{
                 redirect = "/views/user/review_product.jsp";
             }break;
