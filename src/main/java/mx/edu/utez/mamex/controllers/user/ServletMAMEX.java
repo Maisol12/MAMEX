@@ -7,7 +7,7 @@ import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import mx.edu.utez.mamex.models.emails.Email;
+import mx.edu.utez.mamex.models.Review;
 import mx.edu.utez.mamex.models.user.DAOUser;
 import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.items.ItemDao;
@@ -19,7 +19,7 @@ import mx.edu.utez.mamex.models.cart.CartItem;
 import mx.edu.utez.mamex.models.sales.Sale;
 import mx.edu.utez.mamex.models.sales.SaleDao;
 
-import javax.mail.MessagingException;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,9 @@ import java.util.Date;
         "/user/productDetails",
         "/user/cart",
         "/user/checkout-user",
-        "/user/remove-from-cart"
+        "/user/remove-from-cart",
+        "/user/review-product",
+        "/user/review-view"
 }) //endpoints para saber a donde redirigir al usuario
 public class ServletMAMEX extends HttpServlet {
     private String action;
@@ -66,7 +68,7 @@ public class ServletMAMEX extends HttpServlet {
     private String mime, fileName;
     //LINUX - "/"
     private String directory = "D:" + File.separator + "mamex";
-    private int id_product, quantity;
+    private String id_product, quantity;
     private double cost;
     HttpSession session;
 
@@ -226,6 +228,10 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
+            //vista para hacer review al producto
+            case "/user/review-view":{
+                redirect = "/views/user/review_product.jsp";
+            }break;
 
             default: {
                 System.out.println(action);
@@ -399,7 +405,24 @@ public class ServletMAMEX extends HttpServlet {
                 }
             }break;
 
-
+            case "/user/review-product":{
+                try{
+                    int id_product = Integer.parseInt(req.getParameter("id_product"));
+                    int rating = Integer.parseInt(req.getParameter("rating"));
+                    String comment = req.getParameter("comment");
+                    Review review = new Review(0L, id_product, rating, comment);
+                    boolean result = new DAOUser().review(review);
+                    if (result) {
+                        redirect = "/user/mamex?result=" + true
+                                + "&message" + URLEncoder.encode("Exito! Producto calificado correctamente", StandardCharsets.UTF_8);
+                    } else {
+                        throw new Exception("ERROR");
+                    }
+                }catch (Exception e){
+                    redirect = "/user/mamex?result=" + false
+                            + "&message" + URLEncoder.encode("Error :/ Acción no realizada correctamente", StandardCharsets.UTF_8);
+                }
+            }break;
 
             default: {
                 redirect = "/user/mamex";
