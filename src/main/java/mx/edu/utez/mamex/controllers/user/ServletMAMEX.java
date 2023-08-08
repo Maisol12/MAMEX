@@ -180,11 +180,14 @@ public class ServletMAMEX extends HttpServlet {
             }
 
             case "/user/productDetails": {
+                redirect = "/views/user/productDetails.jsp";
+                System.out.println("Servlet invoked");
                 // Obtener el valor del parámetro "productId" de la solicitud
-                String productIdString = req.getParameter("productId");
+                String productIdString = req.getParameter("id");
 
                 // Intentar abrir la conexión a la base de datos
                 try (Connection connection = new MySQLConnection().connect()) {
+                    System.out.println("Connected to database");
 
                     // Si el productIdString es nulo o está vacío, establecer un mensaje de error y redirigir
                     if (productIdString == null || productIdString.trim().isEmpty()) {
@@ -195,11 +198,13 @@ public class ServletMAMEX extends HttpServlet {
 
                     // Intentar convertir el productIdString a un número entero
                     try {
+                        System.out.println("productId: " + productIdString);
                         int productId = Integer.parseInt(productIdString);
 
                         // Usar el ID del producto (productId) para obtener los detalles del producto y mostrarlos en la página
                         ItemDao itemDao = new ItemDao(connection);
                         Item item = itemDao.getItemById(productId);
+                        System.out.println(item);
 
                         // Si el item es nulo, entonces no se encontró en la base de datos
                         if (item == null) {
@@ -218,6 +223,7 @@ public class ServletMAMEX extends HttpServlet {
                     }
 
                 } catch (SQLException e) {
+                    e.printStackTrace();
                     // Aquí podrías manejar errores relacionados con la base de datos
                     // Por ejemplo, podrías mostrar un mensaje amigable al usuario
                     req.setAttribute("errorMessage", "Error al acceder a la base de datos. Por favor, inténtalo más tarde.");

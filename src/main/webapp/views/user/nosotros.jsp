@@ -157,7 +157,9 @@
 <footer class="p-5" style="background-color: #6b6b6b">
     <div class="container text-white border-bottom border-white">
         <nav>
-            <h1 style="font-weight: 400">
+            <h1 style="font-weight: 400">    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <jsp:include page="../../layouts/head.jsp"/>
                 MANOS <br/>
                 MEXICANAS
             </h1>
