@@ -54,15 +54,17 @@
                             </div></li>
                         </ul>
                     </div>
-                    <a href="${pageContext.request.contextPath}/views/user/carrito.jsp" class="icon-button m-2">
+                    <button type="button" class="btn icon-button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
                         <i class="icon" data-feather="shopping-cart"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </nav>
-<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="footer.jsp"/>
+<jsp:include page="carrito.jsp"/>
+
+
 </body>
 </html>
