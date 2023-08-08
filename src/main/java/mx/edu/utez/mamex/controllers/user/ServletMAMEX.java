@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import mx.edu.utez.mamex.models.emails.Email;
 import mx.edu.utez.mamex.models.user.DAOUser;
 import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.items.ItemDao;
@@ -16,6 +17,8 @@ import mx.edu.utez.mamex.models.cart.Cart;
 import mx.edu.utez.mamex.models.cart.CartItem;
 import mx.edu.utez.mamex.models.sales.Sale;
 import mx.edu.utez.mamex.models.sales.SaleDao;
+
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -307,6 +310,27 @@ public class ServletMAMEX extends HttpServlet {
                         // Vacía el carrito
                         cart.clear();
                         session.setAttribute("cart", cart);
+
+                        Email email = new Email();
+                        String destinatario = (String) session.getAttribute("email");
+
+                        // Crear el contenido del correo
+                        String subject = "Información de Pago";
+                        String content =
+                                "GRACIAS POR COMPRAR CON NOSOTROS :D\n" +
+                                "AQUI ESTA LA INFORMACION DE PAGO:\n" +
+                                "NUMERO DE CUENTA: 0123456789123456\n" +
+                                "BANCO: BBVA\n" +
+                                "NOMBRE DESTINATARIO: MAMEX CORP\n\n" +
+                                "PUEDE SER POR TRANSFERENCIA O DEPOSITO\n\n" +
+                                "IMPORTANTE**\n" +
+                                "NO OLVIDES MANDARNOS TU COMPROBANTE COMO RESPUESTA A ESTE CORREO ELECTRONICO :D";
+                        try {
+                            email.sendMail(destinatario, subject, content);
+                        } catch (MessagingException e) {
+                            throw new RuntimeException(e);
+                        }
+
 
                         // Redirige al usuario a la página de confirmación de checkout
                         redirect = "/user/checkout-confirmation";
