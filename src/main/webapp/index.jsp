@@ -44,7 +44,7 @@
 </div>
 <div class="container d-flex flex-nowrap overflow-scroll mt-5 h-auto">
     <div class="container">
-        <h4 class="display-4 mb-5 mt-5">Nuevos productos</h4>
+        <h3 class="display-4 mb-5 mt-5">Nuevos productos</h3>
     </div>
     <a href="" class="text-decoration-none text-black-50">
         <div class="cards-ventas box-shadow-1 mb-5">
