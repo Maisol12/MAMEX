@@ -48,12 +48,11 @@
                         <div class="input-group m-4">
                             <input class="form-control" type="password" name="password" id="password" placeholder="Contraseña (mayor a 6 dígitos)" required>
                             <span id="addon-wrapping">
-                            <button class="btn btn-sm m-0 p-0" onclick="togglePasswordVisibility()">
+                            <button type="button" class="btn btn-sm m-0 p-0" onclick="togglePasswordVisibility()">
                                 <img class="m-0 p-0" id="eye" src="../../assets/svgs/eye-svgrepo-com.svg" alt="Icono mostrar contraseña" style="display:none;">
                                 <img class="m-0 p-0" id="eye-off" src="../../assets/svgs/eye-slash-svgrepo-com.svg" alt="Icono ocultar contraseña">
                             </button>
                         </span>
-
                         </div>
 
 
