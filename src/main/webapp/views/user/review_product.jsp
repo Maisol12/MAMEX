@@ -4,52 +4,58 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <jsp:include page="../../layouts/head.jsp"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Reviews</title>
 </head>
-<body>
+<body class="bg-light">
+<jsp:include page="../../layouts/nav.jsp"/>
 
-<h2>Product Reviews</h2>
+<div class="container mt-5">
+    <h2 class="mb-4">Product Reviews</h2>
 
-<!-- List existing reviews -->
-<h3>Existing Reviews:</h3>
-<table border="1">
-    <thead>
-    <tr>
-        <th>User ID</th>
-        <th>Rating</th>
-        <th>Comment</th>
-        <th>Date</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${reviews}" var="review">
+    <!-- List existing reviews -->
+    <h3 class="mb-3">Existing Reviews:</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
         <tr>
-            <td><c:out value="${review.userId}" /></td>
-            <td><c:out value="${review.rating}" /></td>
-            <td><c:out value="${review.comment}" /></td>
-            <td><c:out value="${review.date}" /></td>
+            <th>User ID</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Date</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach items="${reviews}" var="review">
+            <tr>
+                <td><c:out value="${review.userId}" /></td>
+                <td><c:out value="${review.rating}" /></td>
+                <td><c:out value="${review.comment}" /></td>
+                <td><c:out value="${review.date}" /></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
-<!-- Form to submit a new review -->
-<h3>Submit a New Review:</h3>
-<form action="/user/review-product" method="post">
-    <input type="hidden" name="productId" value="${productId}" />
-    <div>
-        <label for="rating">Rating (1-5):</label>
-        <input type="number" id="rating" name="rating" min="1" max="5" required />
-    </div>
-    <div>
-        <label for="comment">Comment:</label>
-        <textarea id="comment" name="comment" rows="4" required></textarea>
-    </div>
+    <!-- Form to submit a new review -->
+    <h3 class="mt-4 mb-3">Submit a New Review:</h3>
+    <form action="/user/review-product" method="post" class="bg-white p-4 border rounded">
+        <input type="hidden" name="productId" value="${productId}" />
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating (1-5):</label>
+            <input type="number" class="form-control" id="rating" name="rating" min="1" max="5" required />
+        </div>
+        <div class="mb-3">
+            <label for="comment" class="form-label">Comment:</label>
+            <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea>
+        </div>
+        <div class="mb-3">
+            <input type="submit" class="btn btn-primary" value="Submit Review" />
+        </div>
+    </form>
+</div>
 
-    <div>
-        <input type="submit" value="Submit Review" />
-    </div>
-</form>
-
+<jsp:include page="../../layouts/footer.jsp"/>
 </body>
 </html>
