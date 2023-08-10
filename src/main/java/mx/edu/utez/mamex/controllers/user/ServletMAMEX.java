@@ -6,6 +6,11 @@ import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import jakarta.servlet.http.*;
 import mx.edu.utez.mamex.models.Review;
 import mx.edu.utez.mamex.models.user.DAOUser;
@@ -49,6 +54,7 @@ import java.util.Date;
         "/user/logout",
         "/user/profile",
         "/user/update-profile",
+        "/user/update_view",
         "/user/AboutUs",
         "/user/personal_info",
         "/user/novedades",
@@ -57,7 +63,8 @@ import java.util.Date;
         "/user/checkout-user",
         "/user/remove-from-cart",
         "/user/review-product",
-        "/user/review-view"
+        "/user/review-view",
+        "/user/orders-history"
 }) //endpoints para saber a donde redirigir al usuario
 public class ServletMAMEX extends HttpServlet {
     private String action;
@@ -108,6 +115,7 @@ public class ServletMAMEX extends HttpServlet {
                 }
             }
             break;
+
 
             case "/user/logout": {
                 try {
@@ -387,12 +395,14 @@ public class ServletMAMEX extends HttpServlet {
                     user.setGender(gender);
                     if (new DAOUser().update(user)) {
                         redirect = "/user/profile?result=" + true
-                                + "&message" + URLEncoder.encode("Perfil actualizado correctamente", StandardCharsets.UTF_8);
+                                + "&message=" + URLEncoder.encode("Perfil actualizado correctamente", StandardCharsets.UTF_8);
                     } else {
                         redirect = "/user/profile?result=" + false
-                                + "&message" + URLEncoder.encode("Error al actualizar el perfil", StandardCharsets.UTF_8);
+                                + "&message=" + URLEncoder.encode("Error al actualizar el perfil", StandardCharsets.UTF_8);
                     }
                 } catch (Exception e) {
+                    redirect = "/user/update-profile?result=" + false
+                            + "&message=" + URLEncoder.encode("Error :/ Acción no realizada correctamente", StandardCharsets.UTF_8);
                 }
             }
             break;

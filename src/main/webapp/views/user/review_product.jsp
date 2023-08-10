@@ -12,30 +12,31 @@
 <body>
 <jsp:include page="../../layouts/nav.jsp"/>
 
-<h2>Product Reviews</h2>
+<div class="container mt-5">
+    <h2 class="mb-4">Product Reviews</h2>
 
-<!-- List existing reviews -->
-<h3>Existing Reviews:</h3>
-<table border="1">
-    <thead>
-    <tr>
-        <th>User ID</th>
-        <th>Rating</th>
-        <th>Comment</th>
-        <th>Date</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${reviews}" var="review">
+    <!-- List existing reviews -->
+    <h3 class="mb-3">Existing Reviews:</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
         <tr>
-            <td><c:out value="${review.userId}" /></td>
-            <td><c:out value="${review.rating}" /></td>
-            <td><c:out value="${review.comment}" /></td>
-            <td><c:out value="${review.date}" /></td>
+            <th>User ID</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Date</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach items="${reviews}" var="review">
+            <tr>
+                <td><c:out value="${review.userId}" /></td>
+                <td><c:out value="${review.rating}" /></td>
+                <td><c:out value="${review.comment}" /></td>
+                <td><c:out value="${review.date}" /></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
 <!-- Form to submit a new review -->
 <h3>Submit a New Review:</h3>
