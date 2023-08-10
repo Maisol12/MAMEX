@@ -10,8 +10,7 @@ public class Review {
     public Review() {
     }
 
-    public Review(long id, long productId, int rating, String comment) {
-        this.id = id;
+    public Review(long productId, int rating, String comment) {
         this.productId = productId;
         this.rating = rating;
         this.comment = comment;

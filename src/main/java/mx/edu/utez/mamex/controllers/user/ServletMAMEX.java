@@ -117,10 +117,12 @@ public class ServletMAMEX extends HttpServlet {
             break;
 
 
+
             case "/user/logout": {
                 try {
                     session = req.getSession();
                     session.invalidate();
+
                     redirect = "/user/mamex?result =" + true
                             + "&message" + URLEncoder.encode("Sesion cerrada correctamente", StandardCharsets.UTF_8);
                     ;
@@ -421,7 +423,7 @@ public class ServletMAMEX extends HttpServlet {
                     int id_product = Integer.parseInt(req.getParameter("id_product"));
                     int rating = Integer.parseInt(req.getParameter("rating"));
                     String comment = req.getParameter("comment");
-                    Review review = new Review(0L, id_product, rating, comment);
+                    Review review = new Review(id_product, rating, comment);
                     boolean result = new DAOUser().review(review);
                     if (result) {
                         redirect = "/user/mamex?result=" + true
