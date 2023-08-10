@@ -322,7 +322,7 @@ public class ServletMAMEX extends HttpServlet {
                     cart.addItem(item, quantity);
 
                     // Redirige al usuario a la página del carrito
-                    redirect = "/views/user/cart.jsp";
+                    redirect = "/views/user/carrito.jsp";
                 } else {
                     // Redirige al usuario a la página de inicio de sesión si no ha iniciado sesión
                     redirect = "/views/user/inicio_sesion.jsp";
@@ -352,7 +352,6 @@ public class ServletMAMEX extends HttpServlet {
                     redirect = "/views/user/inicio_sesion.jsp";
                 }
             }
-            req.getRequestDispatcher(redirect).forward(req, resp);
             break;
 
 
