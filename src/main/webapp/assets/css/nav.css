@@ -5,9 +5,7 @@
 }
 
 body {
-
     margin: 0;
-    overflow-x: hidden;
 }
 html {
     box-sizing: border-box;
@@ -38,12 +36,13 @@ h1, h2, h3 {
 .nav-link {
     color: white !important;
     margin-left: .5rem !important;
-    font-family: 'Inter', sans-serif;
 }
 
 .nav-link:hover {
     color: #f8c291 !important;
 }
+
+
 
 .circle {
     border-radius: 50%;

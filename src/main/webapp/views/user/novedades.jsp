@@ -19,15 +19,15 @@
             <h3 class="mt-4 mb-4">Lo más nuevo en <em>Manos Mexicanas</em></h3>
         </div>
     </div>
-    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center text-lg-start text-sm-center">
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-4  text-lg-start text-sm-center mb-4">
         <c:forEach var="item" items="${items}">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
-                    <div class="card custom-card h-100 position-relative">
+            <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center">
+                    <div class="card custom-card h-100 position-relative mt-2">
                         <c:if test="${not empty item.base64Images}">
                             <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
                             <a class="text-decoration-none" href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}">
-                            <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="card-img-top"
-                                 alt="${item.name}">
+                            <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="card-img-top w-100"
+                                 alt="${item.name}" style="width: 100%">
                             </a>
                         </c:if>
                         <div class="card-body">
@@ -47,10 +47,6 @@
         </c:forEach>
     </div>
 </div>
-
-
-
-
 
 <script>
     function addToCart(itemId) {

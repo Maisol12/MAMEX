@@ -13,23 +13,29 @@
     .icon {
         color: white;
     }
-    .icon:hover{
+
+    .icon:hover {
         color: #EAB543;
     }
-    .icon-button {
-        background: none;
-        border: none;
-        color: inherit;
-        cursor: pointer;
+
+
+    .icons-container {
+        flex-grow: 1; /* Permite que el contenedor de íconos crezca y ocupe el espacio disponible */
+        justify-content: flex-end; /* Alinea los íconos al final del contenedor */
     }
-    .micarrusel{
+
+
+
+    .micarrusel {
         height: 500px !important;
     }
 
-    .carousel-item{
+    .carousel-item {
         width: 100% !important;
-        height: 500px !important;
+        max-height: 500px !important; /* Para asegurarse de que las imágenes no se vuelvan demasiado grandes */
+        object-fit: cover;
     }
+
     /* Media query para pantallas pequeñas */
     @media screen and (max-width: 767px) {
         .micarrusel {
@@ -40,6 +46,7 @@
             height: auto !important;
         }
     }
+
     @media screen and (max-width: 767px) {
         .custom-container {
             width: auto;
@@ -51,18 +58,20 @@
             height: auto !important;
         }
     }
-    .links{
+
+    .links {
         text-decoration: none;
         color: black;
     }
-    .profile-img{
+
+    .profile-img {
         width: 20%;
         height: 20%;
         border-radius: 50%;
         margin-top: 24px;
     }
 
-    .cards-ventas{
+    .cards-ventas {
         flex: 1 0 auto;
         margin: 0 30px;
         background-color: white;
@@ -70,7 +79,7 @@
         height: 400px;
     }
 
-    .cards-ventas img{
+    .cards-ventas img {
         width: 100%;
         height: 300px;
     }
@@ -87,7 +96,7 @@
     }
 
     .card-img-top {
-        height:220px;
+        height: 220px;
         object-fit: cover;
         border-radius: 0 !important;
 
@@ -98,7 +107,11 @@
 
     }
 
-
+    .profile-img{
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+    }
 
 </style>
 

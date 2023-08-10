@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -30,7 +31,7 @@
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <div class="card box-shadow-1 profile-card" style="border-radius: 0">
                         <div class="card-title text-center">
-                            <img class="profile-img" src="${pageContext.request.contextPath}/path/to/default_profile_picture.jpg"
+                            <img class="img-fluid profile-img" src="${pageContext.request.contextPath}/assets/img/OIP.jpg"
                                  alt="profile picture">
                         </div>
                         <div class="card-body">
