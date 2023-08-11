@@ -27,7 +27,7 @@
                             <th scope="col">Fecha Actualización</th>
                             <th scope="col">Número Venta</th>
                             <th scope="col">ID Usuario</th>
-                            <th scope="col">ID Producto</th>
+                            <th scope="col">Nombre usuario</th>
                             <th scope="col">Pago Confirmado</th>
                         </tr>
                         </thead>
@@ -42,15 +42,9 @@
                                 <td>${sale.slDateUpdate}</td>
                                 <td>${sale.numberSale}</td>
                                 <td>${sale.user.id}</td>
-                                <td>${sale.item.id}</td>
+                                <td>${sale.user.fullName}</td>
                                 <td>
                                     <input type="checkbox" name="pagoConfirmado" value="${sale.idSale}" ${sale.pagoConfirmado ? 'checked' : ''} />
-                                </td>
-                                <td>
-                                    <a href="./editar_venta.jsp?id=${sale.idSale}" style="text-decoration: none">
-                                        <button class="btn btn-primary btn-sm btn-outline"><i data-feather="edit"></i></button>
-                                    </a>
-                                    <button class="btn btn-danger btn-sm btn-outline"><i data-feather="trash"></i></button>
                                 </td>
                             </tr>
                         </c:forEach>

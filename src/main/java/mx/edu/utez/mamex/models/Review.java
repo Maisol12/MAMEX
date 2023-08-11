@@ -1,58 +1,63 @@
 package mx.edu.utez.mamex.models;
 
 public class Review {
-    private long id;
-    private long userId;
-    private long productId;
-    private int rating;
-    private String comment;
+    private long id_review;
+    private String name_user;
+    // Cambio de userId a usuario
+    private int evaluacion; // Cambio de rating a evaluacion
+    private String comentario;
+    private long producto;
 
     public Review() {
     }
 
-    public Review(long productId, int rating, String comment) {
-        this.productId = productId;
-        this.rating = rating;
-        this.comment = comment;
+
+    public Review(long id_review, String name_user, int evaluacion, String comentario, long producto) {
+        this.id_review = id_review;
+        this.name_user = name_user;
+        this.evaluacion = evaluacion;
+        this.comentario = comentario;
+        this.producto = producto;
+
     }
 
-    public long getId() {
-        return id;
+    public long getId_review() {
+        return id_review;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId_review(long id_review) {
+        this.id_review = id_review;
     }
 
-    public long getUserId() {
-        return userId;
+    public String getName_user() {
+        return name_user;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setName_user(long usuario) {
+        this.name_user = name_user;
     }
 
-    public long getProductId() {
-        return productId;
+    public int getEvaluacion() {
+        return evaluacion;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setEvaluacion(int evaluacion) {
+        this.evaluacion = evaluacion;
     }
 
-    public int getRating() {
-        return rating;
+    public String getComentario() {
+        return comentario;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 
-    public String getComment() {
-        return comment;
+    public long getProducto() {
+        return producto;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setProducto(long producto) {
+        this.producto = producto;
     }
 }

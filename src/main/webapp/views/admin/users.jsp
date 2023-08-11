@@ -15,11 +15,6 @@
 <main>
     <div class="container-main">
         <div class="card text-end">
-            <div class="card-title pt-4 pe-3">
-                <a style="text-decoration: none; color:black" href="${pageContext.request.contextPath}/user/admin/create-user">
-                    <small>Agregar usuario</small><button class="btn btn-success btn-sm btn-outline pt-2 ms-2"><i data-feather="plus"></i></button>
-                </a>
-            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped caption-top">
@@ -38,9 +33,6 @@
                             <td>${user.lastnames}</td>
                             <td>${user.email}</td>
                             <td>
-                                <a href="./editar_usuario.jsp?id=${user.id}" style="text-decoration: none">
-                                    <button class="btn btn-primary btn-sm btn-outline"><i data-feather="edit"></i></button>
-                                </a>
                                 <button class="btn btn-danger btn-sm btn-outline"><i data-feather="trash"></i></button>
                             </td>
                         </tr>

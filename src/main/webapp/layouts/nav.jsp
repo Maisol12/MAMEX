@@ -28,7 +28,7 @@
             <div class="navbar-nav">
                 <ul class="mt-lg-3 d-lg-flex justify-content-lg-center justify-content-center list-unstyled">
                     <li><a href="${pageContext.request.contextPath}/user/mamex" class="nav-link">Inicio</a></li>
-                    <li><a href="" class="nav-link">Categorias</a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/categorias" class="nav-link">Categorias</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/novedades" class="nav-link">Novedades</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/contacto" class="nav-link">Contacto</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/AboutUs" class="nav-link">Nosotros</a></li>
@@ -54,17 +54,15 @@
                             </div></li>
                         </ul>
                     </div>
-                    <button type="button" class="btn icon-button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                    <a href="${pageContext.request.contextPath}/views/user/carrito.jsp" class="icon-button m-2">
                         <i class="icon" data-feather="shopping-cart"></i>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </nav>
+<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="footer.jsp"/>
-<jsp:include page="carrito.jsp"/>
-
-
 </body>
 </html>

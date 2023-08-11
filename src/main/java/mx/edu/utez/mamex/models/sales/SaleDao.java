@@ -6,15 +6,12 @@ import java.util.List;
 import java.sql.Timestamp;
 import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.items.Item;
-import mx.edu.utez.mamex.models.items.ItemDao;
-import java.sql.Timestamp;
-import java.sql.Timestamp;
-import mx.edu.utez.mamex.models.user.DAOUser;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.ServletException;
-import java.io.IOException;
-import mx.edu.utez.mamex.utils.MySQLConnection;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 
 public class SaleDao {
     private Connection conn;
@@ -69,6 +66,95 @@ public class SaleDao {
             return -1;
         }
     }
+
+    public List<Sale> getSalesForUser(Long userId) {
+        List<Sale> sales = new ArrayList<>();
+
+        String sqlSale = "SELECT * FROM sales WHERE fk_id_user = ?";
+        String sqlSaleItems = "SELECT si.*, i.id_item, i.name_item, i.unit_price, ii.image " +
+                "FROM SaleItem si " +
+                "JOIN items i ON si.item_id = i.id_item " +
+                "LEFT JOIN item_images ii ON si.item_id = ii.id_item " +
+                "WHERE si.sale_id = ? ORDER BY si.item_id"; // Asegúrate de ordenar por item_id
+
+        try (PreparedStatement psSale = conn.prepareStatement(sqlSale);
+             PreparedStatement psSaleItems = conn.prepareStatement(sqlSaleItems)) {
+
+            psSale.setLong(1, userId);
+            ResultSet rsSale = psSale.executeQuery();
+
+            while (rsSale.next()) {
+                Sale sale = new Sale();
+                sale.setIdSale(rsSale.getInt("id_sale"));
+                sale.setSubtotal(rsSale.getBigDecimal("subtotal").doubleValue());
+
+                // Formatear la fecha para que no incluya horas, minutos y segundos
+                Timestamp timestamp = rsSale.getTimestamp("sldate_create");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(timestamp);
+                sale.setSlDateCreate(Timestamp.valueOf(formattedDate + " 00:00:00"));
+
+                List<SaleItem> saleItems = new ArrayList<>();
+
+                psSaleItems.setInt(1, sale.getIdSale());
+                ResultSet rsSaleItems = psSaleItems.executeQuery();
+
+                SaleItem saleItem = null;
+                while (rsSaleItems.next()) {
+                    int currentItemId = rsSaleItems.getInt("id_item");
+                    if (saleItem == null || saleItem.getItem().getId() != currentItemId) {
+                        saleItem = new SaleItem();
+                        saleItem.setId(rsSaleItems.getInt("id"));
+
+                        Item item = new Item();
+                        item.setId(currentItemId);
+                        item.setName(rsSaleItems.getString("name_item"));
+                        item.setUnitPrice(rsSaleItems.getDouble("unit_price"));
+
+                        if(item.getImages() == null) {
+                            item.setImages(new HashMap<>());
+                        }
+
+                        saleItem.setItem(item);
+                        saleItem.setQuantity(rsSaleItems.getInt("quantity"));
+                        saleItems.add(saleItem);
+                    }
+
+                    byte[] imageBytes = rsSaleItems.getBytes("image");
+                    saleItem.getItem().getImages().put("image" + saleItem.getItem().getImages().size(), imageBytes);
+                    saleItem.getItem().populateBase64ImagesMap();
+                }
+
+                sale.setSaleItems(saleItems);
+                sales.add(sale);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return sales;
+    }
+
+
+
+
+
+
+
+
+    public boolean deleteSaleItemReferences(int itemId) {
+        String query = "DELETE FROM SaleItem WHERE item_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, itemId);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public List<Sale> getAllSales() throws SQLException {
         List<Sale> salesList = new ArrayList<>();
