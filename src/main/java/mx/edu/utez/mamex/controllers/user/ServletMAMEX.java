@@ -108,9 +108,12 @@ public class ServletMAMEX extends HttpServlet {
                     String userEmail = (String) session.getAttribute("email");
                     DAOUser daoUser = new DAOUser();
                     User user = daoUser.findUserByEmail(userEmail);
+                    System.out.println(user);
                     if (user != null) {
                         req.setAttribute("user", user);
                         redirect = "/views/user/personal_info.jsp";
+                    }else {
+                        redirect = null;
                     }
                 }
             }
@@ -121,11 +124,15 @@ public class ServletMAMEX extends HttpServlet {
             case "/user/logout": {
                 try {
                     session = req.getSession();
-                    session.invalidate();
+                    if (session != null){
+                        session.invalidate();
+                    }else{
+                        System.out.println("la sesion no existe");
+                    }
 
-                    redirect = "/user/mamex?result =" + true
-                            + "&message" + URLEncoder.encode("Sesion cerrada correctamente", StandardCharsets.UTF_8);
-                    ;
+                    redirect = "/user/mamex?result=" + true
+                            + "&message=" + URLEncoder.encode("Sesion cerrada correctamente", StandardCharsets.UTF_8);
+
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
                     redirect = "/user/mamex?result=" + false
