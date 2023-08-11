@@ -138,7 +138,3 @@ public class OrderDao {
         return new Date(currentDate.getTime());
     }
 }
-
-
-
-

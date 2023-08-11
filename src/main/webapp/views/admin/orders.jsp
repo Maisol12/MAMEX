@@ -22,7 +22,6 @@
                             <th scope="col">ID Orden</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Fecha Creación</th>
-                            <th scope="col">Fecha Actualización</th>
                             <th scope="col">ID Usuario</th>
                             <th scope="col">ID Venta</th>
                         </tr>
@@ -33,15 +32,8 @@
                                 <th scope="row">${order.id}</th>
                                 <td>${order.state}</td>
                                 <td>${order.date}</td>
-                                <td>${order.updateDate}</td>
                                 <td>${order.fkIdUser}</td>
                                 <td>${order.fkIdSale}</td>
-                                <td>
-                                    <a href="./editar_orden.jsp?id=${order.id}" style="text-decoration: none">
-                                        <button class="btn btn-primary btn-sm btn-outline"><i data-feather="edit"></i></button>
-                                    </a>
-                                    <button class="btn btn-danger btn-sm btn-outline"><i data-feather="trash"></i></button>
-                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -56,4 +48,3 @@
 
 </body>
 </html>
-
