@@ -71,10 +71,9 @@
                 <tbody>
                 <c:forEach items="${reviews}" var="review">
                     <tr>
-                        <td><c:out value="${review.userId}" /></td>
-                        <td><c:out value="${review.rating}" /></td>
-                        <td><c:out value="${review.comment}" /></td>
-                        <td><c:out value="${review.date}" /></td>
+                        <td><c:out value="${review.name_user}" /></td>
+                        <td><c:out value="${review.evaluacion}" /></td>
+                        <td><c:out value="${review.comentario}" /></td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -120,6 +119,29 @@
         </div>
     </div>
 </div>
+<script>
+    feather.replace();
+    $(document).ready(function() {
+        $('.rating .star').click(function() {
+            console.log("Star clicked!");
+
+            let value = $(this).data('value');
+            $('#rating').val(value);
+
+            // Remove "selected" class from all stars
+            $('.rating .star').removeClass('selected');
+            $('.rating .star i').attr('data-feather', 'star'); // Reset all stars to unfilled
+
+            // Mark only the clicked star as selected
+            $(this).addClass('selected');
+            $(this).find('i').attr('data-feather', 'star-fill');
+            console.log("Star with value " + value + " is selected!");
+
+            feather.replace(); // re-render the icons
+        });
+    });
+</script>
+
 
 <jsp:include page="../../layouts/footer.jsp"/>
 </body>

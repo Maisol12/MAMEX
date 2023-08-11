@@ -33,6 +33,10 @@ public class Sale {
         this.PagoConfirmado = pagoConfirmado;
     }
 
+    public void setSaleItems(List<SaleItem> saleItems) {
+        this.saleItems = saleItems;
+    }
+
     public Sale() {
         saleItems = new ArrayList<>();
     }

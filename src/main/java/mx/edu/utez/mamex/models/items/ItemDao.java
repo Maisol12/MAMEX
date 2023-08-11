@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Base64;
 import java.util.Date;
+import java.sql.Connection;
+import java.sql.Statement;
+
 
 public class ItemDao {
     private Connection conn;
@@ -22,7 +25,7 @@ public class ItemDao {
 
     public boolean saveItem(Item item) {
         boolean result = false;
-        String query = "INSERT INTO items(name_item, description_item, available, color, unit_price, create_date, update_date, stock, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO items(name_item, description_item, available, color, unit_price, create_date, stock, notes,category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, item.getName());
@@ -31,9 +34,10 @@ public class ItemDao {
             preparedStatement.setString(4, item.getColor());
             preparedStatement.setDouble(5, item.getUnitPrice());
             preparedStatement.setDate(6, new java.sql.Date(item.getCreateDate().getTime()));
-            preparedStatement.setDate(7, new java.sql.Date(item.getUpdateDate().getTime()));
-            preparedStatement.setInt(8, item.getStock());
-            preparedStatement.setString(9, item.getNotes());
+            preparedStatement.setInt(7, item.getStock());
+            preparedStatement.setString(8, item.getNotes());
+            preparedStatement.setString(9, item.getCategory());
+
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -63,6 +67,93 @@ public class ItemDao {
 
         return result;
     }
+
+    public String convertToBase64(byte[] data) {
+        return Base64.getEncoder().encodeToString(data);
+    }
+
+    public List<Item> getFilteredItems(String category, String priceRange) {
+        List<Item> items = new ArrayList<>();
+
+        String[] prices = priceRange.split("-");
+        double minPrice = Double.parseDouble(prices[0]);
+        double maxPrice = Double.parseDouble(prices[1]);
+
+        String query = "SELECT * FROM items WHERE category = ? AND unit_price BETWEEN ? AND ?";
+
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement(query);
+            stmt.setString(1, category);
+            stmt.setDouble(2, minPrice);
+            stmt.setDouble(3, maxPrice);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Item item = new Item();
+                item.setId(rs.getInt("id_item"));
+                item.setName(rs.getString("name_item"));
+                item.setDescription(rs.getString("description_item"));
+                item.setColor(rs.getString("color"));
+                item.setUnitPrice(rs.getDouble("unit_price"));
+                item.setStock(rs.getInt("stock"));
+                item.setCreateDate(rs.getDate("create_date"));
+                item.setNotes(rs.getString("notes"));
+                item.setCategory(rs.getString("category"));
+
+                Map<String, byte[]> imagesMap = new HashMap<>();
+                Map<String, String> base64ImagesMap = new HashMap<>();
+
+                // Fetch images from the item_images table for the current item
+                PreparedStatement imgStmt = this.conn.prepareStatement("SELECT image FROM item_images WHERE id_item = ?");
+                imgStmt.setInt(1, item.getId());
+
+                ResultSet imgRs = imgStmt.executeQuery();
+                int imageIndex = 1;
+                while (imgRs.next()) {
+                    byte[] imageBytes = imgRs.getBytes("image");
+                    imagesMap.put("image" + imageIndex, imageBytes);
+                    base64ImagesMap.put("image" + imageIndex, Base64.getEncoder().encodeToString(imageBytes));
+                    imageIndex++;
+                }
+                imgRs.close();
+                imgStmt.close();
+
+                item.setImages(imagesMap);
+                item.setBase64Images(base64ImagesMap);
+
+                items.add(item);
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return items;
+    }
+
+    public List<String> getAllCategories() {
+        List<String> categories = new ArrayList<>();
+        String query = "SELECT DISTINCT category FROM items";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                categories.add(rs.getString("category"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return categories;
+    }
+
+
+
+
+
 
     public boolean deleteItem(int itemId) {
         String deleteImagesQuery = "DELETE FROM item_images WHERE id_item = ?";
@@ -126,6 +217,41 @@ public class ItemDao {
         return false;
     }
 
+    public Item getItemByName(String name) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Item item = null;
+
+        try {
+            conn = new MySQLConnection().connect();
+            String sql = "SELECT * FROM items WHERE name_item = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                item = new Item();
+                // Asumiendo que tu clase Item tiene setters para todos los campos.
+                item.setId(rs.getInt("id_item"));
+                item.setName(rs.getString("name_item"));
+                // ... asigna los demás campos aquí ...
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Asegúrate de cerrar tus recursos aquí (ResultSet, PreparedStatement, Connection).
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return item;
+    }
+
 
     public Item getItemById(int itemId) {
         Item item = null;
@@ -143,9 +269,9 @@ public class ItemDao {
                 String color = resultSet.getString("color");
                 double unitPrice = resultSet.getDouble("unit_price");
                 Date createDate = resultSet.getDate("create_date");
-                Date updateDate = resultSet.getDate("update_date");
                 int stock = resultSet.getInt("stock");
                 String notes = resultSet.getString("notes");
+                String category = resultSet.getString("category");
 
                 Map<String, byte[]> images = new HashMap<>();
                 Map<String, String> base64Images = new HashMap<>();
@@ -161,7 +287,7 @@ public class ItemDao {
                     base64Images.put(imageName, base64Image);
                 }
 
-                item = new Item(id, name, description, available, color, unitPrice, createDate, updateDate, stock, notes, images, base64Images);
+                item = new Item(id, name, description, available, color, unitPrice, createDate, stock, notes, images, base64Images,category);
             }
 
             resultSet.close();
@@ -187,9 +313,10 @@ public class ItemDao {
                 String color = resultSet.getString("color");
                 double unitPrice = resultSet.getDouble("unit_price");
                 java.sql.Date createDate = resultSet.getDate("create_date");
-                java.sql.Date updateDate = resultSet.getDate("update_date");
                 int stock = resultSet.getInt("stock");
                 String notes = resultSet.getString("notes");
+                String category = resultSet.getString("category");
+
 
                 Map<String, byte[]> images = new HashMap<>();
                 Map<String, String> base64Images = new HashMap<>();
@@ -207,7 +334,7 @@ public class ItemDao {
                     base64Images.put(imageName, base64Image);
                 }
 
-                items.add(new Item(id, name, description, available, color, unitPrice, createDate, updateDate, stock, notes, images, base64Images));
+                items.add(new Item(id, name, description, available, color, unitPrice, createDate, stock, notes, images, base64Images,category));
             }
 
             preparedStatement.close();

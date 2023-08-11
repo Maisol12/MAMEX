@@ -1,6 +1,8 @@
 package mx.edu.utez.mamex.models.items;
 import java.util.Date;
 import java.util.Map;
+import java.util.Base64;
+import java.util.HashMap;
 
 public class Item {
     private int id;
@@ -14,11 +16,13 @@ public class Item {
     private int stock;
     private String notes;
     private Map<String, byte[]> images;
-    private Map<String, String> base64Images;
 
+    private Map<String, String> base64Images = new HashMap<>();
+
+    private String category;
     // Constructor
     public Item(int id, String name, String description, String available, String color, double unitPrice,
-                Date createDate, Date updateDate, int stock, String notes, Map<String, byte[]> images, Map<String, String> base64Images) {
+                Date createDate, int stock, String notes, Map<String, byte[]> images, Map<String, String> base64Images, String category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -26,12 +30,16 @@ public class Item {
         this.color = color;
         this.unitPrice = unitPrice;
         this.createDate = createDate;
-        this.updateDate = updateDate;
         this.stock = stock;
         this.notes = notes;
         this.images = images;
         this.base64Images = base64Images;
+        this.category = category;
     }
+
+    public Item() {
+    }
+
 
     public int getIdItem() {
         return id; // Suponiendo que el atributo que almacena el ID del item se llama 'id'
@@ -47,13 +55,32 @@ public class Item {
         this.stock = stock;
     }
 
+
+
     public Item(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
+    public String convertToBase64(byte[] data) {
+        return Base64.getEncoder().encodeToString(data);
+    }
 
+    public void populateBase64ImagesMap() {
+        if (this.images != null && !this.images.isEmpty()) {
+            for (Map.Entry<String, byte[]> entry : this.images.entrySet()) {
+                String key = entry.getKey();
+                byte[] imageData = entry.getValue();
+                String base64ImageData = Base64.getEncoder().encodeToString(imageData);
+
+                if (this.base64Images == null) {
+                    this.base64Images = new HashMap<>();
+                }
+                this.base64Images.put(key, base64ImageData);
+            }
+        }
+    }
     // Getters and Setters
     public int getId() {
         return id;
@@ -150,4 +177,15 @@ public class Item {
     public void setBase64Images(Map<String, String> base64Images) {
         this.base64Images = base64Images;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+
+
 }
