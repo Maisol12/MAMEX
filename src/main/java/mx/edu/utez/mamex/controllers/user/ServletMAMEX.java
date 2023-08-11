@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import jakarta.servlet.http.*;
 import mx.edu.utez.mamex.models.Review;
+import mx.edu.utez.mamex.models.token.TokenInfo;
+import mx.edu.utez.mamex.models.token.TokenManager;
 import mx.edu.utez.mamex.models.user.DAOUser;
 import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.items.ItemDao;
@@ -77,7 +79,8 @@ import java.util.Date;
         "/user/categorias",
         "/user/email-edit",
         "/user/historial_compras",
-        "/user/review-view"
+        "/user/review-view",
+        "/user/password-recovery"
 }) //endpoints para saber a donde redirigir al usuario
 @MultipartConfig
 public class ServletMAMEX extends HttpServlet {
@@ -610,7 +613,29 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
+            case "/user/password-recovery":{
+                String newPassword = req.getParameter("newPassword");
+                String confirmPassword = req.getParameter("confirmPassword");
+                String token = req.getParameter("token");
 
+                // Verificar si las contraseñas coinciden
+                if (newPassword.equals(confirmPassword)) {
+                    TokenInfo tokenInfo = TokenManager.getTokenInfo(token);
+                    if (tokenInfo != null && tokenInfo.isValid()) {
+                        // Actualizar la contraseña en la base de datos y marcar el token como utilizado
+                        DAOUser.updateUserPassword(tokenInfo.getUserId(), newPassword);
+                        TokenManager.removeToken(token);
+                        redirect= "/user/login?result=" + true
+                                + "&message" + URLEncoder.encode("Contraseña cambiada correctamente :D", StandardCharsets.UTF_8);
+                    } else {
+                        redirect = "/user/mamex?result=" + false +
+                        "&message=" + URLEncoder.encode("Contraseñas no coinciden D:", StandardCharsets.UTF_8);
+                    }
+                } else {
+                    redirect = "/user/mamex?result=" + false +
+                            "&message=" + URLEncoder.encode("Credentials missmatch!", StandardCharsets.UTF_8);;
+                }
+            }break;
 
 
             default: {

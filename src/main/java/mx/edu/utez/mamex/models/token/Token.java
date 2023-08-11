@@ -8,5 +8,5 @@ public class Token {
         return token.toString().replace("-", " ");
     }
 
-    
+
 }

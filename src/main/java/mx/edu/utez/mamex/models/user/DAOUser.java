@@ -7,7 +7,9 @@ import mx.edu.utez.mamex.utils.MySQLConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +18,9 @@ public class DAOUser{
     private PreparedStatement pstm;
     private CallableStatement cs;
     private ResultSet rs;
+
+    private static Map<String, User> userMap = new HashMap<>();
+
 
 
 
@@ -78,6 +83,12 @@ public class DAOUser{
         return user;
     }
 
+    public static void updateUserPassword(String userId, String newPassword) {
+        if (userMap.containsKey(userId)) {
+            User user = userMap.get(userId);
+            user.setPassword(newPassword);
+        }
+    }
 
     public User findOne(Long id) {
         User user = null;
