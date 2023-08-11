@@ -42,7 +42,7 @@ import java.sql.SQLException;
 import jakarta.servlet.http.*;
 
 
-@WebServlet(name = "admin", urlPatterns = {"/admin/inicio", "/admin/crear_producto", "/admin/products", "/user/admin/dashboard", "/user/admin/products","/admin/users","/admin/sales","/admin/delete_product","/admin/editar_producto","/admin/orders","/user/checkout","/user/reset_password","/views/user/inicio_sesion"})
+@WebServlet(name = "admin", urlPatterns = {"/admin/inicio", "/admin/crear_producto", "/admin/products", "/user/admin/dashboard", "/user/admin/products","/admin/users","/admin/sales","/admin/delete_product","/admin/editar_producto","/admin/orders","/user/checkout","/user/reset_password","/views/user/inicio_sesion","/admin/filterProducts"})
 @MultipartConfig
 public class ServletAdmin extends HttpServlet {
     private String action;
@@ -90,6 +90,12 @@ public class ServletAdmin extends HttpServlet {
             }
             break;
 
+            case "/admin/filterProducts": {
+                filterProducts(req, resp);
+                redirect = "/views/user/novedades.jsp";  // Asume que quieres mostrar los productos filtrados en esta página
+            }
+            break;
+
 
             default:
                 redirect = "/index.jsp";
@@ -97,6 +103,18 @@ public class ServletAdmin extends HttpServlet {
         }
         req.getRequestDispatcher(redirect).forward(req, resp);
 
+    }
+
+    private void filterProducts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String category = request.getParameter("category");
+        String priceRange = request.getParameter("priceRange");
+
+        List<Item> filteredItems = new ArrayList<>();  // Esta lista debe ser llenada con los productos filtrados desde la base de datos
+
+        ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
+        filteredItems = itemDao.getFilteredItems(category, priceRange);  // Asume que tienes un método getFilteredItems
+
+        request.setAttribute("items", filteredItems);
     }
 
     @Override
@@ -111,8 +129,8 @@ public class ServletAdmin extends HttpServlet {
         } else if ("/user/checkout".equals(action)) {
             processCheckout(request, response);
         } else if ("/user/reset_password".equals(action)) { // Ruta para restablecer contraseña
-        resetPassword(request, response); // Método para restablecer la contraseña
-    }
+            resetPassword(request, response); // Método para restablecer la contraseña
+        }
 
     }
 
@@ -236,18 +254,15 @@ public class ServletAdmin extends HttpServlet {
                     e.printStackTrace();
                 }
 
-
                 if (user != null) {
-                    String userEmail = user.getEmail();  // Asegúrate de tener un getter para el email en tu clase User
-
+                    String userEmail = user.getEmail();
                     String subject = "Confirmación de compra a MAMEX";
-                    String message = "¡Gracias por tu compra! Tu pedido ha sido confirmado y se encuentra esperando el pago." +
-                                     "Te dejamos nuestra CLABE 646180146008878702 a nombre de MAMEX" +
-                                     " Esperamos con gusto su pago para enviar el pedido";
+                    String imagePath = request.getServletContext().getRealPath("/assets/img/Pago.jpeg"); // Ruta absoluta a la imagen
+
+                    String htmlMessage = "¡Gracias por tu compra!";
 
                     EmailService emailService = new EmailService();
-
-                    emailService.sendEmail(userEmail, subject, message);
+                    emailService.sendEmailWithImage(userEmail, subject, htmlMessage, imagePath);
 
 
                     // Redirect the user to the index page
@@ -340,14 +355,22 @@ public class ServletAdmin extends HttpServlet {
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
-        boolean success = itemDao.deleteItem(id);
+        SaleDao saleDao = new SaleDao(new MySQLConnection().connect());
 
-        if (success) {
-            response.setStatus(HttpServletResponse.SC_OK);
+        // Primero, eliminar las referencias en SaleItem
+        if (saleDao.deleteSaleItemReferences(id)) {
+            // Si se eliminaron las referencias con éxito, eliminar el ítem
+            boolean success = itemDao.deleteItem(id);
+            if (success) {
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     private void createProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
@@ -356,16 +379,14 @@ public class ServletAdmin extends HttpServlet {
         String color = request.getParameter("color");
         double unitPrice = Double.parseDouble(request.getParameter("unitPrice"));
         String createDateStr = request.getParameter("createDate");
-        String updateDateStr = request.getParameter("updateDate");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date createDate;
         java.sql.Date updateDate;
+        String category = request.getParameter("category");
 
         try {
             java.util.Date parsedCreateDate = dateFormat.parse(createDateStr);
-            java.util.Date parsedUpdateDate = dateFormat.parse(updateDateStr);
             createDate = new java.sql.Date(parsedCreateDate.getTime());
-            updateDate = new java.sql.Date(parsedUpdateDate.getTime());
         } catch (ParseException e) {
             response.sendRedirect(request.getContextPath() + "/views/admin/crear_producto.jsp?result=error");
             return;
@@ -396,11 +417,11 @@ public class ServletAdmin extends HttpServlet {
                 color,
                 unitPrice,
                 new java.sql.Date(createDate.getTime()),
-                new java.sql.Date(updateDate.getTime()),
                 stock,
                 notes,
                 imagesMap,
-                base64ImagesMap
+                base64ImagesMap,
+                category
         );
 
         ItemDao itemDao = new ItemDao(new MySQLConnection().connect());

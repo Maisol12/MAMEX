@@ -27,7 +27,7 @@
         <div class="container mb-3 w-100">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-12 col-lg-4">
-                    <a href="#" class="links">
+                    <a href="${pageContext.request.contextPath}/user/historial_compras" >
                         <div class="card">
                             <div class="row justify-content-center mb-3">
                                 <img src="../../assets/svgs/package-box-svgrepo-com.svg" alt="" style="width: 80px; height: 80px">
@@ -38,7 +38,7 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-12 col-lg-4">
-                    <a href="#" class="links">
+                    <a href="${pageContext.request.contextPath}/user/email-edit" >
                         <div class="card">
                             <div class="row justify-content-center mb-3">
                                 <img src="${pageContext.request.contextPath}/assets/svgs/unlock-filled-svgrepo-com.svg" alt="" style="width: 80px; height: 80px">

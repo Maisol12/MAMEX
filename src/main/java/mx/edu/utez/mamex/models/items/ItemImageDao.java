@@ -111,5 +111,3 @@ public class ItemImageDao {
         return images;
     }
 }
-
-

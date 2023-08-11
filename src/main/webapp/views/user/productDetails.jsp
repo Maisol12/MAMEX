@@ -8,6 +8,10 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.x.x/dist/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
     <jsp:include page="../../layouts/head.jsp"/>
     <title>${item.name}</title>
 </head>
@@ -19,8 +23,9 @@
         <!-- Imagen del producto -->
         <div class="col-md-8 mb-4">
             <c:if test="${not empty item.base64Images}">
-                <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}" />
-                <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="img-fluid product-img" alt="${item.name}">
+                <c:forEach var="imageName" items="${item.base64Images.keySet()}">
+                    <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="d-block w-100 mb-3" alt="${item.name}">
+                </c:forEach>
             </c:if>
         </div>
 
@@ -32,21 +37,9 @@
             <button type="submit" class="btn w-100 btn-outline-dark" onclick="addToCart(${item.id})" style="border-radius: 0"><span>Agregar al carrito</span></button>
         </div>
     </div>
-
-    <!-- Comentarios de los usuarios -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h5 class="display-6">Comentarios de los usuarios</h5>
-            <c:forEach var="comment" items="${comments}">
-                <div class="card">
-                    <h5 class="card-title">${comment.user}</h5>
-                    <p class="card-text">${comment.text}</p>
-                </div>
-            </c:forEach>
-        </div>
-    </div>
 </div>
 
+<jsp:include page="../../views/user/review_product.jsp"/>
 
 <script>
     function addToCart(itemId) {

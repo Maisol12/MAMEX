@@ -28,5 +28,3 @@ public class TransactionDao {
         return totalEarnings;
     }
 }
-
-

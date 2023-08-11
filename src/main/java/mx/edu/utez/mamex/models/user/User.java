@@ -47,6 +47,10 @@ public class User {
         this.email = email;
     }
 
+    public String getFullName() {
+        return names + " " + lastnames;
+    }
+
     public Long getId() {
         return id;
     }

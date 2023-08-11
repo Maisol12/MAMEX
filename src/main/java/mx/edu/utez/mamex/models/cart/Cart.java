@@ -29,9 +29,9 @@ public class Cart {
         return items.add(new CartItem(item, quantity));
     }
 
-    public boolean removeItem(Item item) {
-        // Esto es solo un ejemplo, tu implementación puede variar
-        return items.removeIf(cartItem -> cartItem.getItem().equals(item));
+    public void removeItem(Item itemToRemove) {
+        // Elimina el ítem de la lista
+        items.remove(itemToRemove);
     }
 
     public int getTotalQuantity() {
@@ -41,6 +41,8 @@ public class Cart {
         }
         return totalQuantity;
     }
+
+
 
     public double getTotalPrice() {
         double totalPrice = 0.0;

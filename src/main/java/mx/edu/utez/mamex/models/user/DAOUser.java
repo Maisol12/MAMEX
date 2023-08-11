@@ -130,47 +130,125 @@ public class DAOUser{
         return false;
     } //metodo para registrar un nuevo usuario a mamex
 
-    public boolean review(Review review){
+    public boolean submitReview(Review review, String userEmail) {
+        PreparedStatement ps = null;
+        String query = "INSERT INTO reviews (usuario, evaluacion, comentario, producto) VALUES (?, ?, ?, ?)";
         try {
             conn = new MySQLConnection().connect();
-            cs = conn.prepareCall("{call insertar_review(?, ?, ?)}");
-            cs.setInt(2, review.getRating());
-            cs.setString(3, review.getComment());
-            cs.setLong(4, review.getProductId());
-            boolean result = cs.execute();
-            return !result;
-        }catch (SQLException e){
-            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, "Error saving review" + e.getMessage());
+            if (!hasUserPurchasedProduct(userEmail, review.getProducto())) {
+                // Si el usuario no ha comprado el producto, no permitir la reseña
+                return false;
+            }
+            ps = conn.prepareStatement(query);
+
+            ps.setString(1, review.getName_user());   // usuario
+            ps.setInt(2, review.getEvaluacion());     // evaluación
+            ps.setString(3, review.getComentario());  // comentario
+            ps.setLong(4, review.getProducto());      // producto
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, "Error al guardar review", e);
         } finally {
-            close();
+            close();  // Asegúrate de que este método cierra adecuadamente los recursos (ps, conn, etc.)
         }
         return false;
     }
 
-    public boolean login(User object) {
-        return false;
+    public boolean hasUserPurchasedProduct(String userEmail, long productId) throws SQLException {
+        String query = "SELECT s.id_sale " +
+                "FROM sales s " +
+                "JOIN SaleItem si ON s.id_sale = si.sale_id " +
+                "JOIN users u ON s.fk_id_user = u.id_user " +
+                "WHERE u.email = ? AND si.item_id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, userEmail);
+            pstmt.setLong(2, productId);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();  // Si hay resultados, el usuario ha comprado el producto
+        }
     }
+
+
+
+    public List<Review> getReviewsByProductId(long productId) throws SQLException {
+        List<Review> reviews = new ArrayList<>();
+        conn = new MySQLConnection().connect();
+        String query = "SELECT id_review, usuario as name_user, evaluacion, comentario, producto FROM reviews where producto = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setLong(1, productId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Review review = new Review(
+                            rs.getLong("id_review"),
+                            rs.getString("name_user"),  // Modificado para obtener el nombre de usuario
+                            rs.getInt("evaluacion"),
+                            rs.getString("comentario"),
+                            rs.getLong("producto")
+                    );
+                    reviews.add(review);
+                }
+            }
+        }
+        return reviews;
+    }
+
+    public boolean updateEmailAndPassword(String currentEmail, String newEmail, String newPassword) {
+        try {
+            MySQLConnection mySQLConnection = new MySQLConnection();
+            Connection connection = mySQLConnection.connect();
+
+            String updateQuery = "{CALL actualizar_correo_contrasena(?, ?, ?, 'llaveencriptacion')}";
+            CallableStatement callableStatement = connection.prepareCall(updateQuery);
+            callableStatement.setString(1, currentEmail);
+            callableStatement.setString(2, newEmail);
+            callableStatement.setString(3, newPassword);
+            callableStatement.execute();
+
+            connection.close();
+            return true; // Devuelve true si la actualización fue exitosa
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Devuelve false si hubo un error durante la actualización
+        }
+    }
+
+
+
+
 
 
     public boolean update(User object) {
-        try{
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        try {
             conn = new MySQLConnection().connect();
-            String query = "update users set name_user = ?, lastname = ?, email = ?, birthday = ?, sex = ?" +
-                    ", photo = ? where user_id_user = ?;";
+            String query = "UPDATE users SET name_user = ?, lastname = ?, photo = ? WHERE id_user = ?;"; // Se agrega cláusula WHERE
             pstm = conn.prepareStatement(query);
             pstm.setString(1, object.getNames());
             pstm.setString(2, object.getLastnames());
-            pstm.setString(3, object.getEmail());
-            pstm.setString(4, object.getBirthday());
-            pstm.setString(5, object.getGender());
-            pstm.setBytes(6, object.getImg_user());
-            pstm.setLong(7, object.getId());
+            pstm.setBytes(3, object.getImg_user());
+            pstm.setLong(4, object.getId()); // Se establece el valor del ID (suponiendo que el método para obtenerlo es getId())
+
             return pstm.executeUpdate() > 0;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, "Error update" + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (pstm != null) pstm.close();
+                if (conn != null) conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, "Error closing resources" + ex.getMessage());
+            }
         }
-        return false;
     }
+
+
 
     public boolean delete(Long id) {
         return false;
@@ -226,4 +304,3 @@ public class DAOUser{
         }
     }
 }
-
