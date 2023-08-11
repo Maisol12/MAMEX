@@ -118,19 +118,20 @@ public class ServletMAMEX extends HttpServlet {
 
 
             case "/user/logout": {
-                try {
-                    session = req.getSession();
+                session = req.getSession(false);
+                if (session != null) {
                     session.invalidate();
-                    redirect = "/user/mamex?result =" + true
-                            + "&message" + URLEncoder.encode("Sesion cerrada correctamente", StandardCharsets.UTF_8);
-                    ;
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                    redirect = "/user/mamex?result=" + false
-                            + "&message" + URLEncoder.encode("Credentials Missmatch", StandardCharsets.UTF_8);
+                    boolean result = true; // Establece la variable "result" como verdadera
+                    redirect = "/user/mamex?action=logout&result=true&message=" + URLEncoder.encode("Sesión cerrada correctamente", StandardCharsets.UTF_8);
+                } else {
+                    redirect = "/user/mamex?result=false&message=" + URLEncoder.encode("Credentials Missmatch", StandardCharsets.UTF_8);
                 }
             }
             break;
+
+
+
+
 
             case "/user/register-view": //una vez registrado te llevara a iniciar sesion
             {
@@ -291,8 +292,8 @@ public class ServletMAMEX extends HttpServlet {
                             redirect = "/user/admin/dashboard?result=" + true
                                     + "&message" + URLEncoder.encode("Inicio de sesion correctamente administrador! :D" + user.getNames(), StandardCharsets.UTF_8);
                         } else {
-                            redirect = "/user/mamex?result=" + true
-                                    + "&message" + URLEncoder.encode("Inicio de sesion correctamente! :D" + user.getNames(), StandardCharsets.UTF_8);
+                            redirect = "/user/mamex?action=login&result=" + true
+                                    + "&message=" + URLEncoder.encode("Inicio de sesion correctamente! :D" + user.getNames(), StandardCharsets.UTF_8);
 
                         }
                     } else {

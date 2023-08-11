@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <jsp:include page="../../layouts/head.jsp"/>
+
     <title>Manos Mexicanas</title>
 </head>
 <body>
@@ -29,7 +30,7 @@
                     <div class="m-4">
                         <input class="form-control" type="password" id="password" name="password" placeholder="Contraseña" required>
                     </div>
-                    <a class="text-decoration-none text-dark link-animation"><button type="submit" class="btn btn-dark m-4"
+                    <a class="text-decoration-none text-dark link-animation"><button id="btnLogin" type="submit" class="btn btn-dark m-4"
                                                                                      style="font-weight: 500; border-radius: 0px; padding: 10px; width: 150px;">Iniciar
                         sesión</button>
                     </a>
@@ -101,8 +102,25 @@
     </div>
 </div>
 
-<script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+
+
+
 <jsp:include page="../../layouts/footer.jsp"/>
+
+<% if (request.getParameter("result") != null && request.getParameter("result").equals("true")) { %>
+<script>
+    alertify.alert("¡Bienvenido a Manos Mexicanas!", "¡Gracias por registrarte! Ahora puedes iniciar sesión con tu correo electrónico y contraseña.").set('onok', function() {
+        // Si deseas hacer algo después de que el usuario haga clic en "OK", coloca el código aquí. De lo contrario, simplemente puedes omitir el método set('onok', ...).
+    });
+</script>
+<% } %>
+
+<c:if test="${param.result == 'false'}">
+    <script>
+        alertify.set('notifier','position', 'center')
+        alertify.error('Usuario o contraseña incorrectos');
+    </script>
+</c:if>
 
 </body>
 </html>

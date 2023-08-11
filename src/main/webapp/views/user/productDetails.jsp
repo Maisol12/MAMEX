@@ -26,9 +26,9 @@
 
         <!-- Detalles del producto -->
         <div class="col-md-4">
-            <h3 class="display-6">${item.name}</h3>
-            <p class="lead">${item.description}</p>
-            <p class="lead">$${item.unitPrice}</p>
+            <h4 class="display-6 pt-5">${item.name}</h4>
+            <p class=" fw-light mt-5 mb-5">${item.description}</p>
+            <p class="lead fw-lighter">$${item.unitPrice}</p>
             <button type="submit" class="btn w-100 btn-outline-dark" onclick="addToCart(${item.id})" style="border-radius: 0"><span>Agregar al carrito</span></button>
         </div>
     </div>
@@ -36,7 +36,7 @@
     <!-- Comentarios de los usuarios -->
     <div class="row mt-5">
         <div class="col-12">
-            <h5 class="display-6">Comentarios de los usuarios</h5>
+            <h5>Comentarios de los usuarios</h5>
             <c:forEach var="comment" items="${comments}">
                 <div class="card">
                     <h5 class="card-title">${comment.user}</h5>
@@ -46,7 +46,7 @@
         </div>
     </div>
 </div>
-
+<jsp:include page="../../views/user/review_product.jsp"/>
 
 <script>
     function addToCart(itemId) {
@@ -67,8 +67,9 @@
             });
     }
 </script>
-<jsp:include page="../../layouts/footer.jsp"/>
 
+<script src="../../assets/js/bootstrap.bundle.min.js"></script>
+<jsp:include page="../../layouts/footer.jsp"/>
 
 </body>
 </html>

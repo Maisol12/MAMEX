@@ -164,5 +164,35 @@
 </footer>
 
 <jsp:include page="layouts/footer.jsp"/>
+
+<script>
+    let currentPath = window.location.pathname;
+    let action = new URL(window.location.href).searchParams.get("action");
+    let paramResult = new URL(window.location.href).searchParams.get("result");
+    let paramMessage = new URL(window.location.href).searchParams.get("message");
+    let paramUsername = new URL(window.location.href).searchParams.get("username"); // Obtener el nombre del usuario
+
+    if (currentPath === "/user/mamex" && paramResult) {
+        if (action === "login" && paramResult === "true") {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.success("¡Bienvenido!");
+        } else if (action === "logout" && paramResult === "true") {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.success(`Sesión cerrada exitosamente.`);
+        } else if (paramResult === "false") {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.error("Ocurrió un error");
+        }
+    } else if (currentPath === "/user/admin/dashboard" && paramResult) {
+        if (paramResult === "true") {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.success("Bienvenido admin.");
+        }
+    }
+</script>
+
+
+
+
 </body>
 </html>

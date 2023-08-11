@@ -32,8 +32,8 @@
                         </c:if>
                         <div class="card-body">
                             <h6 class="card-title">${item.name}</h6>
-                            <h6>$${item.unitPrice}</h6>
-                            <small class="card-text fw-lighter" style="font-size: 14px;">${item.description}</small>
+                            <p class="fw-lighter">$${item.unitPrice}</p>
+                            <small class="card-text fw-light" style="font-size: 14px;">${item.description}</small>
                         </div>
                         <div class="card-footer bg-light">
                             <div class="row row-cols-2 justify-content-around">

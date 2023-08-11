@@ -5,8 +5,7 @@
 <link rel="icon" href="${pageContext.request.contextPath}/assets/img/OIP.jpg">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
-<script src="${pageContext.request.contextPath}/assets/js/alertify.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/alertify.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/alertify.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/default.min.css">
 
 <style>
@@ -15,7 +14,7 @@
     }
 
     .icon:hover {
-        color: #EAB543;
+        color: #f8c291;
     }
 
 
@@ -23,7 +22,6 @@
         flex-grow: 1; /* Permite que el contenedor de íconos crezca y ocupe el espacio disponible */
         justify-content: flex-end; /* Alinea los íconos al final del contenedor */
     }
-
 
 
     .micarrusel {
@@ -107,7 +105,7 @@
 
     }
 
-    .profile-img{
+    .profile-img {
         width: 120px;
         height: 120px;
         border-radius: 50%;
