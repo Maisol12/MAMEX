@@ -12,13 +12,13 @@ public class Review {
     }
 
 
-
     public Review(long id_review, String name_user, int evaluacion, String comentario, long producto) {
         this.id_review = id_review;
         this.name_user = name_user;
         this.evaluacion = evaluacion;
         this.comentario = comentario;
         this.producto = producto;
+
     }
 
     public long getId_review() {
