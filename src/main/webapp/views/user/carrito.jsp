@@ -8,6 +8,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <jsp:include page="../../layouts/head.jsp"/>
   <title>Manos mexicanas</title>
+  <script>
+    function removeFromCart(itemId) {
+      console.log("Inside removeFromCart function with itemId:", itemId);
+
+      let formData = new FormData();
+      formData.append("itemId", itemId);
+
+      fetch(`/user/remove-from-cart`, {
+        method: 'POST',
+        body: formData
+      })
+              .then(response => {
+                console.log(response);
+                if (response.ok) {
+                  location.reload();
+                } else {
+                  alert('Error al eliminar el artículo del carrito.');
+                }
+              });
+    }
+
+  </script>
 </head>
 <body>
 <jsp:include page="../../layouts/nav.jsp"/>
@@ -38,7 +60,7 @@
             </td>
             <td>$${cartItem.item.unitPrice * cartItem.quantity}</td>
             <td>
-              <a href="${pageContext.request.contextPath}/user/remove-from-cart?itemId=${cartItem.item.id}" class="btn btn-danger">Eliminar</a>
+              <button type="button" onclick="removeFromCart(${cartItem.item.id})" class="btn btn-danger">Eliminar</button>
             </td>
           </tr>
         </c:forEach>

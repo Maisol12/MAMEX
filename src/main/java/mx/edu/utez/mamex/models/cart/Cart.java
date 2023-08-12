@@ -30,9 +30,10 @@ public class Cart {
     }
 
     public void removeItem(Item itemToRemove) {
-        // Elimina el ítem de la lista
-        items.remove(itemToRemove);
+        items.removeIf(cartItem -> cartItem.getItem().getId() == itemToRemove.getId());
     }
+
+
 
     public int getTotalQuantity() {
         int totalQuantity = 0;

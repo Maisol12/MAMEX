@@ -24,18 +24,23 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellido</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="user" items="${users}"><tr>
-                            <th scope="row">${user.id}</th>
-                            <td>${user.names}</td>
-                            <td>${user.lastnames}</td>
-                            <td>${user.email}</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm btn-outline"><i data-feather="trash"></i></button>
-                            </td>
-                        </tr>
+                        <c:forEach var="user" items="${users}">
+                            <tr>
+                                <th scope="row">${user.id}</th>
+                                <td>${user.names}</td>
+                                <td>${user.lastnames}</td>
+                                <td>${user.email}</td>
+                                <td>
+                                    <form action="${pageContext.request.contextPath}/user/delete" method="post">
+                                        <input type="hidden" name="userId" value="${user.id}" />
+                                        <button type="submit" class="btn btn-danger btn-sm btn-outline" onclick="return confirm('¿Estás seguro de que deseas eliminar a este usuario?');"><i data-feather="trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
                         </c:forEach>
                         </tbody>
                     </table>
@@ -44,7 +49,6 @@
         </div>
     </div>
 </main>
-
 
 <jsp:include page="../../layouts/footer.jsp"/>
 

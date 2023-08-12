@@ -39,7 +39,8 @@
                         <p class="text-center">¿No tienes una cuenta? <a href="${pageContext.request.contextPath}/user/register-view"
                                                                          class="text-decoration-none text-dark link-animation"
                                                                          style=" font-weight: 700; color:black">Regístrate</a></p>
-                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#resetPassword">
+                        <!-- Aquí se agrega el token al enlace y se especifica que abra el modal -->
+                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#resetPassword" data-token="${param.token}">
                             Olvidé mi contraseña
                         </button>
                     </div>
@@ -60,20 +61,18 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="container text-center">
-                                                    <span class="text-center lh-md " style="font-size: 1rem;">Introduce
-                                                        la
-                                                        dirección de
-                                                        correo que usaste en el registro. <br> Te enviaremos un correo
-                                                        con
-                                                        instrucciones para
-                                                        restablecer tu
-                                                        contraseña.</span>
+                                        <span class="text-center lh-md " style="font-size: 1rem;">Introduce la
+                                            dirección de correo que usaste en el registro. <br> Te enviaremos un correo
+                                            con instrucciones para restablecer tu contraseña.</span>
                                         <div class="mt-5">
-                                            <form action="${pageContext.request.contextPath}/user/reset_password" method="POST">
+                                            <form id="reset-password-form" action="${pageContext.request.contextPath}/user/reset_password" method="POST">
                                                 <label class="fw-bold" style="font-size: 14px;">Introduce tu correo electrónico</label>
                                                 <div class="p-2">
                                                     <input style="width: inherit; padding: 6px;" type="email" name="email" id="email_password" placeholder="Correo electrónico" required>
                                                 </div>
+                                                <!-- Incluir el token en el formulario como campo oculto -->
+                                                <input type="hidden" name="token" value="${param.token}">
+                                                <input type="hidden" name="email" value="${param.email}">
                                                 <button type="submit" class="btn btn-dark m-5 m-lg-4"
                                                         style="font-weight: 500; border-radius: 50px; padding: 10px; width: 100px;">Enviar</button>
                                             </form>
@@ -84,7 +83,7 @@
                                             <p class="text-center pb-5 m-3 fw-bold"
                                                style="font-size: 1rem; font-weight: 400;">
                                                 Si necesitas más ayuda, contacta con nosotros en <a
-                                                    href="mailto:manos_mexicanas@gmail.com">manos_mexicanas@gmail.com</a>
+                                                    href="mailto:tiendamanosmexicanas1@gmail.com">tiendamanosmexicanas1@gmail.com</a>
                                             </p>
                                         </div>
                                     </div>
@@ -102,7 +101,25 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Agregar el valor del token al enlace del botón dentro del modal
+        var tokenButtons = document.querySelectorAll("[data-bs-target='#resetPassword']");
+        tokenButtons.forEach(function(button) {
+            var token = button.getAttribute("data-token");
+            var modalLink = button.querySelector("a");
+            modalLink.href = "http://localhost:8080/views/user/password-recovery.jsp?token=" + token;
+        });
+    });
+    function addTokenToResetForm() {
+        var resetForm = document.getElementById("reset-password-form");
+        var tokenInput = document.createElement("input");
+        tokenInput.type = "hidden";
+        tokenInput.name = "token";
+        tokenInput.value = "${param.token}";
+        resetForm.appendChild(tokenInput);
+    }
+</script>
 <jsp:include page="../../layouts/footer.jsp"/>
-
 </body>
 </html>
