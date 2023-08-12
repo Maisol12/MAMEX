@@ -7,4 +7,5 @@ public class Token {
         UUID token = UUID.randomUUID();
         return token.toString(); // No reemplazar los guiones en blanco
     }
+
 }

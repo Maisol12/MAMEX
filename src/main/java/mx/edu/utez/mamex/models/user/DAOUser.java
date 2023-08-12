@@ -7,8 +7,10 @@ import mx.edu.utez.mamex.utils.MySQLConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.HashMap;
+
 import java.util.logging.Level;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -20,6 +22,7 @@ public class DAOUser{
     private ResultSet rs;
 
     private static Map<String, User> userMap = new HashMap<>();
+
 
 
 
@@ -162,6 +165,7 @@ public class DAOUser{
 
         connection.close();
     }
+
 
 
 
