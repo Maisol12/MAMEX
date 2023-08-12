@@ -8,7 +8,9 @@ import mx.edu.utez.mamex.utils.MySQLConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.logging.Level;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class DAOUser{
@@ -16,6 +18,8 @@ public class DAOUser{
     private PreparedStatement pstm;
     private CallableStatement cs;
     private ResultSet rs;
+
+    private static Map<String, User> userMap = new HashMap<>();
 
 
 
@@ -77,6 +81,89 @@ public class DAOUser{
         }
         return user;
     }
+
+    public static void deleteUser(String userId) throws SQLException {
+        // Asumiendo que tienes una conexión a la base de datos configurada:
+        MySQLConnection mySQLConnection = new MySQLConnection();
+        Connection connection = mySQLConnection.connect();  // Obtener conexión (adaptar según tu implementación)
+        PreparedStatement statement = null;
+        try {
+            String sql = "DELETE FROM users WHERE id_user = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, userId);
+            statement.executeUpdate();
+        } finally {
+            // Cerrar recursos (si están abiertos)
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+    }
+
+    public static void deleteOrdersByUserId(String userId) throws SQLException {
+        MySQLConnection mySQLConnection = new MySQLConnection();
+        Connection connection = mySQLConnection.connect();
+
+        String deleteOrdersQuery = "DELETE FROM orders WHERE fk_id_user = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(deleteOrdersQuery);
+        preparedStatement.setString(1, userId);
+        preparedStatement.executeUpdate();
+
+        connection.close();
+    }
+
+    public static void updatePaymentStatus(String saleId, boolean isPaid) throws SQLException {
+        MySQLConnection mySQLConnection = new MySQLConnection();
+        Connection connection = mySQLConnection.connect();
+        PreparedStatement statement = null;
+        try {
+            // Iniciar transacción
+            connection.setAutoCommit(false);
+
+            // Valor que se quiere actualizar
+            String updatedState = isPaid ? "Pagado" : "Pendiente";
+
+            // Actualizar tabla sales
+            String sqlSales = "UPDATE sales SET sale_state = ? WHERE id_sale = ?";
+            statement = connection.prepareStatement(sqlSales);
+            statement.setString(1, updatedState);
+            statement.setString(2, saleId);
+            int affectedRowsSales = statement.executeUpdate();
+
+            // Actualizar tabla orders
+            String sqlOrders = "UPDATE orders SET state = ? WHERE fk_id_sale = ?";
+            statement = connection.prepareStatement(sqlOrders);
+            statement.setString(1, updatedState);
+            statement.setString(2, saleId);
+            int affectedRowsOrders = statement.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            // Si hay algún error, hacer rollback de la transacción y mostrar el mensaje de error
+            connection.rollback();
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+    }
+
+
+
+    public static void updateUserPassword(String email, String newPassword) throws SQLException {
+        MySQLConnection mySQLConnection = new MySQLConnection();
+        Connection connection = mySQLConnection.connect();
+
+        String updatePasswordQuery = "{CALL actualizar_contrasena(?, ?, 'llaveencriptacion')}";
+        CallableStatement callableStatement = connection.prepareCall(updatePasswordQuery);
+        callableStatement.setString(1, email);
+        callableStatement.setString(2, newPassword);
+        callableStatement.execute();
+
+        connection.close();
+    }
+
+
 
 
     public User findOne(Long id) {
