@@ -38,6 +38,7 @@
                                     <input type="file" id="profilePicUpload" name="profilePic">
                                 </div>
                             </div>
+
                             <div class="card-body">
                                 <div class="container">
                                     <div class="row">
@@ -45,6 +46,7 @@
                                             <div class="mb-3">
                                                 <label for="names" class="form-label">Nombre</label>
                                                 <input type="text" class="form-control" id="names" name="names" value="${user.names}">
+
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -58,6 +60,7 @@
                                     <!-- Save Changes button -->
                                     <div class="text-end mb-0">
                                         <button type="submit" class="btn btn-outline-dark m-2">Guardar cambios</button>
+
                                     </div>
                                 </div>
                             </div>

@@ -6,6 +6,11 @@ import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import jakarta.servlet.http.*;
 import mx.edu.utez.mamex.models.Review;
 import mx.edu.utez.mamex.models.user.DAOUser;
@@ -152,6 +157,7 @@ public class ServletMAMEX extends HttpServlet {
                 try {
                     session = req.getSession();
                     session.invalidate();
+
                     redirect = "/user/mamex?result =" + true
                             + "&message" + URLEncoder.encode("Sesion cerrada correctamente", StandardCharsets.UTF_8);
                     ;
@@ -602,6 +608,7 @@ public class ServletMAMEX extends HttpServlet {
                 } catch(Exception e) {
                     e.printStackTrace();
                     redirect = "/user/update_view?result=false&message=" + URLEncoder.encode("Error al actualizar el perfil", StandardCharsets.UTF_8);
+
                 }
             }
             break;
@@ -732,6 +739,7 @@ public class ServletMAMEX extends HttpServlet {
 
                     Review review = new Review(0L, username, rating, comment, productId);
                     boolean result = new DAOUser().submitReview(review, userEmail);
+
 
 
                     if (result) {
