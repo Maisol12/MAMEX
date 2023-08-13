@@ -50,8 +50,6 @@
     </style>
 </head>
 <body class="bg-light">
-<jsp:include page="../../layouts/nav.jsp"/>
-
 <div class="container mt-5">
     <div class="row justify-content-center">
         <!-- List existing reviews -->
