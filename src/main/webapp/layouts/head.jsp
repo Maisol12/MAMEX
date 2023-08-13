@@ -97,13 +97,8 @@
         height: 220px;
         object-fit: cover;
         border-radius: 0 !important;
-
     }
 
-    .card-footer {
-        background-color: transparent !important;
-
-    }
 
     .profile-img {
         width: 120px;

@@ -13,34 +13,38 @@
 
 <jsp:include page="../../layouts/sidebar.jsp"/>
 <main>
-    <div class="container-main">
-        <div class="card text-end">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped caption-top">
-                        <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Apellido</th>
-                            <th scope="col">Email</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="user" items="${users}"><tr>
-                            <th scope="row">${user.id}</th>
-                            <td>${user.names}</td>
-                            <td>${user.lastnames}</td>
-                            <td>${user.email}</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm btn-outline"><i data-feather="trash"></i></button>
-                            </td>
-                        </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+    <div class="container-fluid custom-container">
+        <div class="container pt-4">
+            <div class="card text-end">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped caption-top">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">¿Bloquear?</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="user" items="${users}"><tr>
+                                <th scope="row">${user.id}</th>
+                                <td>${user.names}</td>
+                                <td>${user.lastnames}</td>
+                                <td>${user.email}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger ms-4"><i data-feather="slash"></i></button>
+                                </td>
+                            </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </main>

@@ -12,45 +12,52 @@
 <body>
 <jsp:include page="../../layouts/nav.jsp"/>
 
-<div class="container position-absolute top-50 start-50 translate-middle w-75">
+<div class="container mt-5 w-75">
   <div class="container">
-    <h1 class="text-center">Tu Carrito</h1>
-    <form action="${pageContext.request.contextPath}/user/checkout" method="post">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>Imagen</th>
-          <th>Producto</th>
-          <th>Precio Unitario</th>
-          <th>Cantidad</th>
-          <th>Total por Artículo</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="cartItem" items="${sessionScope.cart.items}">
-          <tr>
-            <td><img src="data:image/jpeg;base64,${cartItem.item.base64Images['image1']}" width="50" height="50" alt="${cartItem.item.name}"></td>
-            <td>${cartItem.item.name}</td>
-            <td>$${cartItem.item.unitPrice}</td>
-            <td>
-              <input type="number" name="quantity_${cartItem.item.id}" value="${cartItem.quantity}" min="1" style="width: 50px;">
-            </td>
-            <td>$${cartItem.item.unitPrice * cartItem.quantity}</td>
-            <td>
-              <a href="${pageContext.request.contextPath}/user/remove-from-cart?itemId=${cartItem.item.id}" class="btn btn-danger">Eliminar</a>
-            </td>
-          </tr>
-        </c:forEach>
-        </tbody>
-      </table>
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <strong>Total: $${sessionScope.cart.getTotalPrice()}</strong>
-        </div>
-        <input type="submit" value="Aceptar" class="btn btn-success"/>
-      </div>
-    </form>
+    <h1 class="text-center">Tu bolsa de compra</h1>
+    <div class="table-responsive">
+      <c:if test="${sessionScope.cart.isEmpty()}">
+        <p class="text-center mt-3">No hay artículos en tu carrito.</p>
+      </c:if>
+      <c:if test="${not sessionScope.cart.isEmpty()}">
+        <form action="${pageContext.request.contextPath}/user/checkout" method="post">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Producto</th>
+              <th>Precio Unitario</th>
+              <th>Cantidad</th>
+              <th>Total por Artículo</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="cartItem" items="${sessionScope.cart.items}">
+              <tr>
+                <td><img src="data:image/jpeg;base64,${cartItem.item.base64Images['image1']}" width="50" height="50" alt="${cartItem.item.name}"></td>
+                <td>${cartItem.item.name}</td>
+                <td>$${cartItem.item.unitPrice}</td>
+                <td>
+                  <input type="number" name="quantity_${cartItem.item.id}" value="${cartItem.quantity}" min="1" style="width: 50px;">
+                </td>
+                <td>$${cartItem.item.unitPrice * cartItem.quantity}</td>
+                <td>
+                  <a href="${pageContext.request.contextPath}/user/remove-from-cart?itemId=${cartItem.item.id}" class="btn btn-danger">Eliminar</a>
+                </td>
+              </tr>
+            </c:forEach>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Total: $${sessionScope.cart.getTotalPrice()}</strong>
+            </div>
+            <input type="submit" value="Pagar" class="btn btn-sm btn-outline-success"/>
+          </div>
+        </form>
+      </c:if>
+    </div>
   </div>
 </div>
 

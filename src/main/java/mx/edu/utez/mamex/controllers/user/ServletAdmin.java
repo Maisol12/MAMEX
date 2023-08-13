@@ -429,9 +429,10 @@ public class ServletAdmin extends HttpServlet {
         boolean result = itemDao.saveItem(item);
 
         if (result) {
-            response.sendRedirect(request.getContextPath() + "/admin/products?result=success");
+            response.sendRedirect(request.getContextPath() + "/admin/products?result=success&productCreated=true");
         } else {
             response.sendRedirect(request.getContextPath() + "/admin/products?result=error");
         }
+
     }
 }

@@ -28,7 +28,8 @@
             <div class="navbar-nav">
                 <ul class="mt-lg-3 d-lg-flex justify-content-lg-center justify-content-center list-unstyled">
                     <li><a href="${pageContext.request.contextPath}/user/mamex" class="nav-link">Inicio</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/categorias" class="nav-link">Categorias</a></li>
+                    <li><a href="${pageContext.request.contextPath}/user/categorias" class="nav-link">Categorias</a>
+                    </li>
                     <li><a href="${pageContext.request.contextPath}/user/novedades" class="nav-link">Novedades</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/contacto" class="nav-link">Contacto</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/AboutUs" class="nav-link">Nosotros</a></li>
@@ -36,27 +37,35 @@
             </div>
             <div class="container">
                 <div class="container d-flex justify-content-lg-end justify-content-center justify-content-md-center pe-3">
-                    <button class="btn icon-button m-2">
+                    <button class="btn icon-button m-1">
                         <i class="icon" data-feather="search"></i>
                     </button>
                     <div class="btn-group">
-                        <button type="button" class="btn m-2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn m-1" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="icon" data-feather="user"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/login">Mi perfil</a></li>
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/register-view">Registrarme</a></li>
-                            <li><div class="container text-center dropdown-item">
-                                <form novalidate action="${pageContext.request.contextPath}/user/logout"
-                                      method="get">
-                                    <button class="btn bg-dark m-1" style="color: white;">Cerrar sesión</button>
-                                </form>
-                            </div></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/login">Mi
+                                perfil</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/register-view">Registrarme</a>
+                            </li>
+                            <li>
+                                <div class="container text-center dropdown-item">
+                                    <form novalidate action="${pageContext.request.contextPath}/user/logout"
+                                          method="get">
+                                        <button class="btn bg-dark mt-3" style="color: white;">Cerrar sesión</button>
+                                    </form>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-                    <a href="${pageContext.request.contextPath}/views/user/carrito.jsp" class="icon-link m-2 pt-1 ps-3">
+                    <a href="${pageContext.request.contextPath}/views/user/carrito.jsp" class="icon-link m-2 pt-1 ps-3 position-relative">
                         <i class="icon" data-feather="shopping-bag"></i>
+                        <span id="cartItemCount" class="badge rounded-circle bg-danger position-absolute top-0 start-100 translate-middle">
+                            ${sessionScope.cart.totalQuantity}
+                        </span>
                     </a>
+
                 </div>
             </div>
         </div>
