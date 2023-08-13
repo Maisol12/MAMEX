@@ -13,42 +13,43 @@
 
 <jsp:include page="../../layouts/sidebar.jsp"/>
 <main>
-    <div class="container-fluid custom-container">
-        <div class="container pt-4">
-            <div class="card text-end">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped caption-top">
-                            <thead>
+    <div class="container-main">
+        <div class="card text-end">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped caption-top">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="user" items="${users}">
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Apellido</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">¿Bloquear?</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="user" items="${users}"><tr>
                                 <th scope="row">${user.id}</th>
                                 <td>${user.names}</td>
                                 <td>${user.lastnames}</td>
                                 <td>${user.email}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-danger ms-4"><i data-feather="slash"></i></button>
+                                    <form action="${pageContext.request.contextPath}/user/delete" method="post">
+                                        <input type="hidden" name="userId" value="${user.id}" />
+                                        <button type="submit" class="btn btn-danger btn-sm btn-outline" onclick="return confirm('¿Estás seguro de que deseas eliminar a este usuario?');"><i data-feather="trash"></i></button>
+                                    </form>
                                 </td>
                             </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
         </div>
     </div>
 </main>
-
 
 <jsp:include page="../../layouts/footer.jsp"/>
 

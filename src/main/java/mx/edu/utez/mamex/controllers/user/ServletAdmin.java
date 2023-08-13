@@ -19,12 +19,14 @@ import mx.edu.utez.mamex.models.cart.Cart;
 import mx.edu.utez.mamex.models.cart.CartItem;
 import mx.edu.utez.mamex.models.orders.Order;
 import mx.edu.utez.mamex.models.orders.OrderDao;
+import mx.edu.utez.mamex.models.token.Token;
 import java.sql.Connection;
 import mx.edu.utez.mamex.models.transactions.TransactionDao;
 import mx.edu.utez.mamex.models.sales.SaleItem;
 import mx.edu.utez.mamex.services.EmailService;
 import mx.edu.utez.mamex.utils.PasswordGenerator;
 import java.sql.CallableStatement;
+import java.util.Base64;  // Esta importación debería estar en la parte superior de tu archivo junto con las demás importaciones.
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -112,10 +114,20 @@ public class ServletAdmin extends HttpServlet {
         List<Item> filteredItems = new ArrayList<>();  // Esta lista debe ser llenada con los productos filtrados desde la base de datos
 
         ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
-        filteredItems = itemDao.getFilteredItems(category, priceRange);  // Asume que tienes un método getFilteredItems
+
+        if (category != null && !category.isEmpty() && priceRange != null && !priceRange.isEmpty()) {
+            filteredItems = itemDao.getFilteredItems(category, priceRange); // Filtra por ambos criterios
+        } else if (category != null && !category.isEmpty()) {
+            filteredItems = itemDao.getFilteredItemsByCategory(category);  // Solo filtra por categoría
+        } else if (priceRange != null && !priceRange.isEmpty()) {
+            filteredItems = itemDao.getFilteredItemsByPriceRange(priceRange);  // Solo filtra por rango de precios
+        } else {
+            redirect = "/views/user/novedades.jsp";  // Asume que quieres mostrar los productos filtrados en esta página
+        }
 
         request.setAttribute("items", filteredItems);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -149,19 +161,25 @@ public class ServletAdmin extends HttpServlet {
     }
 
     private void resetPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email"); // Obtener el email desde el formulario
-        String newPassword = PasswordGenerator.generate(10); // Genera una contraseña aleatoria de longitud 10
+        String email = request.getParameter("email");
+        String newPassword = PasswordGenerator.generate(10);
 
-        String subject = "Tu nueva contraseña";
-        String message = "Hola, \n\nHemos generado una nueva contraseña para ti: " + newPassword +
-                "\n\nPor favor, inicia sesión con esta contraseña y cambia tu contraseña lo antes posible.";
+        // Generar un token único
+        String token = Token.tokenGenerator();
+        String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes());
+
+        String subject = "Recuperación de contraseña";
+        String recoveryFormURL = "http://localhost:8080/views/user/password-recovery.jsp?token=" + token + "&email=" + encodedEmail;
+        String message = "Hola,\n\nHemos recibido una solicitud para restablecer la contraseña de tu cuenta. " +
+                "Si no solicitaste esto, puedes ignorar este mensaje. Si deseas restablecer tu contraseña, " +
+                "haz clic en el siguiente enlace:\n\n" + recoveryFormURL;
 
         try {
             MySQLConnection mySQLConnection = new MySQLConnection();
             Connection connection = mySQLConnection.connect();
             String encryptionKey = "llaveencriptacion"; // Reemplazar con tu llave de encriptación
 
-            // Este es el lugar donde encriptas la contraseña y la guardas en la base de datos.
+            // Actualizar la contraseña en la base de datos
             String updatePasswordQuery = "{CALL actualizar_contrasena(?, ?, ?)}";
             CallableStatement callableStatement = connection.prepareCall(updatePasswordQuery);
             callableStatement.setString(1, email);
@@ -169,19 +187,26 @@ public class ServletAdmin extends HttpServlet {
             callableStatement.setString(3, encryptionKey);
             callableStatement.execute();
 
+            // Guardar el token y el correo en una base de datos temporal o en memoria
+
             connection.close();
 
-            // Aquí es donde se envía la contraseña por correo al usuario.
+            // Envío de correo
             EmailService emailService = new EmailService();
             emailService.sendEmail(email, subject, message);
 
+            // Redirección a la página de inicio de sesión con un mensaje de éxito
+            response.sendRedirect(request.getContextPath() + "/views/user/inicio_sesion.jsp?password_reset=success");
         } catch (SQLException e) {
             e.printStackTrace();
+            // Redirección a la página de inicio de sesión con un mensaje de error en caso de excepción
+            response.sendRedirect(request.getContextPath() + "/views/user/inicio_sesion.jsp?password_reset=error");
         }
-
-        // Aquí es donde rediriges al usuario al inicio de sesión después de que la contraseña haya sido reajustada y enviada por correo electrónico.
-        response.sendRedirect(request.getContextPath() + "/views/user/inicio_sesion?password_reset=success");
     }
+
+
+
+
 
 
     public void processCheckout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -209,7 +234,7 @@ public class ServletAdmin extends HttpServlet {
                         Sale sale = new Sale();
                         sale.setQuantitySale(cart.getTotalQuantity());
                         sale.setSubtotal(cart.getTotalPrice());
-                        sale.setSaleState("PENDIENTE");
+                        sale.setSaleState("Pendiente");
                         sale.setSlDateCreate(sqlTimestamp);
                         sale.setSlDateUpdate(sqlTimestamp);
                         sale.setNumberSale(generateSaleNumber()); // Generate a unique sale number

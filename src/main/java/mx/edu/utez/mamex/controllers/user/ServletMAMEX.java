@@ -20,11 +20,21 @@ import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.items.ItemDao;
 import mx.edu.utez.mamex.utils.MySQLConnection;
 import mx.edu.utez.mamex.models.items.Item;
+import mx.edu.utez.mamex.models.token.TokenInfo;
+import mx.edu.utez.mamex.models.token.TokenManager;
 import mx.edu.utez.mamex.models.cart.Cart;
 import java.sql.Connection;
 import java.util.Map;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.sql.SQLException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Arrays;
@@ -80,6 +90,9 @@ import java.util.Date;
         "/user/email-edit",
         "/user/historial_compras",
         "/user/review-view",
+        "/user/delete",
+        "/user/updatePaymentStatus",
+
         "/user/password-recovery"
 }) //endpoints para saber a donde redirigir al usuario
 @MultipartConfig
@@ -430,6 +443,32 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
+            case "/user/delete": {
+                String userId = req.getParameter("userId");
+                if (userId != null) {
+                    try {
+                        DAOUser.deleteOrdersByUserId(userId);
+                        DAOUser.deleteUser(userId);
+                        resp.sendRedirect("/admin/users");
+                        return;  // Aseguramos que no se ejecute más código después de la redirección
+                    } catch (SQLException e) {
+                        if (e instanceof SQLIntegrityConstraintViolationException) {
+                            resp.setContentType("text/html;charset=UTF-8");
+                            resp.getWriter().write("Error: No puedes eliminar este usuario porque tiene órdenes asociadas.");
+                        } else {
+                            e.printStackTrace();
+                            resp.setContentType("text/html;charset=UTF-8");
+                            resp.getWriter().write("Error al eliminar el usuario. Por favor, inténtalo de nuevo más tarde.");
+                        }
+                        return;  // Aseguramos que no se ejecute más código después de enviar la respuesta
+                    }
+                } else {
+                    resp.setContentType("text/html;charset=UTF-8");
+                    resp.getWriter().write("Error: El ID del usuario es inválido o no se proporcionó.");
+                    return;  // Aseguramos que no se ejecute más código después de enviar la respuesta
+                }
+            }
+
             case "/user/add-to-cart": {
                 // Asegúrate de que el usuario ha iniciado sesión
                 HttpSession session = req.getSession(false);
@@ -488,33 +527,59 @@ public class ServletMAMEX extends HttpServlet {
             }
 
 
-
-
-
             case "/user/remove-from-cart": {
+                System.out.println("Entra al case");
                 // Asegúrate de que el usuario ha iniciado sesión
                 HttpSession session = req.getSession(false);
                 if (session != null && session.getAttribute("email") != null) {
                     // Obtén el ID del ítem de la solicitud
-                    int itemId = Integer.parseInt(req.getParameter("itemId"));
-
+                    String itemIdStr = req.getParameter("itemId");
+                    System.out.println("Received itemId: " + itemIdStr);
+                    if (itemIdStr == null || itemIdStr.trim().isEmpty()) {
+                        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        resp.getWriter().write("El parámetro itemId es requerido.");
+                        return;
+                    }
+                    int itemId;
+                    try {
+                        itemId = Integer.parseInt(itemIdStr);
+                    } catch (NumberFormatException e) {
+                        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        resp.getWriter().write("El parámetro itemId debe ser un número válido.");
+                        return;
+                    }
                     // Obtén el carrito de la sesión
                     Cart cart = (Cart) session.getAttribute("cart");
                     if (cart != null) {
+                        System.out.println("Cart found in session.");
+                        System.out.println("Current cart size: " + cart.getItems().size());
+                        cart.getItems().forEach(cartItem -> System.out.println("Item in cart: " + cartItem.getItem().getName()));
+
                         // Encuentra el ítem en el carrito y remuévelo
                         ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
-                        Item item = itemDao.getItemById(itemId);
-                        cart.removeItem(item);
+                        Item itemToRemove = itemDao.getItemById(itemId);
+                        cart.removeItem(itemToRemove);
+
+                        System.out.println("Cart size after removal: " + cart.getItems().size());
+                        cart.getItems().forEach(cartItem -> System.out.println("Item in cart after removal: " + cartItem.getItem().getName()));
+
+                        session.setAttribute("cart", cart);
+                    } else {
+                        System.out.println("Attempting to remove item with ID: " + itemId);
+                        System.out.println("Cart not found in session.");
                     }
 
                     // No redirigir aquí, ya que la redirección debe estar fuera del switch
                 } else {
+                    System.out.println("Cart not found in session.");
                     // Redirige al usuario a la página de inicio de sesión si no ha iniciado sesión
                     redirect = "/views/user/inicio_sesion.jsp";
+                    return;
                 }
             }
             req.getRequestDispatcher(redirect).forward(req, resp);
             return;
+
 
 
             case "/user/update": {
@@ -538,7 +603,6 @@ public class ServletMAMEX extends HttpServlet {
                         Part filePart = req.getPart("profilePic");
                         if (filePart != null && filePart.getSize() > 0) {
                             InputStream fileContent = filePart.getInputStream();
-                            System.out.println("Si entro al if");
                             byte[] imageBytes = new byte[(int) filePart.getSize()];
                             fileContent.read(imageBytes, 0, imageBytes.length);
                             user.setImg_user(imageBytes);
@@ -562,6 +626,95 @@ public class ServletMAMEX extends HttpServlet {
                 }
             }
             break;
+
+            case "/user/password-recovery": {
+                String newPassword = req.getParameter("newPassword");
+                String confirmPassword = req.getParameter("confirmPassword");
+                String token = req.getParameter("token");
+                String email = req.getParameter("decodedEmail");
+
+                TokenInfo tokenInfo = TokenManager.getTokenInfo(token);
+
+                if (newPassword != null && confirmPassword != null && newPassword.equals(confirmPassword)) {
+                    try {
+                        // Asumiendo que tienes alguna validación del token aquí. Si no, deberías agregarla.
+
+                        // Actualizar la contraseña en la base de datos usando el método proporcionado
+                        DAOUser.updateUserPassword(email, newPassword);
+
+                        // Marcar el token como utilizado y enviar una respuesta de éxito
+                        TokenManager.removeToken(token);
+                        String successMessage = "Contraseña cambiada correctamente :D";
+                        resp.setContentType("text/html;charset=UTF-8");
+                        resp.getWriter().write(successMessage);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        // Enviar una respuesta de error en caso de excepción
+                        String errorMessage = "Error al cambiar la contraseña. Inténtalo de nuevo más tarde.";
+                        resp.setContentType("text/html;charset=UTF-8");
+                        resp.getWriter().write(errorMessage);
+                    }
+                } else {
+                    // Enviar una respuesta de error si las contraseñas no coinciden
+                    String errorMessage = "Las contraseñas no coinciden.";
+                    resp.setContentType("text/html;charset=UTF-8");
+                    resp.getWriter().write(errorMessage);
+                }
+            } break;
+
+            case "/user/updatePaymentStatus": {
+                BufferedReader reader = req.getReader();
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+                String jsonString = sb.toString();
+
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject;
+                try {
+                    jsonObject = (JSONObject) parser.parse(jsonString);
+                    if (jsonObject != null && jsonObject.containsKey("saleId") && jsonObject.containsKey("paymentStatus")) {
+                        Long saleIdLong = (Long) jsonObject.get("saleId");
+                        String saleId = String.valueOf(saleIdLong);
+                        Boolean isPaidValue = (Boolean) jsonObject.get("paymentStatus");
+
+
+
+                        if (isPaidValue != null) {
+                            DAOUser.updatePaymentStatus(saleId, isPaidValue);
+                            System.out.println("Finished updating payment status for sale ID: " + saleId);
+                            resp.setContentType("application/json");
+                            PrintWriter out = resp.getWriter();
+                            out.print("{\"status\": \"success\"}");
+                            out.flush();
+                            return; // Añadido el return aquí
+                        } else {
+                            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            resp.getWriter().write("The 'paymentStatus' value is missing in the request.");
+                            return; // Añadido el return aquí
+                        }
+                    } else {
+                        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        resp.getWriter().write("Missing required parameters in the request.");
+                        return; // Añadido el return aquí
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    resp.getWriter().write("Error parsing JSON request string: " + e.getMessage());
+                    return; // Añadido el return aquí
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    resp.getWriter().write("Database error occurred: " + e.getMessage());
+                    return; // Añadido el return aquí
+                }
+            }
+
+
+
 
 
 
