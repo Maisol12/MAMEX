@@ -27,7 +27,7 @@
                 <div class="mb-3">
                     <label for="categoryFilter" class="form-label">Categoría</label>
                     <select class="form-select" id="categoryFilter" name="category">
-                        <option selected>Elige una categoría...</option>
+                        <option selected value="">Elige una categoría...</option>
                         <optgroup label="Ropa Tejida">
                             <option value="Suéteres">Suéteres</option>
                             <option value="Bufandas">Bufandas</option>
@@ -71,7 +71,7 @@
                 <div class="mb-3">
                     <label for="priceFilter" class="form-label">Rango de precios</label>
                     <select class="form-select" id="priceFilter" name="priceRange">
-                        <option selected>Elige un rango...</option>
+                        <option selected value="">Elige un rango...</option>
                         <option value="0-100">$0 - $100</option>
                         <option value="100-500">$100 - $500</option>
                         <!-- Agregar otros rangos aquí según sean necesarios -->
