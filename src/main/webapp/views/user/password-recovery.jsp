@@ -1,4 +1,3 @@
-
 <%--
   Created by IntelliJ IDEA.
   User: aldair
@@ -22,7 +21,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambio de Contraseña</title>
     <jsp:include page="../../layouts/head.jsp"/></head>
-
 <body class="bg-light">
 <jsp:include page="../../layouts/nav.jsp"/>
 
@@ -70,9 +68,7 @@
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
 </script>
-
 <jsp:include page="../../layouts/footer.jsp"/>
 
 </body>
 </html>
-

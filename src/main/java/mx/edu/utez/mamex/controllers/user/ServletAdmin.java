@@ -114,10 +114,20 @@ public class ServletAdmin extends HttpServlet {
         List<Item> filteredItems = new ArrayList<>();  // Esta lista debe ser llenada con los productos filtrados desde la base de datos
 
         ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
-        filteredItems = itemDao.getFilteredItems(category, priceRange);  // Asume que tienes un método getFilteredItems
+
+        if (category != null && !category.isEmpty() && priceRange != null && !priceRange.isEmpty()) {
+            filteredItems = itemDao.getFilteredItems(category, priceRange); // Filtra por ambos criterios
+        } else if (category != null && !category.isEmpty()) {
+            filteredItems = itemDao.getFilteredItemsByCategory(category);  // Solo filtra por categoría
+        } else if (priceRange != null && !priceRange.isEmpty()) {
+            filteredItems = itemDao.getFilteredItemsByPriceRange(priceRange);  // Solo filtra por rango de precios
+        } else {
+            redirect = "/views/user/novedades.jsp";  // Asume que quieres mostrar los productos filtrados en esta página
+        }
 
         request.setAttribute("items", filteredItems);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

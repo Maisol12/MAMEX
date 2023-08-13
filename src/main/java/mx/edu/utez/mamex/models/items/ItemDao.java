@@ -72,6 +72,119 @@ public class ItemDao {
         return Base64.getEncoder().encodeToString(data);
     }
 
+    public List<Item> getFilteredItemsByCategory(String category) {
+        List<Item> items = new ArrayList<>();
+
+        // La consulta para filtrar por categoría
+        String query = "SELECT * FROM items WHERE category = ?";  // Asegúrate de que "items" es el nombre correcto de tu tabla y "category" es el nombre correcto de tu columna
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, category);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Item item = new Item();
+                item.setId(rs.getInt("id_item"));
+                item.setName(rs.getString("name_item"));
+                item.setDescription(rs.getString("description_item"));
+                item.setColor(rs.getString("color"));
+                item.setUnitPrice(rs.getDouble("unit_price"));
+                item.setStock(rs.getInt("stock"));
+                item.setCreateDate(rs.getDate("create_date"));
+                item.setNotes(rs.getString("notes"));
+                item.setCategory(rs.getString("category"));
+
+                Map<String, byte[]> imagesMap = new HashMap<>();
+                Map<String, String> base64ImagesMap = new HashMap<>();
+
+                // Fetch images from the item_images table for the current item
+                PreparedStatement imgStmt = this.conn.prepareStatement("SELECT image FROM item_images WHERE id_item = ?");
+                imgStmt.setInt(1, item.getId());
+
+                ResultSet imgRs = imgStmt.executeQuery();
+                int imageIndex = 1;
+                while (imgRs.next()) {
+                    byte[] imageBytes = imgRs.getBytes("image");
+                    imagesMap.put("image" + imageIndex, imageBytes);
+                    base64ImagesMap.put("image" + imageIndex, Base64.getEncoder().encodeToString(imageBytes));
+                    imageIndex++;
+                }
+                imgRs.close();
+                imgStmt.close();
+
+                item.setImages(imagesMap);
+                item.setBase64Images(base64ImagesMap);
+
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+
+    public List<Item> getFilteredItemsByPriceRange(String priceRange) {
+        List<Item> items = new ArrayList<>();
+
+        String[] prices = priceRange.split("-");
+        int minPrice = Integer.parseInt(prices[0]);
+        int maxPrice = Integer.parseInt(prices[1]);
+
+        // La consulta para filtrar por rango de precios
+        String query = "SELECT * FROM items WHERE unit_price BETWEEN ? AND ?";  // Asegúrate de que "items" es el nombre correcto de tu tabla y "unitPrice" es el nombre correcto de tu columna
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, minPrice);
+            stmt.setInt(2, maxPrice);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Item item = new Item();
+                item.setId(rs.getInt("id_item"));
+                item.setName(rs.getString("name_item"));
+                item.setDescription(rs.getString("description_item"));
+                item.setColor(rs.getString("color"));
+                item.setUnitPrice(rs.getDouble("unit_price"));
+                item.setStock(rs.getInt("stock"));
+                item.setCreateDate(rs.getDate("create_date"));
+                item.setNotes(rs.getString("notes"));
+                item.setCategory(rs.getString("category"));
+
+                Map<String, byte[]> imagesMap = new HashMap<>();
+                Map<String, String> base64ImagesMap = new HashMap<>();
+
+                // Fetch images from the item_images table for the current item
+                PreparedStatement imgStmt = this.conn.prepareStatement("SELECT image FROM item_images WHERE id_item = ?");
+                imgStmt.setInt(1, item.getId());
+
+                ResultSet imgRs = imgStmt.executeQuery();
+                int imageIndex = 1;
+                while (imgRs.next()) {
+                    byte[] imageBytes = imgRs.getBytes("image");
+                    imagesMap.put("image" + imageIndex, imageBytes);
+                    base64ImagesMap.put("image" + imageIndex, Base64.getEncoder().encodeToString(imageBytes));
+                    imageIndex++;
+                }
+                imgRs.close();
+                imgStmt.close();
+
+                item.setImages(imagesMap);
+                item.setBase64Images(base64ImagesMap);
+
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+
+
+
     public List<Item> getFilteredItems(String category, String priceRange) {
         List<Item> items = new ArrayList<>();
 
