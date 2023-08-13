@@ -26,5 +26,6 @@ public class TokenManager {
 
     public static void addToken(TokenInfo tokenInfo) {
         tokens.add(tokenInfo);
+
     }
 }

@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import jakarta.servlet.http.*;
 import mx.edu.utez.mamex.models.Review;
+import mx.edu.utez.mamex.models.token.TokenInfo;
+import mx.edu.utez.mamex.models.token.TokenManager;
 import mx.edu.utez.mamex.models.user.DAOUser;
 import mx.edu.utez.mamex.models.user.User;
 import mx.edu.utez.mamex.models.items.ItemDao;
@@ -90,6 +92,7 @@ import java.util.Date;
         "/user/review-view",
         "/user/delete",
         "/user/updatePaymentStatus",
+
         "/user/password-recovery"
 }) //endpoints para saber a donde redirigir al usuario
 @MultipartConfig
@@ -136,6 +139,7 @@ public class ServletMAMEX extends HttpServlet {
                     String userEmail = (String) session.getAttribute("email");
                     DAOUser daoUser = new DAOUser();
                     User user = daoUser.findUserByEmail(userEmail);
+                    System.out.println(user);
                     if (user != null) {
                         req.setAttribute("user", user);
 
@@ -147,6 +151,8 @@ public class ServletMAMEX extends HttpServlet {
                         }
 
                         redirect = "/views/user/personal_info.jsp";
+                    }else {
+                        redirect = null;
                     }
                 }
             }
@@ -156,11 +162,15 @@ public class ServletMAMEX extends HttpServlet {
             case "/user/logout": {
                 try {
                     session = req.getSession();
-                    session.invalidate();
+                    if (session != null){
+                        session.invalidate();
+                    }else{
+                        System.out.println("la sesion no existe");
+                    }
 
-                    redirect = "/user/mamex?result =" + true
-                            + "&message" + URLEncoder.encode("Sesion cerrada correctamente", StandardCharsets.UTF_8);
-                    ;
+                    redirect = "/user/mamex?result=" + true
+                            + "&message=" + URLEncoder.encode("Sesion cerrada correctamente", StandardCharsets.UTF_8);
+
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
                     redirect = "/user/mamex?result=" + false
@@ -756,7 +766,29 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
+            case "/user/password-recovery":{
+                String newPassword = req.getParameter("newPassword");
+                String confirmPassword = req.getParameter("confirmPassword");
+                String token = req.getParameter("token");
 
+                // Verificar si las contraseñas coinciden
+                if (newPassword.equals(confirmPassword)) {
+                    TokenInfo tokenInfo = TokenManager.getTokenInfo(token);
+                    if (tokenInfo != null && tokenInfo.isValid()) {
+                        // Actualizar la contraseña en la base de datos y marcar el token como utilizado
+                        DAOUser.updateUserPassword(tokenInfo.getUserId(), newPassword);
+                        TokenManager.removeToken(token);
+                        redirect= "/user/login?result=" + true
+                                + "&message" + URLEncoder.encode("Contraseña cambiada correctamente :D", StandardCharsets.UTF_8);
+                    } else {
+                        redirect = "/user/mamex?result=" + false +
+                        "&message=" + URLEncoder.encode("Contraseñas no coinciden D:", StandardCharsets.UTF_8);
+                    }
+                } else {
+                    redirect = "/user/mamex?result=" + false +
+                            "&message=" + URLEncoder.encode("Credentials missmatch!", StandardCharsets.UTF_8);;
+                }
+            }break;
 
 
             default: {

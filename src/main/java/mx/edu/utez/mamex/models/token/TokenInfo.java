@@ -30,5 +30,6 @@ public class TokenInfo {
 
     public void markAsUsed() {
         this.used = true;
+
     }
 }
