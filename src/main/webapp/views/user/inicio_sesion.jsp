@@ -8,6 +8,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <jsp:include page="../../layouts/head.jsp"/>
+    <style>
+        .input-group img {
+
+            width: 40px;
+            height: 40px;
+        }
+
+        .input-group button:focus {
+            border: none;
+        }
+    </style>
     <title>Manos Mexicanas</title>
 </head>
 <body>
@@ -23,13 +34,24 @@
 
             <div class="container-fluid">
                 <form class="text-center m-auto pt-4 w-75" novalidate action="${pageContext.request.contextPath}/user/login" method="post">
-                    <div class="m-4">
+                    <div class="form-floating m-4">
                         <input class="form-control" type="email" id="email" name="email" placeholder="E-mail" required>
+                        <label>E-mail</label>
                     </div>
-                    <div class="m-4">
-                        <input class="form-control" type="password" id="password" name="password" placeholder="Contraseña" required>
+                    <div class="form-floating input-group m-4">
+                        <input class="form-control" type="password" name="password" id="password"
+                               placeholder="Contraseña" required>
+                        <span id="addon-wrapping">
+                            <button type="button" class="btn btn-sm m-0 p-0" onclick="togglePasswordVisibility()">
+                                <img class="m-0 p-0" id="eye" src="../../assets/svgs/eye-svgrepo-com.svg"
+                                     alt="Icono mostrar contraseña" style="display:none;">
+                                <img class="m-0 p-0" id="eye-off" src="../../assets/svgs/eye-slash-svgrepo-com.svg"
+                                     alt="Icono ocultar contraseña">
+                            </button>
+                        </span>
+                        <label>Contraseña</label>
                     </div>
-                    <a class="text-decoration-none text-dark link-animation"><button type="submit" class="btn btn-dark m-4"
+                    <a class="text-decoration-none text-dark link-animation"><button id="btnLogin" type="submit" class="btn btn-dark m-4"
                                                                                      style="font-weight: 500; border-radius: 0px; padding: 10px; width: 150px;">Iniciar
                         sesión</button>
                     </a>
@@ -99,6 +121,43 @@
         </div>
     </div>
 </div>
+
+
+
+
+<jsp:include page="../../layouts/footer.jsp"/>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eye");
+        const eyeOffIcon = document.getElementById("eye-off");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.style.display = "";
+            eyeOffIcon.style.display = "none";
+        } else {
+            passwordInput.type = "password";
+            eyeIcon.style.display = "none";
+            eyeOffIcon.style.display = "";
+        }
+    }
+</script>
+
+<% if (request.getParameter("result") != null && request.getParameter("result").equals("true")) { %>
+<script>
+    alertify.alert("¡Bienvenido a Manos Mexicanas!", "¡Gracias por registrarte! Ahora puedes iniciar sesión con tu correo electrónico y contraseña.").set('onok', function() {
+        // Si deseas hacer algo después de que el usuario haga clic en "OK", coloca el código aquí. De lo contrario, simplemente puedes omitir el método set('onok', ...).
+    });
+</script>
+<% } %>
+
+<c:if test="${param.result == 'false'}">
+    <script>
+        alertify.error('Usuario o contraseña incorrectos');
+    </script>
+</c:if>
 
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 <script>

@@ -53,7 +53,6 @@
   </c:forEach>
   <!-- Aquí termina el código para mostrar los productos -->
 
-  <!-- Rest of your JSP code goes here... -->
 </div>
 
 <script>
