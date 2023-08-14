@@ -161,7 +161,7 @@ public class ServletMAMEX extends HttpServlet {
 
             case "/user/logout": {
                 try {
-                    session = req.getSession();
+                    session = req.getSession(false);
                     if (session != null){
                         session.invalidate();
                     }else{
