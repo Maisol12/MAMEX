@@ -319,9 +319,6 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
-
-
-
             case "/user/novedades": {
                 ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
                 List<Item> items = itemDao.getAllItems();
@@ -717,10 +714,6 @@ public class ServletMAMEX extends HttpServlet {
             }
 
 
-
-
-
-
             case "/user/go-to-pay":{
                 try {
                     //traer el carrito de compras con los productos para despues mandar un correo electronico con los productos
@@ -730,14 +723,20 @@ public class ServletMAMEX extends HttpServlet {
             }break;
 
             case "/user/review-product": {
+                String productIdStr = null;
                 try {
                     // Verificación del productId
-                    String productIdStr = req.getParameter("productId");
-                    System.out.println("productId recibido: " + productIdStr);
+                    productIdStr = req.getParameter("productId");
+                    String itemIdStr = req.getParameter("itemId");
                     if (productIdStr == null || productIdStr.trim().isEmpty()) {
                         throw new Exception("El ID del producto no fue proporcionado o es inválido.");
                     }
                     long productId = Long.parseLong(productIdStr);
+
+                    itemIdStr = req.getParameter("itemId");
+                    if (itemIdStr == null || itemIdStr.trim().isEmpty()) {
+                        throw new Exception("El ID del ítem no fue proporcionado o es inválido.");
+                    }
 
                     // El resto del código de procesamiento de revisión
                     String userEmail = (String) req.getSession().getAttribute("email");
@@ -757,21 +756,21 @@ public class ServletMAMEX extends HttpServlet {
                     Review review = new Review(0L, username, rating, comment, productId);
                     boolean result = new DAOUser().submitReview(review, userEmail);
 
-
-
+                    // Modificación aquí: Añadir el productId en la URL de redirección.
                     if (result) {
-                        redirect = "/user/mamex?result=true"
-                                + "&message=" + URLEncoder.encode("Éxito! Producto calificado correctamente", StandardCharsets.UTF_8);
+                        redirect = "/user/productDetails?id=" + itemIdStr;
                     } else {
                         throw new Exception("ERROR-NO HAS COMPRADO EL PRODUCTO");
                     }
                 } catch (Exception e) {
                     Logger.getLogger(ServletMAMEX.class.getName()).log(Level.SEVERE, "Error al procesar review", e);
-                    redirect = "/user/mamex?result=false"
+                    redirect = "/user/mamex?id=" + productIdStr + "&result=false"
                             + "&message=" + URLEncoder.encode("Error :/ Acción no realizada correctamente", StandardCharsets.UTF_8);
                 }
             }
             break;
+
+
 
             default: {
                 redirect = "/user/mamex";

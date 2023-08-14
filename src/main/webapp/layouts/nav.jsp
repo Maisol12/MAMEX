@@ -19,7 +19,7 @@
 <nav class="navbar sticky-top navbar-expand-lg bg-dark" data-bs-theme="dark">
     <div class="container">
         <a class="navbar-brand ms-lg-5" href="${pageContext.request.contextPath}/user/mamex"><img
-                src="${pageContext.request.contextPath}/assets/img/OIP.jpg" alt="logo"/></a>
+                src="${pageContext.request.contextPath}/assets/img/MAMEX.jpg" alt="logo"/></a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                 aria-label="Toggle navigation">

@@ -70,8 +70,8 @@
                             <!-- Muestra la tarjeta del producto -->
                             <div class="col-md-4 mb-3">
                                 <a href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}" class="text-decoration-none text-black-50">
-                                <div class="card">
-                                    <!-- ... contenido de tu tarjeta ... -->
+                                    <div class="card">
+                                        <!-- ... contenido de tu tarjeta ... -->
                                         <div class="box-shadow-1">
                                             <!-- Imagen del producto -->
                                             <c:if test="${not empty item.base64Images}">
@@ -83,12 +83,12 @@
                                                 <p class="fw-lighter card-text">$${item.unitPrice}</p>
                                             </div>
                                         </div>
-                                </div>
+                                    </div>
                                 </a>
                             </div>
 
                             <!-- Cierra el ítem del carrusel cada 3 productos o si es el último producto -->
-                            <c:if test="${(loop.index + 1) % 3 == 0 || loop.index == 6}">
+                            <c:if test="${(loop.index + 1) % 3 == 0 || loop.index==9}">
                                 </div>
                                 </div>
                             </c:if>
@@ -97,9 +97,11 @@
                     <!-- Botones de navegación -->
                     <a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
                     </a>
                     <a class="carousel-control-next" href="#carouselExampleIndicators2" role="button" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Siguiente</span>
                     </a>
                 </div>
             </div>
@@ -186,7 +188,6 @@
         }
     }
 </script>
-
 
 </body>
 </html>
