@@ -40,13 +40,12 @@
     <form action="${pageContext.request.contextPath}/user/checkout" method="post">
       <table class="table table-striped">
         <thead>
-        <tr>
+        <tr class="text-black-50">
           <th>Imagen</th>
           <th>Producto</th>
           <th>Precio Unitario</th>
           <th>Cantidad</th>
           <th>Total por Artículo</th>
-          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -60,7 +59,7 @@
             </td>
             <td>$${cartItem.item.unitPrice * cartItem.quantity}</td>
             <td>
-              <button type="button" onclick="removeFromCart(${cartItem.item.id})" class="btn btn-danger">Eliminar</button>
+              <button type="button" onclick="removeFromCart(${cartItem.item.id})" class="btn btn-outline-danger btn-sm"><i data-feather="trash" style="width: 16px; height: 16px"></i></button>
             </td>
           </tr>
         </c:forEach>
@@ -68,9 +67,9 @@
       </table>
       <div class="d-flex justify-content-between align-items-center">
         <div>
-          <strong>Total: $${sessionScope.cart.getTotalPrice()}</strong>
+          <p class="lead">Total: $${sessionScope.cart.getTotalPrice()}</p>
         </div>
-        <input type="submit" value="Aceptar" class="btn btn-success"/>
+        <input type="submit" value="Pagar" class="btn btn-outline-success btn-sm"/>
       </div>
     </form>
   </div>

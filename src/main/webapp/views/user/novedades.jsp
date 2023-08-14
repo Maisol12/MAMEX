@@ -18,7 +18,6 @@
     <div class="row mt-5">
         <!-- Filtros en la columna izquierda -->
         <div class="col-md-2">
-            <div class="sticky-top">
                 <h6 class="text-center">Filtrar por:</h6>
                 <form action="${pageContext.request.contextPath}/admin/filterProducts" method="GET">
                     <div class="mb-3">
@@ -81,15 +80,14 @@
                         <button type="submit" class="btn btn-outline-dark" style="border-radius: 0">Filtrar</button>
                     </div>
                 </form>
-            </div>
         </div>
 
         <!-- Cards de productos en la columna derecha -->
         <div class="col-md-10">
-            <div class="row g-4">
+            <div class="row g-3">
                 <c:forEach var="item" items="${items}">
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card custom-card h-100 position-relative mb-4">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card custom-card h-100 position-relative">
                             <!-- Imagen del producto -->
                             <c:if test="${not empty item.base64Images}">
                                 <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
@@ -105,7 +103,7 @@
                                 <small class="card-text fw-light" style="font-size: 14px;">${item.description}</small>
                             </div>
                             <div class="card-footer bg-light">
-                                <div class="row row-cols-2 justify-content-around">
+                                <div class="row">
                                     <button class="btn btn-sm btn-outline-dark w-100" onclick="addToCart(${item.id})" style="border-radius: 0;">
                                         <small class="text">Agregar <i data-feather="shopping-bag" style="width: 14px; height: 14px"></i></small>
                                     </button>
@@ -119,7 +117,6 @@
     </div>
 </div>
 
-<!-- ... Tu script JavaScript y pie de página ... -->
 
 
 <script>
@@ -140,6 +137,7 @@
             .then(data => {
                 // Actualiza el contador de elementos en el carrito
                 document.getElementById('cartItemCount').textContent = data.cart.totalQuantity;
+                location.reload();
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);

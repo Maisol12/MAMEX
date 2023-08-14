@@ -770,31 +770,6 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
-            case "/user/password-recovery":{
-                String newPassword = req.getParameter("newPassword");
-                String confirmPassword = req.getParameter("confirmPassword");
-                String token = req.getParameter("token");
-
-                // Verificar si las contraseñas coinciden
-                if (newPassword.equals(confirmPassword)) {
-                    TokenInfo tokenInfo = TokenManager.getTokenInfo(token);
-                    if (tokenInfo != null && tokenInfo.isValid()) {
-                        // Actualizar la contraseña en la base de datos y marcar el token como utilizado
-                        DAOUser.updateUserPassword(tokenInfo.getUserId(), newPassword);
-                        TokenManager.removeToken(token);
-                        redirect= "/user/login?result=" + true
-                                + "&message" + URLEncoder.encode("Contraseña cambiada correctamente :D", StandardCharsets.UTF_8);
-                    } else {
-                        redirect = "/user/mamex?result=" + false +
-                        "&message=" + URLEncoder.encode("Contraseñas no coinciden D:", StandardCharsets.UTF_8);
-                    }
-                } else {
-                    redirect = "/user/mamex?result=" + false +
-                            "&message=" + URLEncoder.encode("Credentials missmatch!", StandardCharsets.UTF_8);;
-                }
-            }break;
-
-
             default: {
                 redirect = "/user/mamex";
             }

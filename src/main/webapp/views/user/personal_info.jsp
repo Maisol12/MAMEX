@@ -60,7 +60,7 @@
                                 </div>
                                 <!-- Edit button -->
                                 <form action="${pageContext.request.contextPath}/user/update_view" class="text-end mb-0">
-                                    <button class="btn btn-outline-dark m-2"><small>Editar </small><i
+                                    <button class="btn btn-outline-dark m-2"><small>Editar</small><i
                                             class="custom-icon" data-feather="arrow-right"></i></button>
                                 </form>
                             </div>

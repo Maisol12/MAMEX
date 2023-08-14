@@ -93,6 +93,17 @@
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.15);
     }
 
+    @media (max-width: 576px) {
+        /* Cambios específicos para pantallas pequeñas */
+        .custom-card {
+            max-width: 50% !important; /* Ancho completo en pantallas pequeñas */
+            box-shadow: none; /* Sin sombra en pantallas pequeñas */
+
+        }
+        .card-img-top{
+            height: auto;
+        }
+    }
     .card-img-top {
         height: 220px;
         object-fit: cover;

@@ -28,8 +28,7 @@
             <div class="navbar-nav">
                 <ul class="mt-lg-3 d-lg-flex justify-content-lg-center justify-content-center list-unstyled">
                     <li><a href="${pageContext.request.contextPath}/user/mamex" class="nav-link">Inicio</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/categorias" class="nav-link">Categorias</a>
-                    </li>
+                    <li><a href="${pageContext.request.contextPath}/user/categorias" class="nav-link">Categorias</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/novedades" class="nav-link">Novedades</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/contacto" class="nav-link">Contacto</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/AboutUs" class="nav-link">Nosotros</a></li>
@@ -53,7 +52,7 @@
                                 <div class="container text-center dropdown-item">
                                     <form novalidate action="${pageContext.request.contextPath}/user/logout"
                                           method="get">
-                                        <button class="btn bg-dark mt-3" style="color: white;">Cerrar sesión</button>
+                                        <button class="btn bg-dark mt-3" style="color: white;" onclick="logoutNotification()">Cerrar sesión</button>
                                     </form>
                                 </div>
                             </li>
@@ -65,7 +64,6 @@
                             ${sessionScope.cart.totalQuantity}
                         </span>
                     </a>
-
                 </div>
             </div>
         </div>
@@ -73,5 +71,10 @@
 </nav>
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="footer.jsp"/>
+<script>
+    function logoutNotification(){
+        alertify.success('Sesión cerrada.')
+    }
+</script>
 </body>
 </html>
