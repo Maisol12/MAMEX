@@ -27,7 +27,7 @@
         <div class="container mb-3 w-100">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-12 col-lg-4">
-                    <a href="${pageContext.request.contextPath}/user/historial_compras" >
+                    <a href="${pageContext.request.contextPath}/user/historial_compras" class="links">
                         <div class="card">
                             <div class="row justify-content-center mb-3">
                                 <img src="../../assets/svgs/package-box-svgrepo-com.svg" alt="" style="width: 80px; height: 80px">
@@ -38,7 +38,7 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-12 col-lg-4">
-                    <a href="${pageContext.request.contextPath}/user/email-edit" >
+                    <a href="${pageContext.request.contextPath}/user/email-edit" class="links">
                         <div class="card">
                             <div class="row justify-content-center mb-3">
                                 <img src="${pageContext.request.contextPath}/assets/svgs/unlock-filled-svgrepo-com.svg" alt="" style="width: 80px; height: 80px">
@@ -49,7 +49,7 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-12 col-lg-4">
-                    <a href="/user/personal_info" >
+                    <a href="${pageContext.request.contextPath}/user/personal_info" class="links">
                         <div class="card">
                             <div class="row justify-content-center mb-3">
                                 <img src="${pageContext.request.contextPath}/assets/svgs/user-information-svgrepo-com.svg" alt="" style="width: 80px; height: 80px">

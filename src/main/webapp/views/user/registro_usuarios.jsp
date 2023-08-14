@@ -8,14 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <jsp:include page="../../layouts/head.jsp"/>
     <style>
-    .input-group img{
+        .input-group img {
 
-        width: 40px;
-        height: 40px;
-    }
-    .input-group button:focus{
-        border: none;
-    }
+            width: 40px;
+            height: 40px;
+        }
+
+        .input-group button:focus {
+            border: none;
+        }
 
     </style>
     <title>Manos Mexicanas</title>
@@ -31,35 +32,42 @@
                 CREAR CUENTA
             </h1>
             <div class="container">
-                    <form id="register-form" class="text-center w-75 m-auto pt-3" novalidate
-                          action="${pageContext.request.contextPath}/user/register"
-                          method="post">
-                        <div class="m-4">
-                            <input class="form-control" type="text" name="names" id="names" placeholder="Nombre(s)"
-                                   required>
-                        </div>
-                        <div class="m-4">
-                            <input class="form-control" type="text" name="lastnames" id="lastnames" placeholder="Apellidos"
-                                   required>
-                        </div>
-                        <div class="m-4">
-                            <input class="form-control" type="email" name="email" id="email" placeholder="E-mail" required>
-                        </div>
-                        <div class="input-group m-4">
-                            <input class="form-control" type="password" name="password" id="password" placeholder="Contraseña (mayor a 6 dígitos)" required>
-                            <span id="addon-wrapping">
+                <form id="register-form" class="text-center w-75 m-auto pt-3" novalidate
+                      action="${pageContext.request.contextPath}/user/register"
+                      method="post">
+                    <div class="form-floating m-4">
+                        <input class="form-control" type="text" name="names" id="names" placeholder="Nombre(s)"
+                               required>
+                        <label>Nombre(s)</label>
+                    </div>
+                    <div class="form-floating m-4">
+                        <input class="form-control" type="text" name="lastnames" id="lastnames" placeholder="Apellidos"
+                               required>
+                        <label>Apellidos</label>
+                    </div>
+                    <div class="form-floating m-4">
+                        <input class="form-control" type="email" name="email" id="email" placeholder="E-mail" required>
+                        <label>E-mail</label>
+                    </div>
+                    <div class="form-floating input-group m-4">
+                        <input class="form-control" type="password" name="password" id="password"
+                               placeholder="Contraseña (mayor a 6 dígitos)" required>
+                        <span id="addon-wrapping">
                             <button type="button" class="btn btn-sm m-0 p-0" onclick="togglePasswordVisibility()">
-                                <img class="m-0 p-0" id="eye" src="../../assets/svgs/eye-svgrepo-com.svg" alt="Icono mostrar contraseña" style="display:none;">
-                                <img class="m-0 p-0" id="eye-off" src="../../assets/svgs/eye-slash-svgrepo-com.svg" alt="Icono ocultar contraseña">
+                                <img class="m-0 p-0" id="eye" src="../../assets/svgs/eye-svgrepo-com.svg"
+                                     alt="Icono mostrar contraseña" style="display:none;">
+                                <img class="m-0 p-0" id="eye-off" src="../../assets/svgs/eye-slash-svgrepo-com.svg"
+                                     alt="Icono ocultar contraseña">
                             </button>
                         </span>
-                        </div>
+                        <label>Contraseña (mayor a 6 dígitos)</label>
+                    </div>
 
 
-                        <button id="btn-registro" type="submit" class="btn btn-dark m-4"
-                                style="font-weight: 500; border-radius: 0px; padding: 10px; width: 150px;">Regístrate
-                        </button>
-                    </form>
+                    <button id="btn-registro" type="submit" class="btn btn-dark m-4"
+                            style="font-weight: 500; border-radius: 0px; padding: 10px; width: 150px;">Regístrate
+                    </button>
+                </form>
 
                 <div class="container">
                     <div class="col-12 text-center">
@@ -100,8 +108,6 @@
             eyeOffIcon.style.display = "";
         }
     }
-
-
 
 
     (function () {

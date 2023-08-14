@@ -5,15 +5,13 @@
 }
 
 body {
-
     margin: 0;
-    overflow-x: hidden;
 }
 html {
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Merriweather', serif !important;
 }
 /* CONF BOOTSTRAP CLASSES */
@@ -38,12 +36,13 @@ h1, h2, h3 {
 .nav-link {
     color: white !important;
     margin-left: .5rem !important;
-    font-family: 'Inter', sans-serif;
 }
 
 .nav-link:hover {
     color: #f8c291 !important;
 }
+
+
 
 .circle {
     border-radius: 50%;

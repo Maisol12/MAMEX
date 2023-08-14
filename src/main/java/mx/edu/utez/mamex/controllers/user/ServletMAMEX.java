@@ -179,6 +179,10 @@ public class ServletMAMEX extends HttpServlet {
             }
             break;
 
+
+
+
+
             case "/user/register-view": //una vez registrado te llevara a iniciar sesion
             {
                 redirect = "/views/user/registro_usuarios.jsp";
@@ -421,8 +425,8 @@ public class ServletMAMEX extends HttpServlet {
                             redirect = "/user/admin/dashboard?result=" + true
                                     + "&message" + URLEncoder.encode("Inicio de sesion correctamente administrador! :D" + user.getNames(), StandardCharsets.UTF_8);
                         } else {
-                            redirect = "/user/mamex?result=" + true
-                                    + "&message" + URLEncoder.encode("Inicio de sesion correctamente! :D" + user.getNames(), StandardCharsets.UTF_8);
+                            redirect = "/user/mamex?action=login&result=" + true
+                                    + "&message=" + URLEncoder.encode("Inicio de sesion correctamente! :D" + user.getNames(), StandardCharsets.UTF_8);
 
                         }
                     } else {
@@ -765,7 +769,6 @@ public class ServletMAMEX extends HttpServlet {
                 }
             }
             break;
-
 
             default: {
                 redirect = "/user/mamex";

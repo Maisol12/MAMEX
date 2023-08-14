@@ -2,8 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -21,13 +20,19 @@
          data-bs-interval="3000">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="${pageContext.request.contextPath}/assets/img/h1.png" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/assets/img/h5.png" class="d-block w-100" alt="Promociones en mamex">
+            </div>
+            <div class="carousel-item active">
+                <img src="${pageContext.request.contextPath}/assets/img/h1.png" class="d-block w-100" alt="Promociones en mamex">
             </div>
             <div class="carousel-item">
-                <img src="${pageContext.request.contextPath}/assets/img/h2.png" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/assets/img/h2.png" class="d-block w-100" alt="Promociones en mamex">
             </div>
             <div class="carousel-item">
-                <img src="${pageContext.request.contextPath}/assets/img/h3.png" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/assets/img/h3.png" class="d-block w-100" alt="Promociones en mamex">
+            </div>
+            <div class="carousel-item active">
+                <img src="${pageContext.request.contextPath}/assets/img/h4.png" class="d-block w-100" alt="Promociones en mamex">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
@@ -46,71 +51,27 @@
     <div class="container">
         <h3 class="display-4 mb-5 mt-5">Nuevos productos</h3>
     </div>
-    <a href="" class="text-decoration-none text-black-50">
+    <a href="${item.id}" class="text-decoration-none text-black-50">
         <div class="cards-ventas box-shadow-1 mb-5">
-            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-            <div class="container">
-                <h6 class="mt-1">Nombre producto</h6>
-                <small>$1299</small>
-            </div>
+            <c:forEach var="item" items="${items}">
+                <!-- Imagen del producto -->
+                <c:if test="${not empty item.base64Images}">
+                    <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
+                    <a class="text-decoration-none"
+                       href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}">
+                        <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="card-img-top"
+                             alt="${item.name}">
+                    </a>
+                </c:if>
+                <div class="card-body">
+                    <h6 class="card-title">${item.name}</h6>
+                    <p class="fw-lighter">$${item.unitPrice}</p>
+                </div>
+            </c:forEach>
         </div>
     </a>
-    <a href="" class="text-decoration-none text-black-50">
-        <div class="cards-ventas box-shadow-1 mb-5">
-            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-            <div class="container">
-                <h6 class="mt-1">Nombre producto</h6>
-                <small>$1299</small>
-            </div>
-        </div>
-    </a>
-    <a href="" class="text-decoration-none text-black-50">
-        <div class="cards-ventas box-shadow-1 mb-5">
-            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-            <div class="container">
-                <h6 class="mt-1">Nombre producto</h6>
-                <small>$1299</small>
-            </div>
-        </div>
-    </a>
-    <a href="" class="text-decoration-none text-black-50">
-        <div class="cards-ventas box-shadow-1 mb-5">
-            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-            <div class="container">
-                <h6 class="mt-1">Nombre producto</h6>
-                <small>$1299</small>
-            </div>
-        </div>
-    </a>
-    <a href="" class="text-decoration-none text-black-50">
-        <div class="cards-ventas box-shadow-1 mb-5">
-            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-            <div class="container">
-                <h6 class="mt-1">Nombre producto</h6>
-                <small>$1299</small>
-            </div>
-        </div>
-    </a>
-    <a href="" class="text-decoration-none text-black-50">
-        <div class="cards-ventas box-shadow-1 mb-5">
-            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-            <div class="container">
-                <h6 class="mt-1">Nombre producto</h6>
-                <small>$1299</small>
-            </div>
-        </div>
-    </a>
-    <a href="" class="text-decoration-none text-black-50">
-        <div class="cards-ventas box-shadow-1 mb-5">
-            <img src="${pageContext.request.contextPath}/assets/img/Fibra%20Natura%20Luxor.png" alt="">
-            <div class="container">
-                <h6 class="mt-1">Nombre producto</h6>
-                <small>$1299</small>
-            </div>
-        </div>
-    </a>
-
 </div>
+
 <aside>
     <div class="container-fluid p-5">
         <div class="container p-lg-5">
@@ -164,5 +125,33 @@
 </footer>
 
 <jsp:include page="layouts/footer.jsp"/>
+
+<script>
+    let currentPath = window.location.pathname;
+    let action = new URL(window.location.href).searchParams.get("action");
+    let paramResult = new URL(window.location.href).searchParams.get("result");
+    let paramMessage = new URL(window.location.href).searchParams.get("message");
+    let paramUsername = new URL(window.location.href).searchParams.get("username");
+
+    if (currentPath === "/user/mamex" && paramResult) {
+        if (action === "login" && paramResult === "true") {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.success("¡Bienvenido!");
+        } else if (action === "logout") {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.success(`Sesión cerrada exitosamente.`);
+        } else if (paramResult === "false") {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.error("Ocurrió un error");
+        }
+    } else if (currentPath === "/user/admin/dashboard" && paramResult) {
+        if (paramResult === "true") {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.success("Bienvenido admin.");
+        }
+    }
+</script>
+
+
 </body>
 </html>

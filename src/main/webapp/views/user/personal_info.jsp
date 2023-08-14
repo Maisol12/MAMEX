@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -59,7 +60,7 @@
                                 </div>
                                 <!-- Edit button -->
                                 <form action="${pageContext.request.contextPath}/user/update_view" class="text-end mb-0">
-                                    <button class="btn btn-outline-dark m-2"><small>Editar </small><i
+                                    <button class="btn btn-outline-dark m-2"><small>Editar</small><i
                                             class="custom-icon" data-feather="arrow-right"></i></button>
                                 </form>
                             </div>
