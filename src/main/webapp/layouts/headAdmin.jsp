@@ -9,6 +9,8 @@
 <link rel="icon" href="${pageContext.request.contextPath}/assets/img/OIP.jpg">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styles.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/alertify.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/default.min.css">
 
 <style>
     .custom-container {

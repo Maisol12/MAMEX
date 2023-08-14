@@ -50,6 +50,29 @@
     </div>
 </main>
 
+
 <jsp:include page="../../layouts/footer.jsp"/>
+
+<script>
+    let currentPath = window.location.pathname;
+    let action = new URL(window.location.href).searchParams.get("action");
+    let paramResult = new URL(window.location.href).searchParams.get("result");
+    let paramMessage = new URL(window.location.href).searchParams.get("message");
+
+    if (currentPath === "/user/mamex" && paramResult) {
+        if (action === "login" && paramResult === "true") {
+            alertify.success("Inicio de sesión exitoso!");
+        } else if (action === "logout" && paramResult === "true") {
+            alertify.success("Sesión cerrada exitosamente!");
+        } else if (paramResult === "false") {
+            alertify.error(paramMessage || "Ocurrió un error");
+        }
+    } else if (currentPath === "/user/admin/dashboard" && paramResult) {
+        if (paramResult === "true") {
+            alertify.success("Bienvenido admin.");
+        }
+    }
+</script>
+
 </body>
 </html>

@@ -16,35 +16,39 @@
         <div class="container pt-4">
             <div class="card p-3" style="border-radius: 0px;">
                 <h5 class="mb-4">Agregar producto</h5>
-                <form action="${pageContext.request.contextPath}/admin/crear_producto" method="post" enctype="multipart/form-data">
+                <form action="${pageContext.request.contextPath}/admin/crear_producto" method="post"
+                      enctype="multipart/form-data">
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Nombre del producto*</label>
-                            <input type="text" class="form-control" name="name" placeholder="Nombre del Producto" required>
+                            <input type="text" class="form-control" name="name" placeholder="Nombre" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Descripción del producto*</label>
-                            <input type="text" class="form-control" name="description" placeholder="Descripción del Producto" required>
+                            <input type="text" class="form-control" name="description" placeholder="Descripción"
+                                   required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Color*</label>
-                            <input type="text" class="form-control" name="color" placeholder="Color del Producto" required>
+                            <input type="text" class="form-control" name="color" placeholder="Color" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Precio del Producto*</label>
-                            <input type="text" class="form-control" name="unitPrice" placeholder="Precio del Producto" required>
+                            <label class="form-label">Precio del producto*</label>
+                            <input type="text" class="form-control" name="unitPrice" placeholder="Precio" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Cantidad en Stock*</label>
-                            <input type="number" class="form-control" name="stock" placeholder="Cantidad en Stock" required>
+                            <label class="form-label">Cantidad en stock*</label>
+                            <input type="number" class="form-control" name="stock" placeholder="Cantidad en stock"
+                                   required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Notas*</label>
-                            <input type="text" class="form-control" name="notes" placeholder="Notas adicionales" required>
+                            <input type="text" class="form-control" name="notes" placeholder="Notas adicionales"
+                                   required>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -52,11 +56,10 @@
                             <label class="form-label">Fecha de Creación*</label>
                             <input type="date" class="form-control" name="createDate" required>
                         </div>
-                    </div>
-                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Categoría*</label>
-                            <select id="mainCategory" class="form-control" onchange="updateSubcategories()">
+                            <select id="mainCategory" class="form-select" onchange="updateSubcategories()">
+                                <!-- ... tus opciones de categoría ... -->
                                 <option value="Ropa Tejida">Ropa Tejida</option>
                                 <option value="Bolsas y Accesorios">Bolsas y Accesorios</option>
                                 <option value="Juguetes y Muñecos">Juguetes y Muñecos</option>
@@ -65,9 +68,12 @@
                                 <option value="Joyería tejida">Joyería tejida</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Subcategoría*</label>
-                            <select id="subcategory" class="form-control" name="category">
+                            <select id="subcategory" class="form-select" name="category">
+                                <!-- ... tus opciones de subcategoría ... -->
                                 <option data-category="Ropa Tejida" value="Suéteres">Suéteres</option>
                                 <option data-category="Ropa Tejida" value="Bufandas">Bufandas</option>
                                 <option data-category="Ropa Tejida" value="Gorros">Gorros</option>
@@ -75,7 +81,8 @@
                                 <option data-category="Ropa Tejida" value="Vestidos">Vestidos</option>
                                 <option data-category="Ropa Tejida" value="Pantalones">Pantalones</option>
 
-                                <option data-category="Bolsas y Accesorios" value="Bolsos de mano">Bolsos de mano</option>
+                                <option data-category="Bolsas y Accesorios" value="Bolsos de mano">Bolsos de mano
+                                </option>
                                 <option data-category="Bolsas y Accesorios" value="Mochilas">Mochilas</option>
                                 <option data-category="Bolsas y Accesorios" value="Carteras">Carteras</option>
                                 <option data-category="Bolsas y Accesorios" value="Estuches">Estuches</option>
@@ -90,38 +97,43 @@
                                 <option data-category="Decoración para el Hogar" value="Tapetes">Tapetes</option>
                                 <option data-category="Decoración para el Hogar" value="Cortinas">Cortinas</option>
 
-                                <option data-category="Bebés y Niños" value="Ropita para bebés">Ropita para bebés</option>
+                                <option data-category="Bebés y Niños" value="Ropita para bebés">Ropita para bebés
+                                </option>
                                 <option data-category="Bebés y Niños" value="Mantitas">Mantitas</option>
                                 <option data-category="Bebés y Niños" value="Juguetes tejidos">Juguetes tejidos</option>
                                 <option data-category="Bebés y Niños" value="Zapatos">Zapatos</option>
-                                <option data-category="Bebés y Niños" value="Accesorios de Moda">Accesorios de Moda</option>
+                                <option data-category="Bebés y Niños" value="Accesorios de Moda">Accesorios de Moda
+                                </option>
 
-                                <option data-category="Joyería tejida" value="Diademas y cintillos">Diademas y cintillos</option>
+                                <option data-category="Joyería tejida" value="Diademas y cintillos">Diademas y
+                                    cintillos
+                                </option>
                                 <option data-category="Joyería tejida" value="Broches">Broches</option>
                                 <option data-category="Joyería tejida" value="Lazos y cintas">Lazos y cintas</option>
                             </select>
-
+                            </select>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label class="form-label">Imágenes del producto*</label>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Imagen del producto</label>
-                            <input type="file" class="form-control" name="image1" accept="image/*">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Imagen del producto</label>
-                            <input type="file" class="form-control" name="image2" accept="image/*">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Imagen del producto</label>
-                            <input type="file" class="form-control" name="image3" accept="image/*">
+                        <div class="row mb-3 mt-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Imágenes del producto*</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Imagen del producto</label>
+                                <input type="file" class="form-control" name="image1" accept="image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Imagen del producto</label>
+                                <input type="file" class="form-control" name="image2" accept="image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Imagen del producto</label>
+                                <input type="file" class="form-control" name="image3" accept="image/*">
+                            </div>
                         </div>
                     </div>
                     <div class="container text-end mb-0">
-                        <a href="javascript:void(0);" onclick="redirectToProductsPage();" class="btn btn-small btn-outline-danger">Cancelar</a>
+                        <a href="javascript:void(0);" onclick="redirectToProductsPage();"
+                           class="btn btn-small btn-outline-danger">Cancelar</a>
                         <input type="submit" class="btn btn-small btn-outline-dark" value="Agregar">
                     </div>
                 </form>
@@ -129,6 +141,7 @@
         </div>
     </div>
 </main>
+
 <jsp:include page="../../layouts/footer.jsp"/>
 <script>
     document.getElementById('file-input1').addEventListener('change', function (e) {
@@ -180,6 +193,7 @@
     function redirectToProductsPage() {
         window.location.href = "${pageContext.request.contextPath}/admin/products";
     }
+
     function updateSubcategories() {
         let mainCategory = document.getElementById('mainCategory').value;
         let subcategoryElement = document.getElementById('subcategory');
@@ -195,6 +209,8 @@
         }
         subcategoryElement.value = ""; // Resetea el valor de la subcategoría
     }
+
+   
 </script>
 
 </body>

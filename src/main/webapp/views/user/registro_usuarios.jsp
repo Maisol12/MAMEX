@@ -9,46 +9,67 @@
     <jsp:include page="../../layouts/head.jsp"/>
     <title>Reviews</title>
     <style>
-        table {
-            border-spacing: 0 15px;
-            width: 100%;
-        }
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #f2f2f2; /* Borde claro */
-        }
-        tbody tr:hover {
-            background-color: #f9f9f9; /* Efecto hover suave */
+
+        .input-group img {
+
+            width: 40px;
+            height: 40px;
         }
 
-        .rating {
-            display: inline-block;
+        .input-group button:focus {
+            border: none;
         }
 
         .rating input {
             display: none;
         }
 
-        .rating label {
-            float: right;
-            cursor: pointer;
-            color: #ccc;
-            transition: color 0.3s;
-        }
+<body>
+<jsp:include page="../../layouts/nav.jsp"/>
 
-        .rating label:before {
-            content: '\2605';
-            font-size: 30px;
-        }
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-7 col-12 mt-lg-4 mt-md-5 mt-xs-1">
+            <h1 class="display-3 text-center fs-1 fw-bold mt-5">
+                CREAR CUENTA
+            </h1>
+            <div class="container">
+                <form id="register-form" class="text-center w-75 m-auto pt-3" novalidate
+                      action="${pageContext.request.contextPath}/user/register"
+                      method="post">
+                    <div class="form-floating m-4">
+                        <input class="form-control" type="text" name="names" id="names" placeholder="Nombre(s)"
+                               required>
+                        <label>Nombre(s)</label>
+                    </div>
+                    <div class="form-floating m-4">
+                        <input class="form-control" type="text" name="lastnames" id="lastnames" placeholder="Apellidos"
+                               required>
+                        <label>Apellidos</label>
+                    </div>
+                    <div class="form-floating m-4">
+                        <input class="form-control" type="email" name="email" id="email" placeholder="E-mail" required>
+                        <label>E-mail</label>
+                    </div>
+                    <div class="form-floating input-group m-4">
+                        <input class="form-control" type="password" name="password" id="password"
+                               placeholder="Contraseña (mayor a 6 dígitos)" required>
+                        <span id="addon-wrapping">
+                            <button type="button" class="btn btn-sm m-0 p-0" onclick="togglePasswordVisibility()">
+                                <img class="m-0 p-0" id="eye" src="../../assets/svgs/eye-svgrepo-com.svg"
+                                     alt="Icono mostrar contraseña" style="display:none;">
+                                <img class="m-0 p-0" id="eye-off" src="../../assets/svgs/eye-slash-svgrepo-com.svg"
+                                     alt="Icono ocultar contraseña">
+                            </button>
+                        </span>
+                        <label>Contraseña (mayor a 6 dígitos)</label>
+                    </div>
 
-        .rating input:checked ~ label,
-        .rating label:hover,
-        .rating label:hover ~ label {
-            color: gold;
-            transition: color 0.3s;
-        }
 
-
+                    <button id="btn-registro" type="submit" class="btn btn-dark m-4"
+                            style="font-weight: 500; border-radius: 0px; padding: 10px; width: 150px;">Regístrate
+                    </button>
+                </form>
 
     </style>
 </head>
@@ -119,29 +140,33 @@
     </div>
 </div>
 <script>
-    feather.replace();
-    $(document).ready(function() {
-        $('.rating .star').click(function() {
-            console.log("Star clicked!");
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eye");
+        const eyeOffIcon = document.getElementById("eye-off");
 
-            let value = $(this).data('value');
-            $('#rating').val(value);
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.style.display = "";
+            eyeOffIcon.style.display = "none";
+        } else {
+            passwordInput.type = "password";
+            eyeIcon.style.display = "none";
+            eyeOffIcon.style.display = "";
+        }
+    }
 
-            // Remove "selected" class from all stars
-            $('.rating .star').removeClass('selected');
-            $('.rating .star i').attr('data-feather', 'star'); // Reset all stars to unfilled
 
-            // Mark only the clicked star as selected
-            $(this).addClass('selected');
-            $(this).find('i').attr('data-feather', 'star-fill');
-            console.log("Star with value " + value + " is selected!");
-
-            feather.replace(); // re-render the icons
-        });
-    });
+    (function () {
+        const form = document.getElementById("register-form");
+        form.addEventListener("submit", function (event) {
+            if (!form.checkValidity()) { //Valida que los campos oligatorios esten correctamente llenados.
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add("was-validated");
+        }, false);
+    })();
 </script>
-
-
-<jsp:include page="../../layouts/footer.jsp"/>
 </body>
 </html>
