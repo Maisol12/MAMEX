@@ -109,7 +109,7 @@
                     <label for="comment" class="form-label">Comentarios acerca del producto:</label>
                     <textarea id="comment" name="comment" class="form-control" rows="2" required placeholder="E.g., Excelente producto, lo recomendaría..."></textarea>
                 </div>
-
+                <input type="hidden" name="itemId" value="${item.id}" />
                 <div>
                     <input type="submit" value="Publicar" class="btn btn-submit btn-sm btn-outline-dark" />
                 </div>

@@ -42,7 +42,9 @@
         <!-- Detalles del producto -->
         <div class="col-md-4">
             <h4 class="display-6 pt-5">${item.name}</h4>
-            <p class=" fw-light mt-5 mb-5">${item.description}</p>
+            <p class="fw-light mt-5 mb-5">${item.description}</p>
+            <p class="fw-light mt-5 mb-5">Color: ${item.color}</p>
+            <p class="fw-light mt-5 mb-5">Stock: ${item.stock}</p>
             <p class="lead fw-lighter">$${item.unitPrice}</p>
             <button type="submit" class="btn w-100 btn-outline-dark" onclick="addToCart(${item.id})"
                     style="border-radius: 0"><span>Agregar al carrito</span></button>
@@ -68,7 +70,10 @@
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
-            });
+            })
+            .finally(() => {
+            location.reload();
+        });
     }
 </script>
 

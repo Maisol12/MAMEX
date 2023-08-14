@@ -10,15 +10,17 @@
     <jsp:include page="../../layouts/headAdmin.jsp"/>
     <title>Ventas</title>
     <script>
-        function togglePayment(saleId, isChecked) {
-            // Definir la URL del servidor y los datos que se enviarán
+        function togglePayment(saleId) {
             const url = '/user/updatePaymentStatus';
             const data = {
                 saleId: saleId,
-                paymentStatus: isChecked // true para "pagado", false para "pendiente"
+                paymentStatus: true // Simplemente marcamos como confirmado
             };
 
-            // Hacer la solicitud al servidor usando la API Fetch
+            const button = event.target;
+            const row = button.closest('tr');
+            const estadoCell = row.querySelector('td:nth-child(4)');
+
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -29,13 +31,17 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === "success") {
-                        alert("Estado de pago actualizado con éxito");
-                        // Recargar la página
-                        location.reload();
+                        estadoCell.textContent = "Pagado";
+                        row.style.backgroundColor = 'lightgreen';
+                        setTimeout(() => {
+                            row.style.backgroundColor = '';
+                        }, 1000);
                     } else {
+                        row.style.backgroundColor = 'lightcoral';
+                        setTimeout(() => {
+                            row.style.backgroundColor = '';
+                        }, 1000);
                         alert("Hubo un error al actualizar el estado de pago");
-                        // Recargar la página
-                        location.reload();
                     }
                 })
                 .catch(error => {
@@ -56,20 +62,16 @@
                         <table class="table table-striped caption-top">
                             <thead>
                             <tr>
-                                <th scope="row">${sale.idSale}</th>
-                                <td>${sale.quantitySale}</td>
-                                <td>$${sale.subtotal}</td>
-                                <td>${sale.saleState}</td>
-                                <td><fmt:formatDate value="${sale.slDateCreate}" pattern="yyyy-MM-dd" /></td>
-                                <td><fmt:formatDate value="${sale.slDateUpdate}" pattern="yyyy-MM-dd" /></td>
-                                <td>${sale.numberSale}</td>
-                                <td>${sale.user.id}</td>
-                                <td>${sale.user.fullName}</td>
-                                <td>
-                                    <input type="checkbox" name="pagoConfirmado" value="${sale.idSale}"
-                                        ${sale.pagoConfirmado ? 'checked' : ''}
-                                           onclick="togglePayment(${sale.idSale}, this.checked)" />
-                                </td>
+                                <th scope="col">ID</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Fecha Creación</th>
+                                <th scope="col">Fecha Actualización</th>
+                                <th scope="col">Número Venta</th>
+                                <th scope="col">ID Usuario</th>
+                                <th scope="col">Nombre usuario</th>
+                                <th scope="col">Pago Confirmado</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -79,13 +81,13 @@
                                     <td>${sale.quantitySale}</td>
                                     <td>$${sale.subtotal}</td>
                                     <td>${sale.saleState}</td>
-                                    <td>${sale.slDateCreate}</td>
-                                    <td>${sale.slDateUpdate}</td>
+                                    <td><fmt:formatDate value="${sale.slDateCreate}" pattern="yyyy-MM-dd" /></td>
+                                    <td><fmt:formatDate value="${sale.slDateUpdate}" pattern="yyyy-MM-dd" /></td>
                                     <td>${sale.numberSale}</td>
                                     <td>${sale.user.id}</td>
                                     <td>${sale.user.fullName}</td>
                                     <td>
-                                        <input type="checkbox" name="pagoConfirmado" value="${sale.idSale}" ${sale.pagoConfirmado ? 'checked' : ''} />
+                                        <button onclick="togglePayment(${sale.idSale})">Confirmar</button>
                                     </td>
                                 </tr>
                             </c:forEach>

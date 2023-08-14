@@ -21,9 +21,9 @@ public class MySQLConnection {
         );
 
         try {
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            return DriverManager.getConnection(dataSource);
-        } catch (SQLException e) {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Usar el driver más actual
+            return DriverManager.getConnection(dataSource, USER, PASSWORD);
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
@@ -41,8 +41,6 @@ public class MySQLConnection {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-
         }
     }
 }
