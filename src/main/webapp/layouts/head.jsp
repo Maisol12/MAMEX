@@ -2,7 +2,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap" rel="stylesheet">
-<link rel="icon" href="${pageContext.request.contextPath}/assets/img/OIP.jpg">
+<link rel="icon" href="${pageContext.request.contextPath}/assets/img/e9be2a1f1471feb0c1b18083309ea295.jpg">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/alertify.min.css" type="text/css">
@@ -83,7 +83,7 @@
     }
 
     .custom-card {
-        max-width: 260px !important;
+        max-width: 260px;
         border-radius: 0;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
         transition: box-shadow 0.3s ease;
@@ -95,10 +95,15 @@
 
     @media (max-width: 576px) {
         /* Cambios específicos para pantallas pequeñas */
-        .custom-card {
-            max-width: 50% !important; /* Ancho completo en pantallas pequeñas */
+        .custom-card{
+            max-width:  169px !important; /* Ancho completo en pantallas pequeñas */
+            max-height: 290px !important;
             box-shadow: none; /* Sin sombra en pantallas pequeñas */
+            font-size: 13px !important;
 
+        }
+        .card-img-top{
+            width: inherit;
         }
         .card-img-top{
             height: auto;

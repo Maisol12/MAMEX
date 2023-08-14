@@ -45,7 +45,7 @@
             <p class=" fw-light mt-5 mb-5">${item.description}</p>
             <p class="lead fw-lighter">$${item.unitPrice}</p>
             <button type="submit" class="btn w-100 btn-outline-dark" onclick="addToCart(${item.id})"
-                    style="border-radius: 0"><span>Agregar al carrito</span></button>
+                    style="border-radius: 0"><span>Agregar a la bolsa</span></button>
         </div>
     </div>
 </div>

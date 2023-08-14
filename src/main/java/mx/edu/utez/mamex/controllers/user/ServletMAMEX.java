@@ -117,6 +117,9 @@ public class ServletMAMEX extends HttpServlet {
         switch (action) {
             case "/user/mamex": //redirigir al inicio
             {
+                ItemDao itemDao = new ItemDao(new MySQLConnection().connect());
+                List<Item> items = itemDao.getAllItems();
+                req.setAttribute("items", items);
                 redirect = "/index.jsp";
             }
             break;

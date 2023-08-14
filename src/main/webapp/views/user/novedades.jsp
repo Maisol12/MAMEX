@@ -77,7 +77,7 @@
                         </select>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-outline-dark" style="border-radius: 0">Filtrar</button>
+                        <button type="submit" class="btn btn-outline-dark mb-3" style="border-radius: 0">Filtrar</button>
                     </div>
                 </form>
         </div>
@@ -87,7 +87,7 @@
             <div class="row g-3">
                 <c:forEach var="item" items="${items}">
                     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-                        <div class="card custom-card h-100 position-relative">
+                        <div class="card custom-card position-relative h-100">
                             <!-- Imagen del producto -->
                             <c:if test="${not empty item.base64Images}">
                                 <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
@@ -98,11 +98,11 @@
                             </c:if>
                             <div class="card-body">
                                 <h6 class="card-title">${item.name}</h6>
-                                <p class="text-muted">${item.category}</p>
-                                <p class="fw-lighter">$${item.unitPrice}</p>
-                                <small class="card-text fw-light" style="font-size: 14px;">${item.description}</small>
+                                <p class="text-muted d-lg-block d-none">${item.category}</p>
+                                <p class="fw-lighter ">$${item.unitPrice}</p>
+                                <small class="card-text fw-light d-lg-block d-none" style="font-size: 14px;">${item.description}</small>
                             </div>
-                            <div class="card-footer bg-light">
+                            <div class="card-footer bg-light d-none d-lg-block d-md-block">
                                 <div class="row">
                                     <button class="btn btn-sm btn-outline-dark w-100" onclick="addToCart(${item.id})" style="border-radius: 0;">
                                         <small class="text">Agregar <i data-feather="shopping-bag" style="width: 14px; height: 14px"></i></small>

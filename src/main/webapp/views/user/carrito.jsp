@@ -46,6 +46,7 @@
           <th>Precio Unitario</th>
           <th>Cantidad</th>
           <th>Total por Artículo</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>

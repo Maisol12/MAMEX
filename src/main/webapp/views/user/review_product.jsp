@@ -58,8 +58,8 @@
     <div class="row justify-content-center">
         <!-- List existing reviews -->
         <div class="col-12 col-md-6">
+            <h6 class="mb-3">Reseñas de nuestros clientes</h6>
             <table class="table table-responsive table-striped">
-                <h6 class="mb-3">Reseñas de nuestros clientes</h6>
                 <thead>
                 <tr>
                     <th>Usuario</th>
@@ -87,7 +87,7 @@
                 <input type="hidden" name="productId" value="${productId}" />
                 <div class="mb-3">
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 col-sm-6">
                             <label class="form-label">¿Qué calificación le darías al producto?</label>
                             <div class="rating">
                                 <input value="5" name="rating" id="star5" type="radio">
