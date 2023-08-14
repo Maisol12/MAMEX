@@ -11,6 +11,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/user/carrito.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/user" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/user/edit-info.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/user" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/user/productDetails.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/user" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/views/user/registro_usuarios.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/user" />
       </map>
     </option>
   </component>

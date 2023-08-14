@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <label for="categoryFilter" class="form-label">Categoría</label>
                         <select class="form-select" id="categoryFilter" name="category">
-                            <option selected>Elige una categoría...</option>
+                            <option selected value="">Elige una categoría...</option>
                             <optgroup label="Ropa Tejida">
                                 <option value="Suéteres">Suéteres</option>
                                 <option value="Bufandas">Bufandas</option>
@@ -67,7 +67,7 @@
                     <div class="mb-3">
                         <label for="priceFilter" class="form-label">Rango de precios</label>
                         <select class="form-select" id="priceFilter" name="priceRange">
-                            <option selected>Elige un rango...</option>
+                            <option selected value="">Elige un rango...</option>
                             <option value="0-100">$0 - $100</option>
                             <option value="100-500">$100 - $500</option>
                             <option value="500-1000">$500 - $1000</option>
@@ -137,11 +137,13 @@
             .then(data => {
                 // Actualiza el contador de elementos en el carrito
                 document.getElementById('cartItemCount').textContent = data.cart.totalQuantity;
-                location.reload();
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
-            });
+            })
+            .finally(() => {
+            location.reload();
+        });
     }
 </script>
 
