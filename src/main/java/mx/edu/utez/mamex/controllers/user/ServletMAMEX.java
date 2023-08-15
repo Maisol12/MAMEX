@@ -92,8 +92,8 @@ import java.util.Date;
         "/user/review-view",
         "/user/delete",
         "/user/updatePaymentStatus",
-
-        "/user/password-recovery"
+        "/user/password-recovery",
+        "/user/restore"
 }) //endpoints para saber a donde redirigir al usuario
 @MultipartConfig
 public class ServletMAMEX extends HttpServlet {
@@ -417,31 +417,62 @@ public class ServletMAMEX extends HttpServlet {
                     email = req.getParameter("email");
                     password = req.getParameter("password");
                     User user = new DAOUser().login(email, password);
-                    if (user != null) {
-                        session = req.getSession(true); // Create a new session
-                        session.setAttribute("email", user.getEmail()); // Set the email from the user object
-                        session.setAttribute("id", user.getId());
-                        if (user.getRol() == 1) {
-                            redirect = "/user/admin/dashboard?result=" + true
-                                    + "&message" + URLEncoder.encode("Inicio de sesion correctamente administrador! :D" + user.getNames(), StandardCharsets.UTF_8);
-                        } else {
-                            redirect = "/user/mamex?action=login&result=" + true
-                                    + "&message=" + URLEncoder.encode("Inicio de sesion correctamente! :D" + user.getNames(), StandardCharsets.UTF_8);
 
+                    if (user != null) {
+                        if ("HABILITADO".equals(user.getUserState())) {
+                            session = req.getSession(true); // Create a new session
+                            session.setAttribute("email", user.getEmail()); // Set the email from the user object
+                            session.setAttribute("id", user.getId());
+                            if (user.getRol() == 1) {
+                                redirect = "/user/admin/dashboard?result=" + true
+                                        + "&message=" + URLEncoder.encode("Inicio de sesión correctamente administrador! :D" + user.getNames(), StandardCharsets.UTF_8);
+                            } else {
+                                redirect = "/user/mamex?action=login&result=" + true
+                                        + "&message=" + URLEncoder.encode("Inicio de sesión correctamente! :D" + user.getNames(), StandardCharsets.UTF_8);
+                            }
+                        } else {
+                            redirect = "/user/login?result=" + false
+                                    + "&message=" + URLEncoder.encode("Usuario no está habilitado para iniciar sesión", StandardCharsets.UTF_8);
                         }
                     } else {
                         redirect = "/user/login?result=" + false
-                                + "&message" + URLEncoder.encode("Usuario o contraseña incorrectos", StandardCharsets.UTF_8);
+                                + "&message=" + URLEncoder.encode("Usuario o contraseña incorrectos", StandardCharsets.UTF_8);
                     }
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
                     System.out.println(email + " " + password);
-                    System.out.println(e);
+                    e.printStackTrace();
                     redirect = "/user/mamex?result=" + false
-                            + "&message" + URLEncoder.encode("Credentials Missmatch", StandardCharsets.UTF_8);
+                            + "&message=" + URLEncoder.encode("Credentials Missmatch", StandardCharsets.UTF_8);
                 }
             }
             break;
+
+
+            case "/user/restore": {
+                String userId = req.getParameter("userId");
+                if (userId != null) {
+                    try {
+                        DAOUser.updateUser(userId);
+                        resp.sendRedirect("/admin/users");
+                        return;  // Aseguramos que no se ejecute más código después de la redirección
+                    } catch (SQLException e) {
+                        if (e instanceof SQLIntegrityConstraintViolationException) {
+                            resp.setContentType("text/html;charset=UTF-8");
+                            resp.getWriter().write("Error: No puedes eliminar este usuario porque tiene órdenes asociadas.");
+                        } else {
+                            e.printStackTrace();
+                            resp.setContentType("text/html;charset=UTF-8");
+                            resp.getWriter().write("Error al eliminar el usuario. Por favor, inténtalo de nuevo más tarde.");
+                        }
+                        return;  // Aseguramos que no se ejecute más código después de enviar la respuesta
+                    }
+                } else {
+                    resp.setContentType("text/html;charset=UTF-8");
+                    resp.getWriter().write("Error: El ID del usuario es inválido o no se proporcionó.");
+                    return;  // Aseguramos que no se ejecute más código después de enviar la respuesta
+                }
+            }
 
             case "/user/delete": {
                 String userId = req.getParameter("userId");

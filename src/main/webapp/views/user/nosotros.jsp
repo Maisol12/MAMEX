@@ -137,14 +137,6 @@
                                         excepcional.
                                     </li>
                                 </ul>
-                                <button class="btn btn-dark m-4"
-                                        style="font-weight: 300; border-radius: 0; padding: 10px; width: 150px;">
-                                    <a href="${pageContext.request.contextPath}/admin/inicio">Ver mas</a>
-                                </button>
-                                <button class="btn btn-dark m-4"
-                                        style="font-weight: 300; border-radius: 0; padding: 10px; width: 150px;">
-                                    <a href="${pageContext.request.contextPath}/views/user/review_product.jsp">Ver mas</a>
-                                </button>
                             </div>
                         </div>
                     </div>

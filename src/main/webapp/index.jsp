@@ -54,60 +54,31 @@
 <section class="pt-5 pb-5">
     <div class="container">
         <div class="row">
-            <div class="col-6">
-                <h3 class="mb-3">Nuevos productos</h3>
-            </div>
             <div class="col-12">
-                <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner"> <!-- Aquí está el contenedor principal del carrusel -->
-                        <c:forEach var="item" items="${items}" varStatus="loop">
-                            <!-- Abre un nuevo ítem del carrusel cada 3 productos o si es el primer producto -->
-                            <c:if test="${loop.index % 3 == 0}">
-                                <div class="carousel-item${loop.index == 0 ? ' active' : ''}">
-                                <div class="row">
-                            </c:if>
+                <h3 class="mb-3">Productos de la semana</h3>
+            </div>
 
-                            <!-- Muestra la tarjeta del producto -->
-                            <div class="col-md-4 mb-3">
-                                <a href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}" class="text-decoration-none text-black-50">
-                                    <div class="card">
-                                        <!-- ... contenido de tu tarjeta ... -->
-                                        <div class="box-shadow-1">
-                                            <!-- Imagen del producto -->
-                                            <c:if test="${not empty item.base64Images}">
-                                                <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
-                                                <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="card-img-top" alt="${item.name}">
-                                            </c:if>
-                                            <div class="card-body">
-                                                <h6 class="card-title">${item.name}</h6>
-                                                <p class="fw-lighter card-text">$${item.unitPrice}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
+            <c:forEach var="item" items="${items}" varStatus="loop" begin="0" end="11">
+                <div class="col-md-4 mb-3">
+                    <a href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}" class="text-decoration-none text-black-50">
+                        <div class="card">
+                            <div class="box-shadow-1">
+                                <!-- Imagen del producto -->
+                                <c:if test="${not empty item.base64Images}">
+                                    <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
+                                    <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="card-img-top" alt="${item.name}">
+                                </c:if>
+                                <div class="card-body">
+                                    <h6 class="card-title">${item.name}</h6>
+                                    <p class="fw-lighter card-text">$${item.unitPrice}</p>
+                                </div>
                             </div>
-
-                            <!-- Cierra el ítem del carrusel cada 3 productos o si es el último producto -->
-                            <c:if test="${(loop.index + 1) % 3 == 0 || loop.index==9}">
-                                </div>
-                                </div>
-                            </c:if>
-                        </c:forEach>
-                    </div> <!-- Fin del contenedor principal del carrusel -->
-                    <!-- Botones de navegación -->
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Anterior</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators2" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Siguiente</span>
+                        </div>
                     </a>
                 </div>
-            </div>
+            </c:forEach>
         </div>
-    </div>
-</section>
+    </div></section>
 
 <aside>
     <div class="container-fluid p-5">
@@ -169,7 +140,7 @@
     let paramResult = new URL(window.location.href).searchParams.get("result");
     let paramMessage = new URL(window.location.href).searchParams.get("message");
     let paramUsername = new URL(window.location.href).searchParams.get("username");
-
+    alertify.set('notifier', 'delay', 2);
     if (currentPath === "/user/mamex" && paramResult) {
         if (action === "login" && paramResult === "true") {
             alertify.set('notifier', 'position', 'top-right');

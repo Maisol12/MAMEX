@@ -91,7 +91,26 @@ public class DAOUser{
         Connection connection = mySQLConnection.connect();  // Obtener conexión (adaptar según tu implementación)
         PreparedStatement statement = null;
         try {
-            String sql = "DELETE FROM users WHERE id_user = ?";
+            // Modificamos el SQL para hacer una actualización del estado en lugar de eliminar
+            String sql = "UPDATE users SET user_state = 'INHABILITADO' WHERE id_user = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, userId);
+            statement.executeUpdate();
+        } finally {
+            // Cerrar recursos (si están abiertos)
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+    }
+
+    public static void updateUser(String userId) throws SQLException {
+        // Asumiendo que tienes una conexión a la base de datos configurada:
+        MySQLConnection mySQLConnection = new MySQLConnection();
+        Connection connection = mySQLConnection.connect();  // Obtener conexión (adaptar según tu implementación)
+        PreparedStatement statement = null;
+        try {
+            // Modificamos el SQL para hacer una actualización del estado en lugar de eliminar
+            String sql = "UPDATE users SET user_state = 'HABILITADO' WHERE id_user = ?";
             statement = connection.prepareStatement(sql);
             statement.setString(1, userId);
             statement.executeUpdate();
@@ -366,6 +385,7 @@ public class DAOUser{
                     user.setNames(rs.getString("name_user"));
                     user.setLastnames(rs.getString("lastname"));
                     user.setBirthday(rs.getString("birthday"));
+                    user.setUserState(rs.getString("user_state"));
                     user.setGender(rs.getString("sex"));
                     user.getImg_user();
                     rs.close();

@@ -2,7 +2,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap" rel="stylesheet">
-<link rel="icon" href="${pageContext.request.contextPath}/assets/img/MAMEX.jpg">
+<link rel="icon" href="${pageContext.request.contextPath}/assets/img/MAMEX.png">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/alertify.min.css" type="text/css">
