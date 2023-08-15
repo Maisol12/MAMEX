@@ -31,7 +31,7 @@
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <div class="card box-shadow-1 profile-card" style="border-radius: 0">
                         <div class="card-title text-center">
-                            <img class="profile-img" src="data:image/jpeg;base64,${base64Image}" alt="profile picture">
+                            <img class="profile-img" src="${empty base64Image ? '../../assets/img/descarga.jfif' : 'data:image/jpeg;base64,' + base64Image}" alt="profile picture">
                         </div>
                         <div class="card-body">
                             <div class="container">

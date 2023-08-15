@@ -87,7 +87,7 @@
             <div class="row g-3">
                 <c:forEach var="item" items="${items}">
                     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-                        <div class="card custom-card position-relative h-100">
+                        <div class="card position-relative h-100">
                             <!-- Imagen del producto -->
                             <c:if test="${not empty item.base64Images}">
                                 <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>

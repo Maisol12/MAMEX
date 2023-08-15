@@ -48,6 +48,16 @@
             transition: color 0.3s;
         }
 
+        .star-filled, .star-empty {
+            font-size: 20px;
+            margin-right: 3px;
+            color: gold;
+        }
+
+        .star-empty {
+            color: #ccc;
+        }
+
 
 
     </style>
@@ -58,27 +68,23 @@
         <!-- List existing reviews -->
         <div class="col-12 col-md-6">
             <h6 class="mb-3">Reseñas de nuestros clientes</h6>
-            <table class="table table-responsive table-striped">
-                <thead>
-                <tr>
-                    <th>Usuario</th>
-                    <th>Calificación</th>
-                    <th>Comentarios</th>
-                    <th>Fecha de reseña</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${reviews}" var="review">
-                    <tr>
-                        <td><c:out value="${review.name_user}" /></td>
-                        <td><c:out value="${review.evaluacion}" /></td>
-                        <td><c:out value="${review.comentario}" /></td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+            <c:forEach items="${reviews}" var="review">
+                <div class="card">
+                    <h6><c:out value="${review.name_user}" /></h6>
+                    <div class="user-rating">
+                        <!-- Mostrar estrellas completas según la calificación del usuario -->
+                        <c:forEach begin="1" end="${review.evaluacion}" var="star">
+                            <span class="star-filled">★</span>
+                        </c:forEach>
+                        <!-- Mostrar estrellas vacías para el resto hasta 5 -->
+                        <c:forEach begin="${review.evaluacion + 1}" end="5" var="emptyStar">
+                            <span class="star-empty">☆</span>
+                        </c:forEach>
+                    </div>
+                    <p><c:out value="${review.comentario}" /></p>
+                </div>
+            </c:forEach>
         </div>
-
         <!-- Form to submit a new review -->
         <div class="col-12 col-md-6 ">
             <h6 class="mt-5 mb-3">Tu reseña sobre ${item.name}</h6>

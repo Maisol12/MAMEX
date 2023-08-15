@@ -22,7 +22,7 @@
                 <img src="${pageContext.request.contextPath}/assets/img/h5.png" class="d-block w-100"
                      alt="Promociones en mamex">
             </div>
-            <div class="carousel-item active">
+            <div class="carousel-item">
                 <img src="${pageContext.request.contextPath}/assets/img/h1.png" class="d-block w-100"
                      alt="Promociones en mamex">
             </div>
@@ -34,7 +34,7 @@
                 <img src="${pageContext.request.contextPath}/assets/img/h3.png" class="d-block w-100"
                      alt="Promociones en mamex">
             </div>
-            <div class="carousel-item active">
+            <div class="carousel-item">
                 <img src="${pageContext.request.contextPath}/assets/img/h4.png" class="d-block w-100"
                      alt="Promociones en mamex">
             </div>
@@ -58,51 +58,33 @@
                 <h3 class="mb-3">Nuevos productos</h3>
             </div>
             <div class="col-12">
-                <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner"> <!-- Aquí está el contenedor principal del carrusel -->
-                        <c:forEach var="item" items="${items}" varStatus="loop">
-                            <!-- Abre un nuevo ítem del carrusel cada 3 productos o si es el primer producto -->
-                            <c:if test="${loop.index % 3 == 0}">
-                                <div class="carousel-item${loop.index == 0 ? ' active' : ''}">
-                                <div class="row">
-                            </c:if>
-
-                            <!-- Muestra la tarjeta del producto -->
-                            <div class="col-md-4 mb-3">
-                                <a href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}" class="text-decoration-none text-black-50">
-                                    <div class="card">
-                                        <!-- ... contenido de tu tarjeta ... -->
-                                        <div class="box-shadow-1">
-                                            <!-- Imagen del producto -->
-                                            <c:if test="${not empty item.base64Images}">
-                                                <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
-                                                <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="card-img-top" alt="${item.name}">
-                                            </c:if>
-                                            <div class="card-body">
-                                                <h6 class="card-title">${item.name}</h6>
-                                                <p class="fw-lighter card-text">$${item.unitPrice}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img class="img-fluid" alt="100%x280"
+                                 src="https://images.unsplash.com/photo-1532781914607-2031eca2f00d?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=7c625ea379640da3ef2e24f20df7ce8d">
+                            <div class="card-body">
+                                <h4 class="card-title">Special title treatment</h4>
+                                <p class="card-text">With supporting text below as a natural lead-in to
+                                    additional content.</p>
                             </div>
-
-                            <!-- Cierra el ítem del carrusel cada 3 productos o si es el último producto -->
-                            <c:if test="${(loop.index + 1) % 3 == 0 || loop.index==9}">
-                                </div>
-                                </div>
-                            </c:if>
-                        </c:forEach>
-                    </div> <!-- Fin del contenedor principal del carrusel -->
-                    <!-- Botones de navegación -->
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Anterior</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators2" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Siguiente</span>
-                    </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img class="img-fluid" alt="100%x280"
+                                 src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=ee8417f0ea2a50d53a12665820b54e23">
+                            <div class="card-body">
+                                <h4 class="card-title">Special title treatment</h4>
+                                <p class="card-text">With supporting text below as a natural lead-in to
+                                    additional content.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -161,6 +143,7 @@
     </p>
 </footer>
 
+
 <jsp:include page="layouts/footer.jsp"/>
 
 <script>
@@ -169,7 +152,7 @@
     let paramResult = new URL(window.location.href).searchParams.get("result");
     let paramMessage = new URL(window.location.href).searchParams.get("message");
     let paramUsername = new URL(window.location.href).searchParams.get("username");
-
+    alertify.set('notifier', 'delay', 2);
     if (currentPath === "/user/mamex" && paramResult) {
         if (action === "login" && paramResult === "true") {
             alertify.set('notifier', 'position', 'top-right');
