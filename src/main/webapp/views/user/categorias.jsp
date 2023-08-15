@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+v<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
@@ -22,15 +22,15 @@
       </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center text-lg-start text-sm-center">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center text-lg-start text-sm-center">
       <c:forEach var="item" items="${categoryEntry.value}">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
-          <div class="card custom-card h-100 position-relative">
+        <div class="col d-flex justify-content-center">
+          <div class="card custom-card h-100 position-relative" style="min-height: 450px;">
             <c:if test="${not empty item.base64Images}">
               <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
               <a class="text-decoration-none" href="${pageContext.request.contextPath}/user/productDetails?id=${item.id}">
                 <img src="data:image/jpeg;base64,${item.base64Images[imageName]}" class="card-img-top"
-                     alt="${item.name}">
+                     alt="${item.name}" style="max-height: 200px;">
               </a>
             </c:if>
             <div class="card-body">

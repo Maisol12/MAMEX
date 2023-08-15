@@ -38,6 +38,50 @@ public class UserDao {
         preparedStatement.executeUpdate();
     }
 
+    public List<User> getUsersWithStatus(String status) {
+        List<User> users = new ArrayList<>();
+        String query = "select * from users where user_state = 'INHABILITADO';";
+        try {
+            PreparedStatement pstm = con.prepareStatement(query);
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getLong("id_user"));
+                user.setNames(rs.getString("name_user"));
+                user.setLastnames(rs.getString("lastname"));
+                user.setEmail(rs.getString("email"));
+                // Aquí deberías añadir más campos según los atributos de tu clase User
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return users;
+    }
+
+    public List<User> getUsersWithStatusGood(String status) {
+        List<User> users = new ArrayList<>();
+        String query = "select * from users where user_state = 'HABILITADO';";
+        try {
+            PreparedStatement pstm = con.prepareStatement(query);
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getLong("id_user"));
+                user.setNames(rs.getString("name_user"));
+                user.setLastnames(rs.getString("lastname"));
+                user.setEmail(rs.getString("email"));
+                // Aquí deberías añadir más campos según los atributos de tu clase User
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return users;
+    }
+
 
 
     public User findUserByEmail(String email) {
@@ -116,7 +160,7 @@ public class UserDao {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users WHERE user_state = 'HABILITADO'";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();

@@ -48,6 +48,16 @@
             transition: color 0.3s;
         }
 
+        .star-filled, .star-empty {
+            font-size: 20px;
+            margin-right: 3px;
+            color: gold;
+        }
+
+        .star-empty {
+            color: #ccc;
+        }
+
 
 
     </style>
@@ -57,28 +67,24 @@
     <div class="row justify-content-center">
         <!-- List existing reviews -->
         <div class="col-12 col-md-6">
-            <table class="table table-responsive table-striped">
-                <h6 class="mb-3">Reseñas de nuestros clientes</h6>
-                <thead>
-                <tr>
-                    <th>Usuario</th>
-                    <th>Calificación</th>
-                    <th>Comentarios</th>
-                    <th>Fecha de reseña</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${reviews}" var="review">
-                    <tr>
-                        <td><c:out value="${review.name_user}" /></td>
-                        <td><c:out value="${review.evaluacion}" /></td>
-                        <td><c:out value="${review.comentario}" /></td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+            <h6 class="mb-3">Reseñas de nuestros clientes</h6>
+            <c:forEach items="${reviews}" var="review">
+                <div class="card">
+                    <h6><c:out value="${review.name_user}" /></h6>
+                    <div class="user-rating">
+                        <!-- Mostrar estrellas completas según la calificación del usuario -->
+                        <c:forEach begin="1" end="${review.evaluacion}" var="star">
+                            <span class="star-filled">★</span>
+                        </c:forEach>
+                        <!-- Mostrar estrellas vacías para el resto hasta 5 -->
+                        <c:forEach begin="${review.evaluacion + 1}" end="5" var="emptyStar">
+                            <span class="star-empty">☆</span>
+                        </c:forEach>
+                    </div>
+                    <p><c:out value="${review.comentario}" /></p>
+                </div>
+            </c:forEach>
         </div>
-
         <!-- Form to submit a new review -->
         <div class="col-12 col-md-6 ">
             <h6 class="mt-5 mb-3">Tu reseña sobre ${item.name}</h6>
@@ -86,7 +92,7 @@
                 <input type="hidden" name="productId" value="${productId}" />
                 <div class="mb-3">
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 col-sm-6">
                             <label class="form-label">¿Qué calificación le darías al producto?</label>
                             <div class="rating">
                                 <input value="5" name="rating" id="star5" type="radio">

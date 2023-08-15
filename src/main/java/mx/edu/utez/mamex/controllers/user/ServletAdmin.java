@@ -44,7 +44,7 @@ import java.sql.SQLException;
 import jakarta.servlet.http.*;
 
 
-@WebServlet(name = "admin", urlPatterns = {"/admin/inicio", "/admin/crear_producto", "/admin/products", "/user/admin/dashboard", "/user/admin/products","/admin/users","/admin/sales","/admin/delete_product","/admin/editar_producto","/admin/orders","/user/checkout","/user/reset_password","/views/user/inicio_sesion","/admin/filterProducts"})
+@WebServlet(name = "admin", urlPatterns = {"/admin/inicio", "/admin/crear_producto", "/admin/products", "/user/admin/dashboard", "/user/admin/products","/admin/users","/admin/sales","/admin/delete_product","/admin/editar_producto","/admin/orders","/user/checkout","/user/reset_password","/views/user/inicio_sesion","/admin/filterProducts","/admin/restore"})
 @MultipartConfig
 public class ServletAdmin extends HttpServlet {
     private String action;
@@ -56,8 +56,7 @@ public class ServletAdmin extends HttpServlet {
         action = req.getServletPath();
         switch (action) {
             case "/admin/inicio":
-            case "/user/admin/dashboard":
-            {
+            case "/user/admin/dashboard": {
                 loadInicioData(req, resp);
                 redirect = "/views/admin/inicio.jsp";
             }
@@ -72,6 +71,7 @@ public class ServletAdmin extends HttpServlet {
 
             case "/admin/users": {
                 loadUsersData(req, resp);
+                loadUsersDataBlocked(req, resp);
                 redirect = "/views/admin/users.jsp";
             }
             break;
@@ -87,7 +87,7 @@ public class ServletAdmin extends HttpServlet {
             case "/admin/orders": {
                 MySQLConnection mySQLConnection = new MySQLConnection();
                 Connection connection = mySQLConnection.connect();
-                loadOrdersData(req, resp,connection);
+                loadOrdersData(req, resp, connection);
                 redirect = "/views/admin/orders.jsp";
             }
             break;
@@ -106,6 +106,20 @@ public class ServletAdmin extends HttpServlet {
         req.getRequestDispatcher(redirect).forward(req, resp);
 
     }
+
+    private void loadUsersDataBlocked(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UserDao userDao = new UserDao(new MySQLConnection().connect());
+        List<User> pendingUsers = userDao.getUsersWithStatus("INAHIBILITADO");
+        request.setAttribute("pendingUsers", pendingUsers);
+    }
+
+    private void loadUsersData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UserDao userDao = new UserDao(new MySQLConnection().connect());
+        List<User> users = userDao.getAllUsers();
+        request.setAttribute("users", users);
+    }
+
+
 
     private void filterProducts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String category = request.getParameter("category");
@@ -337,11 +351,6 @@ public class ServletAdmin extends HttpServlet {
         }
     }
 
-    private void loadUsersData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserDao userDao = new UserDao(new MySQLConnection().connect());
-        List<User> users = userDao.getAllUsers();
-        request.setAttribute("users", users);
-    }
 
     public void loadSalesData(HttpServletRequest request, HttpServletResponse response, java.sql.Connection connection) throws ServletException, IOException {
         SaleDao saleDao = new SaleDao(new MySQLConnection().connect());

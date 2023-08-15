@@ -44,8 +44,8 @@
           <th>Imagen</th>
           <th>Producto</th>
           <th>Precio Unitario</th>
-          <th>Cantidad</th>
           <th>Total por Artículo</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -54,9 +54,6 @@
             <td><img src="data:image/jpeg;base64,${cartItem.item.base64Images['image1']}" width="50" height="50" alt="${cartItem.item.name}"></td>
             <td>${cartItem.item.name}</td>
             <td>$${cartItem.item.unitPrice}</td>
-            <td>
-              <input type="number" name="quantity_${cartItem.item.id}" value="${cartItem.quantity}" min="1" style="width: 50px;">
-            </td>
             <td>$${cartItem.item.unitPrice * cartItem.quantity}</td>
             <td>
               <button type="button" onclick="removeFromCart(${cartItem.item.id})" class="btn btn-outline-danger btn-sm"><i data-feather="trash" style="width: 16px; height: 16px"></i></button>

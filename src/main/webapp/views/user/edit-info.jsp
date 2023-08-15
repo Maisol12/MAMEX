@@ -30,13 +30,21 @@
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <div class="card box-shadow-1 profile-card" style="border-radius: 0">
                         <form action="${pageContext.request.contextPath}/user/update" method="post" enctype="multipart/form-data">
-                            <div class="card-title text-center">
-                                <img src="data:image/jpeg;base64,${base64Image}" alt="User Image" style="max-width: 200px; height: auto;">
-                                <!-- Upload new profile picture -->
-                                <div class="mt-2">
-                                    <label for="profilePicUpload">Cambiar foto de perfil</label>
-                                    <input type="file" id="profilePicUpload" name="profilePic">
-                                </div>
+                            <div class="card-title text-center" id="imagePreviewContainer">
+                                <c:choose>
+                                    <c:when test="${not empty base64Image}">
+                                        <img src="data:image/jpeg;base64,${base64Image}" alt="User Image" style="max-width: 200px; height: auto;">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p>No hay foto de perfil</p>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+
+                            <!-- Upload new profile picture -->
+                            <div class="mt-2 text-center">
+                                <input type="file" id="profilePicUpload" name="profilePic" style="display: none;">
+                                <label for="profilePicUpload" class="btn btn-outline-dark">Cambiar foto de perfil</label>
                             </div>
 
                             <div class="card-body">
@@ -60,7 +68,6 @@
                                     <!-- Save Changes button -->
                                     <div class="text-end mb-0">
                                         <button type="submit" class="btn btn-outline-dark m-2">Guardar cambios</button>
-
                                     </div>
                                 </div>
                             </div>
@@ -73,5 +80,35 @@
 </main>
 
 <jsp:include page="../../layouts/footer.jsp"/>
+
+<!-- JavaScript for image preview -->
+<script>
+    document.getElementById('profilePicUpload').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            console.log("Archivo seleccionado:", file.name);  // Depuración
+
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    console.log("Resultado de FileReader:", e.target.result);  // Depuración
+                    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+                    imagePreviewContainer.innerHTML = `<img src="${e.target.result}" alt="User Image" style="max-width: 200px; height: auto;">`;
+                };
+
+                reader.onerror = function(e) {
+                    console.error("Error al leer el archivo:", e);  // Depuración
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                alert("Por favor, selecciona una imagen válida.");
+            }
+        }
+    });
+
+</script>
+
 </body>
 </html>
