@@ -183,7 +183,7 @@ public class ServletAdmin extends HttpServlet {
         String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes());
 
         String subject = "Recuperación de contraseña";
-        String recoveryFormURL = "http://localhost:8080/views/user/password-recovery.jsp?token=" + token + "&email=" + encodedEmail;
+        String recoveryFormURL = "http://localhost:8080//views/user/password-recovery.jsp?token=" + token + "&email=" + encodedEmail;
         String message = "Hola,\n\nHemos recibido una solicitud para restablecer la contraseña de tu cuenta. " +
                 "Si no solicitaste esto, puedes ignorar este mensaje. Si deseas restablecer tu contraseña, " +
                 "haz clic en el siguiente enlace:\n\n" + recoveryFormURL;
