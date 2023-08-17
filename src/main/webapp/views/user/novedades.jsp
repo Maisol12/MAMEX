@@ -15,7 +15,7 @@
 
 <div class="container-fluid">
     <h4 class="text-center mt-4">Lo más nuevo en <em>Manos Mexicanas</em></h4>
-    <div class="row mt-5">
+    <div class="row mt-5 ms-2">
         <!-- Filtros en la columna izquierda -->
         <div class="col-md-2">
             <h6 class="text-center">Filtrar por:</h6>
@@ -79,9 +79,9 @@
                 <div class="text-center">
                     <div class="row">
                         <form novalidate action="${pageContext.request.contextPath}/user/novedades" method="get">
-                            <button type="submit" class="btn btn-outline-dark mb-3" style="border-radius: 0">Filtrar</button>
+                            <button type="submit" class="btn btn-outline-dark mb-3 btn-sm" style="border-radius: 0">Filtrar <i data-feather="filter" style="width: 14px; height: 14px"></i></button>
                         </form>
-                        <a href="${pageContext.request.contextPath}/user/novedades" class="btn btn-outline-dark" style="border-radius: 0">Eliminar filtros</a>
+                        <a href="${pageContext.request.contextPath}/user/novedades" class="btn btn-outline-danger btn-sm" style="border-radius: 0">Eliminar filtros <i data-feather="x" style="width: 16px; height: 16px; margin-bottom: 3px"></i></a>
 
                     </div>
                 </div>
@@ -93,7 +93,7 @@
             <div class="row g-3">
                 <c:forEach var="item" items="${items}">
                     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-                        <div class="card position-relative h-100 mt-4">
+                        <div class="card position-relative h-100 mt-4 mb-3">
                             <!-- Imagen del producto -->
                             <c:if test="${not empty item.base64Images}">
                                 <c:set var="imageName" value="${item.base64Images.keySet().iterator().next()}"/>
@@ -108,7 +108,7 @@
                                 <p class="fw-lighter ">$${item.unitPrice}</p>
                                 <small class="card-text fw-light d-lg-block d-none" style="font-size: 14px;">${item.description}</small>
                             </div>
-                            <div class="card-footer bg-light d-none d-lg-block d-md-block">
+                            <div class="card-footer bg-white">
                                 <div class="row">
                                     <button class="btn btn-sm btn-outline-dark w-100" onclick="addToCart(${item.id})" style="border-radius: 0;">
                                         <small class="text">Agregar <i data-feather="shopping-bag" style="width: 14px; height: 14px"></i></small>

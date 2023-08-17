@@ -69,19 +69,21 @@
         <div class="col-12 col-md-6">
             <h6 class="mb-3">Reseñas de nuestros clientes</h6>
             <c:forEach items="${reviews}" var="review">
-                <div class="card">
-                    <h6><c:out value="${review.name_user}" /></h6>
-                    <div class="user-rating">
-                        <!-- Mostrar estrellas completas según la calificación del usuario -->
-                        <c:forEach begin="1" end="${review.evaluacion}" var="star">
-                            <span class="star-filled">★</span>
-                        </c:forEach>
-                        <!-- Mostrar estrellas vacías para el resto hasta 5 -->
-                        <c:forEach begin="${review.evaluacion + 1}" end="5" var="emptyStar">
-                            <span class="star-empty">☆</span>
-                        </c:forEach>
+                <div class="card mb-2">
+                    <div class="container m-2">
+                        <h6 class="card-title"><c:out value="${review.name_user}" /></h6>
+                        <div class="user-rating">
+                            <!-- Mostrar estrellas completas según la calificación del usuario -->
+                            <c:forEach begin="1" end="${review.evaluacion}" var="star">
+                                <span class="star-filled">★</span>
+                            </c:forEach>
+                            <!-- Mostrar estrellas vacías para el resto hasta 5 -->
+                            <c:forEach begin="${review.evaluacion + 1}" end="5" var="emptyStar">
+                                <span class="star-empty">☆</span>
+                            </c:forEach>
+                        </div>
+                        <p class="card-text"><c:out value="${review.comentario}" /></p>
                     </div>
-                    <p><c:out value="${review.comentario}" /></p>
                 </div>
             </c:forEach>
         </div>

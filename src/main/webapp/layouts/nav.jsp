@@ -31,9 +31,6 @@
             </div>
             <div class="container">
                 <div class="container d-flex justify-content-lg-end justify-content-center justify-content-md-center pe-3">
-                    <button class="btn icon-button m-1">
-                        <i class="icon" data-feather="search"></i>
-                    </button>
                     <div class="btn-group">
                         <button type="button" class="btn m-1" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="icon" data-feather="user"></i>

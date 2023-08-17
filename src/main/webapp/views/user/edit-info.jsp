@@ -44,9 +44,10 @@
                             <!-- Upload new profile picture -->
                             <div class="mt-2 text-center">
                                 <input type="file" id="profilePicUpload" name="profilePic" style="display: none;">
-                                <label for="profilePicUpload" class="btn btn-outline-dark">Cambiar foto de perfil</label>
+                                <label for="profilePicUpload" class="btn btn-sm btn-outline-dark">Agregar foto de perfil <i data-feather="image"></i></label>
                             </div>
 
+                            <!-- Upload new profile picture -->
                             <div class="card-body">
                                 <div class="container">
                                     <div class="row">
@@ -54,20 +55,19 @@
                                             <div class="mb-3">
                                                 <label for="names" class="form-label">Nombre</label>
                                                 <input type="text" class="form-control" id="names" name="names" value="${user.names}">
-
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="lastnames" class="form-label">Apellidos</label>
-                                                <input type="text" class="form-control" id="lastnames" name="lastnames" value="${user.lastnames}">
+                                                <input type="text" class="form-control" id="lastnames" name="lastnames" value="${user.lastnames}" >
                                             </div>
                                         </div>
                                     </div>
                                     <input type="hidden" name="userId" value="${user.id}">
                                     <!-- Save Changes button -->
                                     <div class="text-end mb-0">
-                                        <button type="submit" class="btn btn-outline-dark m-2">Guardar cambios</button>
+                                        <button type="submit" class="btn btn-outline-dark m-2 btn-sm">Guardar cambios <i data-feather="check" style="width: 18px; height: 18px"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -83,31 +83,25 @@
 
 <!-- JavaScript for image preview -->
 <script>
-    document.getElementById('profilePicUpload').addEventListener('change', function (event) {
-        const file = event.target.files[0];
+
+    document.getElementById('profilePicUpload').addEventListener('change', function() {
+        const file = this.files[0];
         if (file) {
-            console.log("Archivo seleccionado:", file.name);  // Depuración
-
-            if (file.type.startsWith("image/")) {
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    console.log("Resultado de FileReader:", e.target.result);  // Depuración
-                    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-                    imagePreviewContainer.innerHTML = `<img src="${e.target.result}" alt="User Image" style="max-width: 200px; height: auto;">`;
-                };
-
-                reader.onerror = function(e) {
-                    console.error("Error al leer el archivo:", e);  // Depuración
-                };
-
-                reader.readAsDataURL(file);
-            } else {
-                alert("Por favor, selecciona una imagen válida.");
-            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewContainer = document.getElementById('imagePreviewContainer');
+                const image = document.createElement('img');
+                image.src = e.target.result;
+                image.alt = "Vista previa de la imagen de perfil";
+                image.style.maxWidth = '200px';
+                image.style.marginTop = '8px';
+                image.style.height = 'auto';
+                previewContainer.innerHTML = '';  // Limpia el contenedor de la vista previa
+                previewContainer.appendChild(image);  // Añade la miniatura al contenedor
+            };
+            reader.readAsDataURL(file);
         }
     });
-
 </script>
 
 </body>

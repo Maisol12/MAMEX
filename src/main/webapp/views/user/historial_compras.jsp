@@ -25,6 +25,7 @@
         <th>Cantidad</th>
         <th>Fecha de Compra</th>
         <th>Total por Artículo</th>
+        <th>Reseñar producto</th>
       </tr>
       </thead>
       <tbody>
@@ -37,6 +38,9 @@
             <td>${purchaseItem.quantity}</td>
             <td><fmt:formatDate value="${sale.slDateCreate}" pattern="yyyy-MM-dd" /></td>
             <td>$${purchaseItem.item.unitPrice * purchaseItem.quantity}</td>
+            <td>
+              <a href="${pageContext.request.contextPath}/user/productDetails?id=${purchaseItem.item.id}" class="btn btn-primary">Reseñar</a>
+            </td>
           </tr>
         </c:forEach>
       </c:forEach>

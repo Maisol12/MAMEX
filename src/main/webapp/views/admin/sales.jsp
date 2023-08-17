@@ -87,8 +87,9 @@
                                     <td>${sale.user.id}</td>
                                     <td>${sale.user.fullName}</td>
                                     <td>
-                                        <button onclick="togglePayment(${sale.idSale})">Confirmar</button>
+                                        <button class="btn btn-outline-dark" onclick="togglePayment(${sale.idSale})">Confirmar</button>
                                     </td>
+
                                 </tr>
                             </c:forEach>
                             </tbody>
